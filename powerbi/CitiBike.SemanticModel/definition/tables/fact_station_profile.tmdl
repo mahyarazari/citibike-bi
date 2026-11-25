@@ -1,0 +1,77 @@
+table fact_station_profile
+	lineageTag: fc26390b-4892-5716-891e-214279086d73
+
+	column station_id
+		dataType: string
+		isHidden
+		lineageTag: 81b3193b-299e-54dd-8211-c86c8802d3ed
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column weekday
+		dataType: int64
+		formatString: 0
+		lineageTag: 38ac8c72-35cd-546a-b7b8-4011560d3fd7
+		summarizeBy: none
+		sourceColumn: weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: d218de04-2747-52b5-8463-86f7b1ef95b6
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_departures
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 154cb946-9095-55f2-bfa4-e24567c872dc
+		summarizeBy: none
+		sourceColumn: avg_departures
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_arrivals
+		dataType: double
+		formatString: #,0.00
+		lineageTag: caa952fd-54e7-5b1b-b9d2-8c1852493a01
+		summarizeBy: none
+		sourceColumn: avg_arrivals
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_net_flow
+		dataType: double
+		formatString: #,0.00
+		lineageTag: bd0132b1-13fb-5bb1-9256-84dd8346766e
+		summarizeBy: none
+		sourceColumn: avg_net_flow
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: a282cd16-4c5c-5e5d-a452-3feac439bd0b
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_station_profile = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_station_profile"),
+				    Typed = Table.TransformColumnTypes(Source, {{"station_id", type text}, {"weekday", Int64.Type}, {"hour", Int64.Type}, {"avg_departures", type number}, {"avg_arrivals", type number}, {"avg_net_flow", type number}, {"station_key", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,30 @@
+table dim_region
+	lineageTag: c4b915df-cf53-5bca-93f6-63c48eb0e092
+
+	column region_id
+		dataType: string
+		isHidden
+		lineageTag: 8ca2b663-1cdb-5949-b7a6-71bea50eb020
+		summarizeBy: none
+		sourceColumn: region_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_name
+		dataType: string
+		lineageTag: fd55c03f-185a-52d6-a7e8-2e37d8c0974c
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_region = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("dim_region"),
+				    Typed = Table.TransformColumnTypes(Source, {{"region_id", type text}, {"region_name", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

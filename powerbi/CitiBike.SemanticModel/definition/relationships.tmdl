@@ -1,0 +1,84 @@
+relationship 6c60da4a-843a-56b7-b137-af11358846a7
+	fromColumn: fact_trips_hourly.date
+	toColumn: dim_date.date
+
+relationship eca2b60a-b2c4-599a-ad27-2b332472e5de
+	fromColumn: fact_trips_hourly.hour
+	toColumn: dim_hour.hour
+
+relationship 72142911-3e3a-5803-87c8-bcbf97a2330a
+	fromColumn: fact_trips_hourly.start_station_key
+	toColumn: dim_station.station_key
+
+relationship 9ea38785-373f-5c75-b2dc-f3fc1646c7e1
+	fromColumn: fact_station_hourly.date
+	toColumn: dim_date.date
+
+relationship 6e590511-405b-5231-9d0f-5af42f47d0b0
+	fromColumn: fact_station_hourly.hour
+	toColumn: dim_hour.hour
+
+relationship 30139a01-d61c-553e-8fb6-a025992ec4c2
+	fromColumn: fact_station_hourly.station_key
+	toColumn: dim_station.station_key
+
+relationship e260e121-ca1d-5459-9ea3-b26df1437573
+	fromColumn: fact_od_monthly.start_station_key
+	toColumn: dim_station.station_key
+
+relationship 47b85e68-d95a-5caa-a560-92326e1dc390
+	isActive: false
+	fromColumn: fact_od_monthly.end_station_key
+	toColumn: dim_station.station_key
+
+relationship 0de9b81b-3acc-5f03-ae76-fbab5bf52c7b
+	fromColumn: fact_top_routes.start_station_key
+	toColumn: dim_station.station_key
+
+relationship c244d09f-597b-5fe1-ad0c-1fa65e3ed056
+	fromColumn: fact_casual_repeat_od.start_station_key
+	toColumn: dim_station.station_key
+
+relationship fe7afa49-5023-59e8-a21b-ce05b66cfe27
+	fromColumn: fact_station_profile.station_key
+	toColumn: dim_station.station_key
+
+relationship 38c99eb2-f4fb-5538-880c-10a6614904f4
+	fromColumn: fact_station_profile.hour
+	toColumn: dim_hour.hour
+
+relationship 2f5ee467-327c-5fcc-956e-38f0c0bd2dd7
+	fromColumn: fact_customer_profile.hour
+	toColumn: dim_hour.hour
+
+relationship 4629df09-f296-59c3-9526-9746f5636416
+	fromColumn: fact_station_live.station_key
+	toColumn: dim_station.station_key
+
+relationship e601bf39-4786-535c-a7c0-8dbec4da9265
+	fromColumn: fact_station_live.status_class
+	toColumn: 'Status Class'.status_class
+
+relationship ea58f44d-ac75-599a-99fd-c17a2cc7489a
+	fromColumn: fact_station_status.station_key
+	toColumn: dim_station.station_key
+
+relationship 635fd2b5-f837-5d29-8236-9732cb4d05b0
+	fromColumn: fact_rebalance_list.station_key
+	toColumn: dim_station.station_key
+
+relationship b274fe1b-6369-56c3-8918-20cd8903434f
+	fromColumn: fact_neighborhood_live.nta_code
+	toColumn: dim_neighborhood.nta_code
+
+relationship 03c3baae-26e8-5aa2-8ca8-4a8081fa7b80
+	fromColumn: fact_weather_hourly.date
+	toColumn: dim_date.date
+
+relationship 87fa5618-f8ee-5cc6-b118-bbac6a733922
+	fromColumn: fact_weather_hourly.hour
+	toColumn: dim_hour.hour
+
+relationship 98be9f58-ea95-53fd-b835-33b3280cd238
+	fromColumn: dim_station.nta_code
+	toColumn: dim_neighborhood.nta_code

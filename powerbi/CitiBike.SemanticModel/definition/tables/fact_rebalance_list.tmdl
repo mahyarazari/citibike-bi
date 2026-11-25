@@ -1,0 +1,198 @@
+table fact_rebalance_list
+	lineageTag: 7857efa1-9108-593c-9b08-acf7e11e6648
+
+	column priority_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: e53565cc-6cec-58d1-9f91-3c5888754a72
+		summarizeBy: none
+		sourceColumn: priority_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: 3148cde5-424c-5081-9268-984de3bbe368
+		summarizeBy: none
+		sourceColumn: snapshot_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 43b34ec0-6f2f-5f36-840f-eafc737c0809
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column short_name
+		dataType: string
+		lineageTag: 0816612d-4bce-5a6f-8a29-5555a54cbec8
+		summarizeBy: none
+		sourceColumn: short_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 2a6b56cb-0507-5420-a27a-7d7bc96f3106
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nta_code
+		dataType: string
+		lineageTag: c85e0e98-c478-52d6-8dfd-3855c5e3c9a9
+		summarizeBy: none
+		sourceColumn: nta_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column borough
+		dataType: string
+		lineageTag: 407f53f6-c155-558c-8e60-ff2f8aebb8ab
+		summarizeBy: none
+		sourceColumn: borough
+
+		annotation SummarizationSetBy = Automatic
+
+	column status_class
+		dataType: string
+		lineageTag: 7f66b383-0e68-57c9-b695-8ce7efcc0e3d
+		summarizeBy: none
+		sourceColumn: status_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_bikes_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 664a68f8-32e8-57fb-89db-4607a2a51708
+		summarizeBy: none
+		sourceColumn: num_bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_docks_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 807784c5-c360-5db2-9c95-fa01f3900ba7
+		summarizeBy: none
+		sourceColumn: num_docks_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column capacity
+		dataType: int64
+		formatString: #,0
+		lineageTag: 4c6fa09e-efc0-52c4-b080-de68cd87cf3c
+		summarizeBy: none
+		sourceColumn: capacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column fill_ratio
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 582eb7e4-d4ff-59df-a772-f5d9a0c7d28b
+		summarizeBy: none
+		sourceColumn: fill_ratio
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_flow_per_hour
+		dataType: double
+		formatString: #,0.00
+		lineageTag: bccfaefd-0f78-57f9-8ddc-0a3f31210bbf
+		summarizeBy: none
+		sourceColumn: net_flow_per_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column flow_source
+		dataType: string
+		lineageTag: 71b1071d-dcfd-5b60-a0d9-8a98fc88e372
+		summarizeBy: none
+		sourceColumn: flow_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column est_minutes_to_empty
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 27c274d0-43be-5318-9554-8ba8d35f3b0a
+		summarizeBy: none
+		sourceColumn: est_minutes_to_empty
+
+		annotation SummarizationSetBy = Automatic
+
+	column est_minutes_to_full
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5b8c7802-a752-535b-aa07-a91ec83ef515
+		summarizeBy: none
+		sourceColumn: est_minutes_to_full
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_index
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 5cf6cc22-026e-5c5d-ad37-8cae773d31ec
+		summarizeBy: none
+		sourceColumn: demand_index
+
+		annotation SummarizationSetBy = Automatic
+
+	column rebalance_priority_score
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 160fc555-0ee2-56ab-8a52-a2b8f2ed77f7
+		summarizeBy: none
+		sourceColumn: rebalance_priority_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_to_target
+		dataType: int64
+		formatString: #,0
+		lineageTag: 987599da-25a2-579a-a6cc-fc8036ffbd14
+		summarizeBy: none
+		sourceColumn: bikes_to_target
+
+		annotation SummarizationSetBy = Automatic
+
+	column action
+		dataType: string
+		lineageTag: ea9c5604-567c-59d2-9dc0-93663727d158
+		summarizeBy: none
+		sourceColumn: action
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 29be6e21-2ae2-5080-b3d8-7f99709e2b1c
+		summarizeBy: none
+		sourceColumn: snapshot_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_rebalance_list = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_rebalance_list"),
+				    Utc = Table.TransformColumns(Source, {{"snapshot_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}}),
+				    Typed = Table.TransformColumnTypes(Utc, {{"priority_rank", Int64.Type}, {"snapshot_utc", type datetime}, {"station_key", Int64.Type}, {"short_name", type text}, {"name", type text}, {"nta_code", type text}, {"borough", type text}, {"status_class", type text}, {"num_bikes_available", Int64.Type}, {"num_docks_available", Int64.Type}, {"capacity", Int64.Type}, {"fill_ratio", type number}, {"net_flow_per_hour", type number}, {"flow_source", type text}, {"est_minutes_to_empty", type number}, {"est_minutes_to_full", type number}, {"demand_index", type number}, {"rebalance_priority_score", type number}, {"bikes_to_target", Int64.Type}, {"action", type text}, {"snapshot_utc_ny", type datetime}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

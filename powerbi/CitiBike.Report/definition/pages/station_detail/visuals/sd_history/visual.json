@@ -1,0 +1,83 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "sd_history",
+  "position": {
+    "x": 642,
+    "y": 192,
+    "z": 3500,
+    "width": 618,
+    "height": 250,
+    "tabOrder": 3500
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_station_status"
+                    }
+                  },
+                  "Property": "snapshot_utc_ny"
+                }
+              },
+              "queryRef": "fact_station_status.snapshot_utc_ny",
+              "nativeQueryRef": "snapshot_utc_ny"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_station_status"
+                        }
+                      },
+                      "Property": "num_bikes_available"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_station_status.num_bikes_available)",
+              "nativeQueryRef": "Bikes available"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Bikes available over the last snapshots (live history)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

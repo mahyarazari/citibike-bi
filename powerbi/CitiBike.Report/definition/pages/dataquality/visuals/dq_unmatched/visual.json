@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "dq_unmatched",
+  "position": {
+    "x": 736,
+    "y": 480,
+    "z": 5600,
+    "width": 528,
+    "height": 228,
+    "tabOrder": 5600
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_unmatched_stations"
+                    }
+                  },
+                  "Property": "station_id"
+                }
+              },
+              "queryRef": "fact_unmatched_stations.station_id",
+              "nativeQueryRef": "station_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_unmatched_stations"
+                    }
+                  },
+                  "Property": "station_name"
+                }
+              },
+              "queryRef": "fact_unmatched_stations.station_name",
+              "nativeQueryRef": "station_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_unmatched_stations"
+                    }
+                  },
+                  "Property": "trips"
+                }
+              },
+              "queryRef": "fact_unmatched_stations.trips",
+              "nativeQueryRef": "trips"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_unmatched_stations"
+                  }
+                },
+                "Property": "trips"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Unmatched trip station IDs (not in today''s GBFS)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

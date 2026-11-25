@@ -1,0 +1,21 @@
+table 'Membership Price'
+	lineageTag: 68402e03-f19e-5d6f-a501-9e6acfe878a1
+
+	column Price
+		dataType: int64
+		formatString: 0
+		lineageTag: e02d65dd-6f88-52cf-928b-c9f49845ff06
+		summarizeBy: none
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Membership Price' = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Price = Int64.Type], List.Transform(List.Numbers(100, 61, 5), each {_}))
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

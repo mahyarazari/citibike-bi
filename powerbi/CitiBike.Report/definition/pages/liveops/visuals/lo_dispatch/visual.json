@@ -1,0 +1,289 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "lo_dispatch",
+  "position": {
+    "x": 678,
+    "y": 188,
+    "z": 5400,
+    "width": 586,
+    "height": 520,
+    "tabOrder": 5400
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "priority_rank"
+                }
+              },
+              "queryRef": "fact_rebalance_list.priority_rank",
+              "nativeQueryRef": "priority_rank"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_station"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "dim_station.name",
+              "nativeQueryRef": "name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "borough"
+                }
+              },
+              "queryRef": "fact_rebalance_list.borough",
+              "nativeQueryRef": "borough"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "status_class"
+                }
+              },
+              "queryRef": "fact_rebalance_list.status_class",
+              "nativeQueryRef": "status_class"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "num_bikes_available"
+                }
+              },
+              "queryRef": "fact_rebalance_list.num_bikes_available",
+              "nativeQueryRef": "num_bikes_available"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "num_docks_available"
+                }
+              },
+              "queryRef": "fact_rebalance_list.num_docks_available",
+              "nativeQueryRef": "num_docks_available"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "est_minutes_to_empty"
+                }
+              },
+              "queryRef": "fact_rebalance_list.est_minutes_to_empty",
+              "nativeQueryRef": "est_minutes_to_empty"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "est_minutes_to_full"
+                }
+              },
+              "queryRef": "fact_rebalance_list.est_minutes_to_full",
+              "nativeQueryRef": "est_minutes_to_full"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "rebalance_priority_score"
+                }
+              },
+              "queryRef": "fact_rebalance_list.rebalance_priority_score",
+              "nativeQueryRef": "rebalance_priority_score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_rebalance_list"
+                    }
+                  },
+                  "Property": "action"
+                }
+              },
+              "queryRef": "fact_rebalance_list.action",
+              "nativeQueryRef": "action"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_rebalance_list"
+                  }
+                },
+                "Property": "priority_rank"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "columnFormatting": [
+        {
+          "properties": {
+            "dataBars": {
+              "positiveColor": {
+                "solid": {
+                  "color": {
+                    "expr": {
+                      "Literal": {
+                        "Value": "'#F4A582'"
+                      }
+                    }
+                  }
+                }
+              },
+              "negativeColor": {
+                "solid": {
+                  "color": {
+                    "expr": {
+                      "Literal": {
+                        "Value": "'#92C5DE'"
+                      }
+                    }
+                  }
+                }
+              },
+              "axisColor": {
+                "solid": {
+                  "color": {
+                    "expr": {
+                      "Literal": {
+                        "Value": "'#5B6478'"
+                      }
+                    }
+                  }
+                }
+              },
+              "reverseDirection": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              },
+              "hideText": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_rebalance_list.rebalance_priority_score"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Rebalancing dispatch list (right-click a station → drill through)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measures"
+                    }
+                  },
+                  "Property": "Action Dispatch"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

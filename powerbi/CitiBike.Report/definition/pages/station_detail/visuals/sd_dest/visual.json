@@ -1,0 +1,120 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "sd_dest",
+  "position": {
+    "x": 20,
+    "y": 454,
+    "z": 3600,
+    "width": 1240,
+    "height": 250,
+    "tabOrder": 3600
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_top_routes"
+                    }
+                  },
+                  "Property": "route"
+                }
+              },
+              "queryRef": "fact_top_routes.route",
+              "nativeQueryRef": "route"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measures"
+                    }
+                  },
+                  "Property": "Route Trips per Day"
+                }
+              },
+              "queryRef": "Measures.Route Trips per Day",
+              "nativeQueryRef": "Route Trips per Day"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measures"
+                    }
+                  },
+                  "Property": "Route Member Share"
+                }
+              },
+              "queryRef": "Measures.Route Member Share",
+              "nativeQueryRef": "Route Member Share"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_top_routes"
+                    }
+                  },
+                  "Property": "avg_distance_km"
+                }
+              },
+              "queryRef": "fact_top_routes.avg_distance_km",
+              "nativeQueryRef": "avg_distance_km"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Measures"
+                  }
+                },
+                "Property": "Route Trips per Day"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top routes starting here'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

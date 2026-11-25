@@ -1,0 +1,105 @@
+table fact_weather_hourly
+	lineageTag: 75994860-162d-5b65-b0f8-9807fbfdb8bb
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 1a649772-c6e1-5718-a068-587f8b349cf8
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: e59c1fb6-98b2-5bfd-a8ea-9f696af99be6
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column temp_c
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 7c4abd65-5009-5355-917d-128004f7be0c
+		summarizeBy: none
+		sourceColumn: temp_c
+
+		annotation SummarizationSetBy = Automatic
+
+	column precip_mm
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 7a139d69-9b20-52c8-adf7-ffe405ad4f20
+		summarizeBy: none
+		sourceColumn: precip_mm
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_kmh
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 672b3b54-bab1-5820-a6ea-61bae6d9b45e
+		summarizeBy: none
+		sourceColumn: wind_kmh
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_code
+		dataType: int64
+		formatString: #,0
+		isHidden
+		lineageTag: 932fc54a-6aee-5a45-bc61-de92d933baff
+		summarizeBy: none
+		sourceColumn: weather_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_class
+		dataType: string
+		lineageTag: af680227-9a90-540f-bcf0-2eadeab76b10
+		summarizeBy: none
+		sourceColumn: weather_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column trips
+		dataType: int64
+		formatString: #,0
+		lineageTag: e95ab4fd-1711-588d-8f12-fc41b11acadd
+		summarizeBy: none
+		sourceColumn: trips
+
+		annotation SummarizationSetBy = Automatic
+
+	column expected_trips
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 59a66b28-1641-5daf-b962-01130bc9b4d1
+		summarizeBy: none
+		sourceColumn: expected_trips
+
+		annotation SummarizationSetBy = Automatic
+
+	column trips_vs_normal
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 17a5f8d1-287f-50ad-b0e3-24521cc331ac
+		summarizeBy: none
+		sourceColumn: trips_vs_normal
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_weather_hourly = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_weather_hourly"),
+				    Typed = Table.TransformColumnTypes(Source, {{"date", type date}, {"hour", Int64.Type}, {"temp_c", type number}, {"precip_mm", type number}, {"wind_kmh", type number}, {"weather_code", Int64.Type}, {"weather_class", type text}, {"trips", Int64.Type}, {"expected_trips", type number}, {"trips_vs_normal", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

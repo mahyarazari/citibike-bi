@@ -1,0 +1,40 @@
+table 'Status Class'
+	lineageTag: 15f6bdca-67dc-5178-a093-b41ba9bc13cc
+
+	column status_class
+		dataType: string
+		lineageTag: 69239bab-ade0-54e7-ba13-50183b8dc330
+		summarizeBy: none
+		sourceColumn: status_class
+		sortByColumn: status_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column status_order
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: eac31e93-25a3-521e-9b86-120a2c11ef43
+		summarizeBy: none
+		sourceColumn: status_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column status_color
+		dataType: string
+		isHidden
+		lineageTag: fd670df2-27c9-5c34-b395-aed64df952af
+		summarizeBy: none
+		sourceColumn: status_color
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Status Class' = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [status_class = text, status_order = Int64.Type, status_color = text], {{"Empty", 1, "#B2182B"}, {"Low", 2, "#F4A582"}, {"Balanced", 3, "#92C5DE"}, {"High", 4, "#4393C3"}, {"Full", 5, "#2166AC"}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

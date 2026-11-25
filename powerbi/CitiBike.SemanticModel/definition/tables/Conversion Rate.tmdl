@@ -1,0 +1,21 @@
+table 'Conversion Rate'
+	lineageTag: 7e64b59a-8fe3-50ed-b772-85eead3c0573
+
+	column Rate
+		dataType: double
+		formatString: 0%
+		lineageTag: 6c3c5752-2273-5a3d-8186-ef202ff54fde
+		summarizeBy: none
+		sourceColumn: Rate
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Conversion Rate' = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Rate = number], List.Transform({1..30}, each {_ / 100}))
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

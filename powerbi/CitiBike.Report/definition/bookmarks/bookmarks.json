@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "bm_overview_filters_open"
+    },
+    {
+      "name": "bm_overview_filters_closed"
+    },
+    {
+      "name": "bm_overview_reset"
+    },
+    {
+      "name": "bm_liveops_filters_open"
+    },
+    {
+      "name": "bm_liveops_filters_closed"
+    },
+    {
+      "name": "bm_liveops_reset"
+    },
+    {
+      "name": "bm_demand_filters_open"
+    },
+    {
+      "name": "bm_demand_filters_closed"
+    },
+    {
+      "name": "bm_demand_reset"
+    },
+    {
+      "name": "bm_customers_filters_open"
+    },
+    {
+      "name": "bm_customers_filters_closed"
+    },
+    {
+      "name": "bm_customers_reset"
+    },
+    {
+      "name": "bm_network_filters_open"
+    },
+    {
+      "name": "bm_network_filters_closed"
+    },
+    {
+      "name": "bm_network_reset"
+    },
+    {
+      "name": "bm_dataquality_filters_open"
+    },
+    {
+      "name": "bm_dataquality_filters_closed"
+    },
+    {
+      "name": "bm_dataquality_reset"
+    }
+  ]
+}

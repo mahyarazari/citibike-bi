@@ -1,0 +1,18 @@
+expression BaseUrl = "https://raw.githubusercontent.com/mahyarazari/citibike-bi/data/" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 1df86036-aa2e-5ddd-9a33-6ffd74daaae8
+
+	annotation PBI_ResultType = Text
+
+expression fnRead =
+		(name as text) as table =>
+		let
+		    // Parquet first (typed, compact); CSV fallback if Parquet cannot be read
+		    Parquet = try Parquet.Document(Binary.Buffer(Web.Contents(BaseUrl, [RelativePath = "data/clean/" & name & ".parquet"]))),
+		    Result = if Parquet[HasError] = false then Parquet[Value] else
+		        Table.PromoteHeaders(Csv.Document(Web.Contents(BaseUrl, [RelativePath = "data/clean/" & name & ".csv"]),
+		            [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]), [PromoteAllScalars = true])
+		in
+		    Result
+	lineageTag: 8fb91bef-3d6a-50fe-ae19-8cf4fbb1574b
+
+	annotation PBI_ResultType = Function

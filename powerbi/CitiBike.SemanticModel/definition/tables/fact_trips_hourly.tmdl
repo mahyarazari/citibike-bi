@@ -1,0 +1,123 @@
+table fact_trips_hourly
+	lineageTag: b651065b-2607-5f7c-b466-8bd6f38ff976
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 971ebd63-6683-5a1e-aa60-405b09e0af43
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 47d8b6af-152b-5c29-b50e-03256f0a77b1
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_station_id
+		dataType: string
+		isHidden
+		lineageTag: 37507a6a-4a95-5363-b85f-e11b94310882
+		summarizeBy: none
+		sourceColumn: start_station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column rideable_type
+		dataType: string
+		lineageTag: e46e71ec-0e9e-5eef-8d49-66ad5f311296
+		summarizeBy: none
+		sourceColumn: rideable_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column member_casual
+		dataType: string
+		lineageTag: b5f43e1a-b106-54a0-93c3-8df742abf4fa
+		summarizeBy: none
+		sourceColumn: member_casual
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: 62b3b0d5-9421-5ed8-b434-42962fabf866
+		summarizeBy: none
+		sourceColumn: trip_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_duration_min
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3bc41c80-252e-557d-915a-f90a5d5e1cb8
+		summarizeBy: none
+		sourceColumn: total_duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_distance_km
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a6cff02b-5abf-51ef-9fc3-8f69357bf531
+		summarizeBy: none
+		sourceColumn: total_distance_km
+
+		annotation SummarizationSetBy = Automatic
+
+	column trips_with_distance
+		dataType: int64
+		formatString: #,0
+		lineageTag: a71c505d-2777-5d68-acd0-408902bd55c2
+		summarizeBy: none
+		sourceColumn: trips_with_distance
+
+		annotation SummarizationSetBy = Automatic
+
+	column unreturned_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: a82b9ef3-651f-53ef-a37d-5b9bd8fbf9d2
+		summarizeBy: none
+		sourceColumn: unreturned_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_station_key
+		dataType: int64
+		formatString: #,0
+		isHidden
+		lineageTag: 4a71f35f-73cd-581f-bb8b-63b1d627e62d
+		summarizeBy: none
+		sourceColumn: start_station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 7f0d6e7a-fabb-5daf-9256-c1878d26c387
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_trips_hourly = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_trips_hourly"),
+				    Typed = Table.TransformColumnTypes(Source, {{"date", type date}, {"hour", Int64.Type}, {"start_station_id", type text}, {"rideable_type", type text}, {"member_casual", type text}, {"trip_count", Int64.Type}, {"total_duration_min", type number}, {"total_distance_km", type number}, {"trips_with_distance", Int64.Type}, {"unreturned_count", Int64.Type}, {"start_station_key", Int64.Type}, {"date_key", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

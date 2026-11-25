@@ -1,0 +1,31 @@
+table 'Map Metric'
+	lineageTag: e4f07e09-6b17-54ff-854b-c20c96bc5c58
+
+	column metric_id
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 8cf31b6e-0d4a-5f83-836f-0699cad8c4b1
+		summarizeBy: none
+		sourceColumn: metric_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Metric
+		dataType: string
+		lineageTag: 644112b6-0a75-5c4b-8974-5882e697141b
+		summarizeBy: none
+		sourceColumn: Metric
+		sortByColumn: metric_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Map Metric' = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [metric_id = Int64.Type, Metric = text], {{1, "Live balance"}, {2, "Bikes per 1k residents"}, {3, "Trips per 1k residents"}, {4, "Week-over-week growth"}, {5, "Utilization per dock"}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

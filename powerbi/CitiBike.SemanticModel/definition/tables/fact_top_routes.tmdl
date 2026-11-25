@@ -1,0 +1,210 @@
+table fact_top_routes
+	lineageTag: 5cbc5ee7-06c1-5c45-877a-f84f61b9b7bf
+
+	column route_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 6470e29c-99c8-5502-a98b-7aec8053e8d2
+		summarizeBy: none
+		sourceColumn: route_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_station_key
+		dataType: int64
+		formatString: #,0
+		isHidden
+		lineageTag: 449457c3-ff10-5fd0-92a2-e5044878b215
+		summarizeBy: none
+		sourceColumn: start_station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_station_key
+		dataType: int64
+		formatString: #,0
+		isHidden
+		lineageTag: 8b617d69-f277-5bd7-abed-ec594719b4d9
+		summarizeBy: none
+		sourceColumn: end_station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column trips
+		dataType: int64
+		formatString: #,0
+		lineageTag: 3b73f67d-ef2b-5c7c-bc20-f92d8a3fc629
+		summarizeBy: none
+		sourceColumn: trips
+
+		annotation SummarizationSetBy = Automatic
+
+	column member_trips
+		dataType: int64
+		formatString: #,0
+		lineageTag: 5ce39612-28b6-5406-ac5f-22f36ec2d8e2
+		summarizeBy: none
+		sourceColumn: member_trips
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_duration_min
+		dataType: double
+		formatString: #,0.00
+		lineageTag: f33f8bd1-518c-5c52-a536-c6c44fb5d9a4
+		summarizeBy: none
+		sourceColumn: total_duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_distance_km
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0d5148d1-732d-526b-a035-afe4b9b7e6e7
+		summarizeBy: none
+		sourceColumn: total_distance_km
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_name
+		dataType: string
+		lineageTag: 6b4f809e-8aa8-5282-8843-54b97ab4f257
+		summarizeBy: none
+		sourceColumn: start_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_lat
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5eb9a119-7883-5874-aeef-fe6f308c634d
+		summarizeBy: none
+		sourceColumn: start_lat
+		dataCategory: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_lon
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a99baf0b-fd8a-53b8-8d17-9b9ee01a8571
+		summarizeBy: none
+		sourceColumn: start_lon
+		dataCategory: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_nta_name
+		dataType: string
+		lineageTag: 83bb0809-9775-5d21-b97a-731dbc89d5a6
+		summarizeBy: none
+		sourceColumn: start_nta_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_borough
+		dataType: string
+		lineageTag: 86a45680-e43e-5ba5-9810-ad8b3f058035
+		summarizeBy: none
+		sourceColumn: start_borough
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_name
+		dataType: string
+		lineageTag: 56a4bd0f-f28c-52d1-9e45-b8946778c73b
+		summarizeBy: none
+		sourceColumn: end_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_lat
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 87fe2412-ec2f-57cb-aa14-f5c0d6af9ea3
+		summarizeBy: none
+		sourceColumn: end_lat
+		dataCategory: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_lon
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 66fcd77c-39db-5d12-9ba9-7e26c92945f4
+		summarizeBy: none
+		sourceColumn: end_lon
+		dataCategory: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_nta_name
+		dataType: string
+		lineageTag: eedcc9aa-a065-5de1-be14-9753a3a26366
+		summarizeBy: none
+		sourceColumn: end_nta_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_borough
+		dataType: string
+		lineageTag: 08bc2171-6245-5225-a4a5-a35dfdaf6980
+		summarizeBy: none
+		sourceColumn: end_borough
+
+		annotation SummarizationSetBy = Automatic
+
+	column route
+		dataType: string
+		lineageTag: f570c41e-f74d-54c2-bb5a-5ed84a74bbf3
+		summarizeBy: none
+		sourceColumn: route
+
+		annotation SummarizationSetBy = Automatic
+
+	column trips_per_day
+		dataType: double
+		formatString: #,0.00
+		lineageTag: f7bc872a-f575-5ba2-acbe-548f4aef15ed
+		summarizeBy: none
+		sourceColumn: trips_per_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_duration_min
+		dataType: double
+		formatString: #,0.00
+		lineageTag: fe4e1784-a58f-5f1b-a44b-9eb6a5653290
+		summarizeBy: none
+		sourceColumn: avg_duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_distance_km
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 000e72f5-c80d-5681-8f91-d4311af55cd9
+		summarizeBy: none
+		sourceColumn: avg_distance_km
+
+		annotation SummarizationSetBy = Automatic
+
+	column member_share
+		dataType: double
+		formatString: 0.0%
+		lineageTag: de451f07-9c5c-533a-a189-ffe732c0acdd
+		summarizeBy: none
+		sourceColumn: member_share
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_top_routes = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_top_routes"),
+				    Typed = Table.TransformColumnTypes(Source, {{"route_rank", Int64.Type}, {"start_station_key", Int64.Type}, {"end_station_key", Int64.Type}, {"trips", Int64.Type}, {"member_trips", Int64.Type}, {"total_duration_min", type number}, {"total_distance_km", type number}, {"start_name", type text}, {"start_lat", type number}, {"start_lon", type number}, {"start_nta_name", type text}, {"start_borough", type text}, {"end_name", type text}, {"end_lat", type number}, {"end_lon", type number}, {"end_nta_name", type text}, {"end_borough", type text}, {"route", type text}, {"trips_per_day", type number}, {"avg_duration_min", type number}, {"avg_distance_km", type number}, {"member_share", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

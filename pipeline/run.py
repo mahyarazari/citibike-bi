@@ -158,11 +158,40 @@ class Run:
             if p.stem.rsplit("_", 1)[-1] not in months:
                 p.unlink()
         self.out(pl.DataFrame(parts), "meta_partitions")
+        # Single combined files for Power BI when they fit the 50 MB limit (true for 1-2 months).
+        # Power Query then reads one static URL per table (no dynamic-URL / formula-firewall issues).
+        for t in ("fact_trips_hourly", "fact_station_hourly"):
+            combined = pl.concat([pl.read_parquet(self.clean / f"{t}_{m}.parquet") for m in months], how="vertical_relaxed")
+            try:
+                self.out(combined, t, csv=False)
+            except ValueError as e:
+                (self.clean / f"{t}.parquet").unlink(missing_ok=True)
+                log.warning("%s too large for one file (%s) - Power BI must combine partitions", t, e)
 
         od = (cat("od_monthly")
               .join(key.rename({"short_name": "start_station_id", "station_key": "start_station_key"}), on="start_station_id", how="left")
               .join(key.rename({"short_name": "end_station_id", "station_key": "end_station_key"}), on="end_station_id", how="left"))
         self.out(od.drop("start_station_id", "end_station_id"), "fact_od_monthly", csv=False)
+        # top routes with names/coordinates for the routes table + flow map (small, Power BI friendly)
+        st = dim_station.select("station_key", "name", "lat", "lon", "nta_name", "borough")
+        days = max(1, pl.concat([pl.read_parquet(self.agg / m / "station_hourly.parquet", columns=["date"])
+                                 for m in months])["date"].n_unique())
+        top = (od.filter(pl.col("start_station_key") != pl.col("end_station_key"))
+               .group_by("start_station_key", "end_station_key")
+               .agg(pl.col("trip_count").sum().alias("trips"),
+                    pl.col("trip_count").filter(pl.col("member_casual") == "member").sum().alias("member_trips"),
+                    pl.col("total_duration_min").sum(), pl.col("total_distance_km").sum())
+               .sort("trips", descending=True).head(500)
+               .with_row_index("route_rank", offset=1)
+               .join(st.rename({c: f"start_{c}" for c in st.columns}), on="start_station_key", how="left")
+               .join(st.rename({c: f"end_{c}" for c in st.columns}), on="end_station_key", how="left")
+               .with_columns(
+                   pl.format("{} → {}", "start_name", "end_name").alias("route"),
+                   (pl.col("trips") / days).alias("trips_per_day"),
+                   (pl.col("total_duration_min") / pl.col("trips")).alias("avg_duration_min"),
+                   (pl.col("total_distance_km") / pl.col("trips")).alias("avg_distance_km"),
+                   (pl.col("member_trips") / pl.col("trips")).alias("member_share")))
+        self.out(top, "fact_top_routes")
         self.out(cat("customer_profile"), "fact_customer_profile")
         self.out(cat("casual_repeat_od")
                  .join(key.rename({"short_name": "start_station_id", "station_key": "start_station_key"}), on="start_station_id", how="left")
@@ -190,7 +219,16 @@ class Run:
         self.out(self.regions, "dim_region")
         self.out(dim_nbhd, "dim_neighborhood")
         try:
-            self.out(weather.fetch(first, station_hourly_all["date"].max()), "fact_weather_hourly")
+            w = weather.fetch(first, station_hourly_all["date"].max())
+            # city-wide departures per hour and the "normal" level for that weekday-type x hour,
+            # so weather impact is measured against the same hour (removes time-of-day bias)
+            hourly = (station_hourly_all.group_by("date", "hour").agg(pl.col("departures").sum().alias("trips"))
+                      .with_columns((pl.col("date").dt.weekday() >= 6).alias("is_weekend")))
+            hourly = hourly.with_columns(pl.col("trips").mean().over("is_weekend", "hour").alias("expected_trips"))
+            w = (w.join(hourly.select("date", pl.col("hour").cast(pl.Int8), "trips", "expected_trips"),
+                        on=["date", "hour"], how="left")
+                 .with_columns((pl.col("trips") / pl.col("expected_trips")).alias("trips_vs_normal")))
+            self.out(w, "fact_weather_hourly")
         except Exception as e:  # optional enrichment must not break the run
             log.warning("Weather enrichment skipped: %s", e)
         self.trip_window = (first, station_hourly_all["date"].max())
@@ -211,7 +249,8 @@ class Run:
         snap = self.status.join(self.dim_station.filter(pl.col("is_active")).select("station_id"), on="station_id")
         hist = T.update_status_history(self.read_clean("fact_station_status"), snap,
                                        self.cfg["live"]["snapshot_retention_days"])
-        self.out(hist, "fact_station_status", csv=False)
+        keys = self.dim_station.filter(pl.col("is_active")).select("station_id", "station_key")
+        self.out(hist.join(keys, on="station_id", how="left"), "fact_station_status", csv=False)
         live = T.live_station_metrics(hist, self.dim_station, self.profile, self.cfg)
         V.check(V.LiveStation, live)
         self.out(live.drop("station_id"), "fact_station_live")
@@ -225,7 +264,7 @@ class Run:
         cur = pl.DataFrame(self.dq) if self.dq else None
         if cur is not None:
             cur = cur.with_columns(pl.col("run_time_utc").cast(pl.Datetime("us", "UTC")))
-            dq = cur if prev is None else pl.concat([prev, cur], how="vertical_relaxed")
+            dq = cur if prev is None else pl.concat([prev, cur], how="diagonal_relaxed")
             self.out(dq.tail(20000), "fact_data_quality")
 
         # run log (one row per run) for the Data Quality page
@@ -234,7 +273,7 @@ class Run:
                              "status": status, "error": error,
                              "duration_s": round((datetime.now(timezone.utc) - self.run_time).total_seconds(), 1)}])
         row = row.with_columns(pl.col("run_time_utc").cast(pl.Datetime("us", "UTC")))
-        runs = row if runs is None else pl.concat([runs, row], how="vertical_relaxed").tail(5000)
+        runs = row if runs is None else pl.concat([runs, row], how="diagonal_relaxed").tail(5000)
         self.out(runs, "fact_pipeline_runs")
         if status != "success":
             return

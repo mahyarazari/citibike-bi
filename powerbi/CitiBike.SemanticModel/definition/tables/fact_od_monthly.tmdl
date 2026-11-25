@@ -1,0 +1,78 @@
+table fact_od_monthly
+	lineageTag: e7ba97d5-ebda-5c97-9515-6c051e1993ff
+
+	column month_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 44852da6-abac-5b27-9e4c-7c817f2c8325
+		summarizeBy: none
+		sourceColumn: month_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column member_casual
+		dataType: string
+		lineageTag: b248100f-7188-5fe8-888e-09a0a88e4b93
+		summarizeBy: none
+		sourceColumn: member_casual
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: 92608bce-51a9-5b77-882b-32a41897c703
+		summarizeBy: none
+		sourceColumn: trip_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_duration_min
+		dataType: double
+		formatString: #,0.00
+		lineageTag: ac0463db-35ee-50a2-b476-64df50acd271
+		summarizeBy: none
+		sourceColumn: total_duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_distance_km
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 78c6e1c6-a6ee-5fed-97ad-3344a699bb2f
+		summarizeBy: none
+		sourceColumn: total_distance_km
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_station_key
+		dataType: int64
+		formatString: #,0
+		isHidden
+		lineageTag: 4b2221f4-de57-5bf0-b1c1-4ffecf97955f
+		summarizeBy: none
+		sourceColumn: start_station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_station_key
+		dataType: int64
+		formatString: #,0
+		isHidden
+		lineageTag: db5b9e08-5b3d-5483-a9de-5c9bc230bf94
+		summarizeBy: none
+		sourceColumn: end_station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_od_monthly = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_od_monthly"),
+				    Typed = Table.TransformColumnTypes(Source, {{"month_key", Int64.Type}, {"member_casual", type text}, {"trip_count", Int64.Type}, {"total_duration_min", type number}, {"total_distance_km", type number}, {"start_station_key", Int64.Type}, {"end_station_key", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

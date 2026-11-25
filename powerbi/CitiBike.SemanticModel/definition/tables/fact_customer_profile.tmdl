@@ -1,0 +1,83 @@
+table fact_customer_profile
+	lineageTag: c21a4e15-b708-5ef0-9a2c-d7933ebf931e
+
+	column month_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 90b49b5d-d23a-5492-a69a-3c175413097b
+		summarizeBy: none
+		sourceColumn: month_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column member_casual
+		dataType: string
+		lineageTag: e0b7a79e-9056-5631-a512-9f84bc08cfdc
+		summarizeBy: none
+		sourceColumn: member_casual
+
+		annotation SummarizationSetBy = Automatic
+
+	column rideable_type
+		dataType: string
+		lineageTag: c6f4259c-ed1e-524d-946f-c4af4e271890
+		summarizeBy: none
+		sourceColumn: rideable_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column weekday
+		dataType: int64
+		formatString: 0
+		lineageTag: cd211329-da95-57ec-80fb-44f8383e1252
+		summarizeBy: none
+		sourceColumn: weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: c2f143f7-d177-5ef1-b769-3480ba14effe
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_bucket
+		dataType: string
+		lineageTag: 65f2d34c-92b7-51cb-ab61-2307a498e3c6
+		summarizeBy: none
+		sourceColumn: duration_bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: 7d33d8eb-9b69-520c-8378-4253cab5f8c3
+		summarizeBy: none
+		sourceColumn: trip_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_duration_min
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0cb40737-91f4-5b24-a178-7234da8e4586
+		summarizeBy: none
+		sourceColumn: total_duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_customer_profile = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_customer_profile"),
+				    Typed = Table.TransformColumnTypes(Source, {{"month_key", Int64.Type}, {"member_casual", type text}, {"rideable_type", type text}, {"weekday", Int64.Type}, {"hour", Int64.Type}, {"duration_bucket", type text}, {"trip_count", Int64.Type}, {"total_duration_min", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

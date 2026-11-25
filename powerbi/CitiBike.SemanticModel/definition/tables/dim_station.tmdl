@@ -1,0 +1,116 @@
+table dim_station
+	lineageTag: e1ec99af-3a93-517f-aea0-9ee0aed376f3
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 8c731fa2-991d-58f4-91fd-695f8b1c2021
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column short_name
+		dataType: string
+		lineageTag: 2d16de60-b76d-52ff-814e-f0ab02c95fb1
+		summarizeBy: none
+		sourceColumn: short_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 8e5cb43d-4603-5200-9925-21c469560912
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column lat
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 4f2a72e4-d00d-518c-bb68-4ae9f72c48cc
+		summarizeBy: none
+		sourceColumn: lat
+		dataCategory: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column lon
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 7614604a-086c-511c-a211-f9aa122e27d7
+		summarizeBy: none
+		sourceColumn: lon
+		dataCategory: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column capacity
+		dataType: int64
+		formatString: #,0
+		lineageTag: 11508383-7801-56da-9710-9e10d5ecf977
+		summarizeBy: none
+		sourceColumn: capacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_id
+		dataType: string
+		isHidden
+		lineageTag: 4eeacc62-aacc-50e9-b537-81165ab294f2
+		summarizeBy: none
+		sourceColumn: region_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_name
+		dataType: string
+		lineageTag: 992933c9-386d-5b38-bb58-361f95134895
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_active
+		dataType: boolean
+		lineageTag: aab699c5-db91-5e87-9ec1-73af273eeea1
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	column nta_code
+		dataType: string
+		lineageTag: 19c87da1-45db-53d1-8275-1754805d8244
+		summarizeBy: none
+		sourceColumn: nta_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column nta_name
+		dataType: string
+		lineageTag: b14f1abe-df5e-5d93-a433-712f96bbd407
+		summarizeBy: none
+		sourceColumn: nta_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column borough
+		dataType: string
+		lineageTag: fbe8fa96-dbf4-5c71-a655-ab3399771801
+		summarizeBy: none
+		sourceColumn: borough
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_station = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("dim_station"),
+				    Typed = Table.TransformColumnTypes(Source, {{"station_key", Int64.Type}, {"short_name", type text}, {"name", type text}, {"lat", type number}, {"lon", type number}, {"capacity", Int64.Type}, {"region_id", type text}, {"region_name", type text}, {"is_active", type logical}, {"nta_code", type text}, {"nta_name", type text}, {"borough", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

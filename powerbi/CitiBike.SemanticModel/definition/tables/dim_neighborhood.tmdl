@@ -1,0 +1,115 @@
+table dim_neighborhood
+	lineageTag: 275fee5f-f1e6-56c7-a5cf-e1190e20f9db
+
+	column nta_code
+		dataType: string
+		lineageTag: 32b92934-a7c8-5f87-8786-c26188d5432e
+		summarizeBy: none
+		sourceColumn: nta_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column nta_name
+		dataType: string
+		lineageTag: b134fa84-c19c-528a-9af6-504cc0a9ac86
+		summarizeBy: none
+		sourceColumn: nta_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column borough
+		dataType: string
+		lineageTag: d962fe41-e187-5a38-8702-1f6207bc769c
+		summarizeBy: none
+		sourceColumn: borough
+
+		annotation SummarizationSetBy = Automatic
+
+	column nta_type
+		dataType: string
+		lineageTag: 1cb4611b-3c85-5bf0-8367-0081231523a1
+		summarizeBy: none
+		sourceColumn: nta_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: int64
+		formatString: #,0
+		lineageTag: 4a12f159-c308-5b4a-81f0-1df15b66da50
+		summarizeBy: none
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	column area_km2
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5fd9d5d1-7f9b-5789-84c2-f029f053f6df
+		summarizeBy: none
+		sourceColumn: area_km2
+
+		annotation SummarizationSetBy = Automatic
+
+	column in_service_area
+		dataType: boolean
+		lineageTag: 0ff8455f-dade-54cf-950f-857013d17e16
+		summarizeBy: none
+		sourceColumn: in_service_area
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: e78d064b-6ff3-5530-99f4-ca80e73435fd
+		summarizeBy: none
+		sourceColumn: station_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column dock_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: 1f273631-981d-5548-9e14-b3fcdafbd3df
+		summarizeBy: none
+		sourceColumn: dock_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column docks_per_1k_residents
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 8d8f1fbd-41e8-50f0-b060-539f5a41a500
+		summarizeBy: none
+		sourceColumn: docks_per_1k_residents
+
+		annotation SummarizationSetBy = Automatic
+
+	column stations_per_km2
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 34422ea0-40d3-53fc-9ee9-7305351033af
+		summarizeBy: none
+		sourceColumn: stations_per_km2
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_population
+		dataType: boolean
+		lineageTag: 093b90ce-9e3f-5dff-8a8e-f57387376297
+		summarizeBy: none
+		sourceColumn: has_population
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_neighborhood = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("dim_neighborhood"),
+				    Typed = Table.TransformColumnTypes(Source, {{"nta_code", type text}, {"nta_name", type text}, {"borough", type text}, {"nta_type", type text}, {"population", Int64.Type}, {"area_km2", type number}, {"in_service_area", type logical}, {"station_count", Int64.Type}, {"dock_count", Int64.Type}, {"docks_per_1k_residents", type number}, {"stations_per_km2", type number}, {"has_population", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

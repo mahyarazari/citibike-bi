@@ -1,0 +1,39 @@
+table fact_unmatched_stations
+	lineageTag: 3009a7fe-ad69-5032-a264-5437e41cffc8
+
+	column station_id
+		dataType: string
+		isHidden
+		lineageTag: 4742dcec-a819-5340-86bf-1fc3dbb20faa
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_name
+		dataType: string
+		lineageTag: 3822ac4c-266c-547e-ac77-1284eb8d9237
+		summarizeBy: none
+		sourceColumn: station_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column trips
+		dataType: int64
+		formatString: #,0
+		lineageTag: 06c14759-7ff4-536e-b016-5e857d09b768
+		summarizeBy: none
+		sourceColumn: trips
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_unmatched_stations = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_unmatched_stations"),
+				    Typed = Table.TransformColumnTypes(Source, {{"station_id", type text}, {"station_name", type text}, {"trips", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

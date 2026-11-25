@@ -1,0 +1,109 @@
+table fact_data_quality
+	lineageTag: df317391-00f1-5663-ad03-db2de49987d0
+
+	column run_id
+		dataType: string
+		isHidden
+		lineageTag: f57e466e-9ebc-5ca2-baf8-0a3ea6719f92
+		summarizeBy: none
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: a227263d-59e4-53c1-9b2c-a3deba4ba533
+		summarizeBy: none
+		sourceColumn: run_time_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column scope
+		dataType: string
+		lineageTag: 3a43e1d3-ceb6-55dc-b61f-365a26014bc7
+		summarizeBy: none
+		sourceColumn: scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column entity
+		dataType: string
+		lineageTag: 19c0fbf3-9d75-579a-ba36-dedc2acce42d
+		summarizeBy: none
+		sourceColumn: entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column rule
+		dataType: string
+		lineageTag: 8fe4b6fe-0a6c-5caf-83ab-3e5f5cfcaa51
+		summarizeBy: none
+		sourceColumn: rule
+
+		annotation SummarizationSetBy = Automatic
+
+	column action
+		dataType: string
+		lineageTag: 29f98bac-dd6f-51e1-9c65-357eb88ca84c
+		summarizeBy: none
+		sourceColumn: action
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_affected
+		dataType: int64
+		formatString: #,0
+		lineageTag: da3df7b3-530e-59da-af8a-97f55a78dad9
+		summarizeBy: none
+		sourceColumn: rows_affected
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_in
+		dataType: int64
+		formatString: #,0
+		lineageTag: bedee6d5-d0da-5d77-ba04-77e73a8bf424
+		summarizeBy: none
+		sourceColumn: rows_in
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_out
+		dataType: int64
+		formatString: #,0
+		lineageTag: c5c2a675-55d0-5ae1-bf5b-b9784de2584a
+		summarizeBy: none
+		sourceColumn: rows_out
+
+		annotation SummarizationSetBy = Automatic
+
+	column note
+		dataType: string
+		lineageTag: dc4b5f8e-4244-58d8-a61d-6222eae6dbc0
+		summarizeBy: none
+		sourceColumn: note
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 199d4391-42e8-5ac8-b522-8640800671a5
+		summarizeBy: none
+		sourceColumn: run_time_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_data_quality = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_data_quality"),
+				    Utc = Table.TransformColumns(Source, {{"run_time_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}}),
+				    Typed = Table.TransformColumnTypes(Utc, {{"run_id", type text}, {"run_time_utc", type datetime}, {"scope", type text}, {"entity", type text}, {"rule", type text}, {"action", type text}, {"rows_affected", Int64.Type}, {"rows_in", Int64.Type}, {"rows_out", Int64.Type}, {"note", type text}, {"run_time_utc_ny", type datetime}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

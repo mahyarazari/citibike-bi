@@ -1,0 +1,134 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "dq_runs",
+  "position": {
+    "x": 196,
+    "y": 480,
+    "z": 5500,
+    "width": 528,
+    "height": 228,
+    "tabOrder": 5500
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_pipeline_runs"
+                    }
+                  },
+                  "Property": "run_time_utc_ny"
+                }
+              },
+              "queryRef": "fact_pipeline_runs.run_time_utc_ny",
+              "nativeQueryRef": "run_time_utc_ny"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_pipeline_runs"
+                    }
+                  },
+                  "Property": "mode"
+                }
+              },
+              "queryRef": "fact_pipeline_runs.mode",
+              "nativeQueryRef": "mode"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_pipeline_runs"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "fact_pipeline_runs.status",
+              "nativeQueryRef": "status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_pipeline_runs"
+                    }
+                  },
+                  "Property": "duration_s"
+                }
+              },
+              "queryRef": "fact_pipeline_runs.duration_s",
+              "nativeQueryRef": "duration_s"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_pipeline_runs"
+                    }
+                  },
+                  "Property": "error"
+                }
+              },
+              "queryRef": "fact_pipeline_runs.error",
+              "nativeQueryRef": "error"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_pipeline_runs"
+                  }
+                },
+                "Property": "run_time_utc_ny"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Pipeline run log (newest first)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

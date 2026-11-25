@@ -1,0 +1,134 @@
+table fact_station_status
+	lineageTag: 3528e5d6-1ef9-5021-ae85-4cc7957bcb98
+
+	column snapshot_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: 1bbf8487-1f9d-547e-a043-f99eb603ca3d
+		summarizeBy: none
+		sourceColumn: snapshot_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		isHidden
+		lineageTag: e4af61e0-6827-53e2-a50f-05652c8b696d
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_bikes_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 754d3566-1b5f-5850-a4d2-a100fc7dcd29
+		summarizeBy: none
+		sourceColumn: num_bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_ebikes_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 5dd30301-079f-5d8c-8c73-ec5839526d6a
+		summarizeBy: none
+		sourceColumn: num_ebikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_bikes_disabled
+		dataType: int64
+		formatString: #,0
+		lineageTag: aaf37976-4e37-5c79-b84a-8dae8fa03ced
+		summarizeBy: none
+		sourceColumn: num_bikes_disabled
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_docks_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 87386c30-d456-5388-845a-5b734596ac1b
+		summarizeBy: none
+		sourceColumn: num_docks_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_docks_disabled
+		dataType: int64
+		formatString: #,0
+		lineageTag: c1124fa3-bf45-5aed-9950-4898f9fbba27
+		summarizeBy: none
+		sourceColumn: num_docks_disabled
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_renting
+		dataType: int64
+		formatString: #,0
+		lineageTag: 6105eeb9-aade-575b-b0fb-efe33f470744
+		summarizeBy: none
+		sourceColumn: is_renting
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_returning
+		dataType: int64
+		formatString: #,0
+		lineageTag: 97194bbe-6312-5d9d-b60a-6f1851739815
+		summarizeBy: none
+		sourceColumn: is_returning
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_reported_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: 28621b3b-6a4b-5314-ab44-eac777464253
+		summarizeBy: none
+		sourceColumn: last_reported_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 09c420e5-1889-5c04-9b55-1fa3d3041cdf
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: d2c6dfda-e443-5e10-85de-d2549892921d
+		summarizeBy: none
+		sourceColumn: snapshot_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_reported_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 4de716f3-343d-5bd0-af22-3105fce434e8
+		summarizeBy: none
+		sourceColumn: last_reported_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_station_status = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_station_status"),
+				    Utc = Table.TransformColumns(Source, {{"snapshot_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}, {"last_reported_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}}),
+				    Typed = Table.TransformColumnTypes(Utc, {{"snapshot_utc", type datetime}, {"station_id", type text}, {"num_bikes_available", Int64.Type}, {"num_ebikes_available", Int64.Type}, {"num_bikes_disabled", Int64.Type}, {"num_docks_available", Int64.Type}, {"num_docks_disabled", Int64.Type}, {"is_renting", Int64.Type}, {"is_returning", Int64.Type}, {"last_reported_utc", type datetime}, {"station_key", Int64.Type}, {"snapshot_utc_ny", type datetime}, {"last_reported_utc_ny", type datetime}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

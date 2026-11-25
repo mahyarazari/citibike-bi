@@ -1,0 +1,177 @@
+table fact_neighborhood_live
+	lineageTag: 874e5ce2-42d9-55a8-b6c9-7fd64080b8cc
+
+	column nta_code
+		dataType: string
+		lineageTag: 091357c8-fda0-566d-9302-66c42e3b97f5
+		summarizeBy: none
+		sourceColumn: nta_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column stations_reporting
+		dataType: int64
+		formatString: #,0
+		lineageTag: bdc11f44-0411-5f22-9200-2723a5d33ba6
+		summarizeBy: none
+		sourceColumn: stations_reporting
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 96578373-88b9-5262-8d99-c45dfeab6c9b
+		summarizeBy: none
+		sourceColumn: bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column ebikes_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: e72b007a-7652-5761-9827-fbfb4b3eef69
+		summarizeBy: none
+		sourceColumn: ebikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column docks_available
+		dataType: int64
+		formatString: #,0
+		lineageTag: 755afc89-2ba9-526c-ac85-ad6c9e353c9e
+		summarizeBy: none
+		sourceColumn: docks_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_stations
+		dataType: int64
+		formatString: #,0
+		lineageTag: 39384432-e281-5ef4-89d4-ebca7b594371
+		summarizeBy: none
+		sourceColumn: empty_stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column full_stations
+		dataType: int64
+		formatString: #,0
+		lineageTag: de067aeb-65ea-51f5-81b6-d964ef1b82a6
+		summarizeBy: none
+		sourceColumn: full_stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column balanced_stations
+		dataType: int64
+		formatString: #,0
+		lineageTag: beb3cba2-61e4-56f3-9ac2-889e2a751681
+		summarizeBy: none
+		sourceColumn: balanced_stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: aacd6a6f-770c-582b-9c43-dd2c8f48db4f
+		summarizeBy: none
+		sourceColumn: snapshot_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_1h_ago
+		dataType: int64
+		formatString: #,0
+		lineageTag: 63f8bd95-0511-5c67-a050-41ab941ac201
+		summarizeBy: none
+		sourceColumn: bikes_1h_ago
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_balanced_1h_ago
+		dataType: double
+		formatString: 0.0%
+		lineageTag: b05001af-9799-5f7c-ab67-b18705914a7f
+		summarizeBy: none
+		sourceColumn: pct_balanced_1h_ago
+
+		annotation SummarizationSetBy = Automatic
+
+	column compare_snapshot_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: 406bcb8c-06a8-5f15-a349-a7e3fb92f5b1
+		summarizeBy: none
+		sourceColumn: compare_snapshot_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_balanced
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 31477fee-25fa-5c8f-968d-54a22822c26e
+		summarizeBy: none
+		sourceColumn: pct_balanced
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_per_1k_residents
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 6959a7b5-3e5f-58be-94bc-13ebcbf47629
+		summarizeBy: none
+		sourceColumn: bikes_per_1k_residents
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_change_1h
+		dataType: int64
+		formatString: #,0
+		lineageTag: 0e5d0188-58dc-57da-bd7c-c6588dda1b34
+		summarizeBy: none
+		sourceColumn: bikes_change_1h
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_balanced_change_1h
+		dataType: double
+		formatString: 0.0%
+		lineageTag: c8b39031-64df-52e0-845b-2a52415c2262
+		summarizeBy: none
+		sourceColumn: pct_balanced_change_1h
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 2080e773-e9b5-5969-b8ad-765dc8209743
+		summarizeBy: none
+		sourceColumn: snapshot_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	column compare_snapshot_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: d6fb788f-e56d-5535-bcb9-0c7392c358d2
+		summarizeBy: none
+		sourceColumn: compare_snapshot_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_neighborhood_live = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_neighborhood_live"),
+				    Utc = Table.TransformColumns(Source, {{"snapshot_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}, {"compare_snapshot_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}}),
+				    Typed = Table.TransformColumnTypes(Utc, {{"nta_code", type text}, {"stations_reporting", Int64.Type}, {"bikes_available", Int64.Type}, {"ebikes_available", Int64.Type}, {"docks_available", Int64.Type}, {"empty_stations", Int64.Type}, {"full_stations", Int64.Type}, {"balanced_stations", Int64.Type}, {"snapshot_utc", type datetime}, {"bikes_1h_ago", Int64.Type}, {"pct_balanced_1h_ago", type number}, {"compare_snapshot_utc", type datetime}, {"pct_balanced", type number}, {"bikes_per_1k_residents", type number}, {"bikes_change_1h", Int64.Type}, {"pct_balanced_change_1h", type number}, {"snapshot_utc_ny", type datetime}, {"compare_snapshot_utc_ny", type datetime}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

@@ -105,6 +105,27 @@ def download(url: str, dest: Path, chunk: int = 1 << 20, max_attempts: int = 30)
     return dest
 
 
+def to_powerbi_types(df, tz: str):
+    """Make types Power Query reads without surprises.
+
+    - unsigned / small ints -> Int64 (Power BI has one whole-number type)
+    - Float32 -> Float64
+    - every tz-aware UTC datetime gets a companion '<col>_ny' column in New York local
+      time (naive). Power Query cannot do DST-aware conversion, so it is done here.
+    """
+    import polars as pl
+
+    casts, extra = [], []
+    for c, t in df.schema.items():
+        if t in (pl.UInt8, pl.UInt16, pl.UInt32, pl.UInt64, pl.Int8, pl.Int16, pl.Int32):
+            casts.append(pl.col(c).cast(pl.Int64))
+        elif t == pl.Float32:
+            casts.append(pl.col(c).cast(pl.Float64))
+        elif isinstance(t, pl.Datetime) and t.time_zone and not c.endswith("_ny") and f"{c}_ny" not in df.columns:
+            extra.append(pl.col(c).dt.convert_time_zone(tz).dt.replace_time_zone(None).alias(f"{c}_ny"))
+    return df.with_columns(casts + extra) if casts or extra else df
+
+
 def write_table(df, name: str, cfg: dict, csv: bool = True) -> dict:
     """Write a polars/pandas DataFrame to data/clean as Parquet (+ CSV fallback).
 
@@ -114,6 +135,7 @@ def write_table(df, name: str, cfg: dict, csv: bool = True) -> dict:
 
     if not isinstance(df, pl.DataFrame):
         df = pl.from_pandas(df)
+    df = to_powerbi_types(df, cfg["cleaning"]["timezone"])
     out = cfg["paths"]["clean_dir"]
     pq = out / f"{name}.parquet"
     df.write_parquet(pq, compression="zstd")

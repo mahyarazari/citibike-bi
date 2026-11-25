@@ -1,0 +1,81 @@
+table meta_refresh
+	lineageTag: cb269568-fd68-5055-9ec4-4bcc35437564
+
+	column last_successful_run_utc
+		dataType: string
+		isHidden
+		lineageTag: 8fe46724-beff-5a60-b806-0f2a6b4ba879
+		summarizeBy: none
+		sourceColumn: last_successful_run_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_run_id
+		dataType: string
+		isHidden
+		lineageTag: cc4683f4-4276-51e7-b2d3-e2c09c819732
+		summarizeBy: none
+		sourceColumn: last_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_mode
+		dataType: string
+		lineageTag: 3bbf2820-b1c7-5d98-a2b5-22a3d97573b3
+		summarizeBy: none
+		sourceColumn: last_mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_live_snapshot_utc
+		dataType: string
+		isHidden
+		lineageTag: 6dd9ad28-e849-5ad3-a7a4-d315d97fb19b
+		summarizeBy: none
+		sourceColumn: last_live_snapshot_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshots_kept
+		dataType: string
+		lineageTag: 7c159df0-b9cf-5e0f-8cba-afde9017b7b4
+		summarizeBy: none
+		sourceColumn: snapshots_kept
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_window_start
+		dataType: string
+		lineageTag: 751e8375-fdd8-55ef-bd48-33dc6f865b80
+		summarizeBy: none
+		sourceColumn: trip_window_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_window_end
+		dataType: string
+		lineageTag: e05a2140-7513-516b-8d02-62102713909b
+		summarizeBy: none
+		sourceColumn: trip_window_end
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_trip_refresh_utc
+		dataType: string
+		isHidden
+		lineageTag: 37674ec6-1751-5069-b04a-f56ddffc0fb7
+		summarizeBy: none
+		sourceColumn: last_trip_refresh_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition meta_refresh = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("meta_refresh"),
+				    Typed = Table.TransformColumnTypes(Source, {{"last_successful_run_utc", type text}, {"last_run_id", type text}, {"last_mode", type text}, {"last_live_snapshot_utc", type text}, {"snapshots_kept", type text}, {"trip_window_start", type text}, {"trip_window_end", type text}, {"last_trip_refresh_utc", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

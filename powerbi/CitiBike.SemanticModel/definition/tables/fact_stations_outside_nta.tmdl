@@ -1,0 +1,49 @@
+table fact_stations_outside_nta
+	lineageTag: 9d7d333d-bf04-5359-9074-f28ebbf3fd58
+
+	column short_name
+		dataType: string
+		lineageTag: ea5527c5-42c1-5457-bc09-73c7db55b676
+		summarizeBy: none
+		sourceColumn: short_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: fc62896a-a9d6-51fd-b3d7-58e22e68708c
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column lat
+		dataType: double
+		formatString: #,0.00
+		lineageTag: df8db91c-a166-536f-89e8-d01ff2ea5f81
+		summarizeBy: none
+		sourceColumn: lat
+		dataCategory: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column lon
+		dataType: double
+		formatString: #,0.00
+		lineageTag: b9fdce05-691d-5220-acbb-4a5490c6372f
+		summarizeBy: none
+		sourceColumn: lon
+		dataCategory: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_stations_outside_nta = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_stations_outside_nta"),
+				    Typed = Table.TransformColumnTypes(Source, {{"short_name", type text}, {"name", type text}, {"lat", type number}, {"lon", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,41 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["BaseUrl", "fnRead", "dim_date", "dim_hour", "dim_station", "dim_neighborhood", "dim_region", "meta_refresh", "fact_trips_hourly", "fact_station_hourly", "fact_od_monthly", "fact_top_routes", "fact_customer_profile", "fact_casual_repeat_od", "fact_station_profile", "fact_station_live", "fact_station_status", "fact_rebalance_list", "fact_neighborhood_live", "fact_weather_hourly", "fact_trip_cleaning", "fact_data_quality", "fact_pipeline_runs", "fact_unmatched_stations", "fact_stations_outside_nta", "Map Metric", "Membership Price", "Conversion Rate", "Status Class", "Measures"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+ref table dim_date
+ref table dim_hour
+ref table dim_station
+ref table dim_neighborhood
+ref table dim_region
+ref table meta_refresh
+ref table fact_trips_hourly
+ref table fact_station_hourly
+ref table fact_od_monthly
+ref table fact_top_routes
+ref table fact_customer_profile
+ref table fact_casual_repeat_od
+ref table fact_station_profile
+ref table fact_station_live
+ref table fact_station_status
+ref table fact_rebalance_list
+ref table fact_neighborhood_live
+ref table fact_weather_hourly
+ref table fact_trip_cleaning
+ref table fact_data_quality
+ref table fact_pipeline_runs
+ref table fact_unmatched_stations
+ref table fact_stations_outside_nta
+ref table 'Map Metric'
+ref table 'Membership Price'
+ref table 'Conversion Rate'
+ref table 'Status Class'
+ref table Measures

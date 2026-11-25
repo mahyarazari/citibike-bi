@@ -1,0 +1,75 @@
+table fact_pipeline_runs
+	lineageTag: 5a7c9f82-4dc2-5311-a317-48b1af408bea
+
+	column run_id
+		dataType: string
+		isHidden
+		lineageTag: 02980e99-10d5-5a39-a789-e37daf5fc30e
+		summarizeBy: none
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time_utc
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		isHidden
+		lineageTag: 4a17a96e-41a7-5cbc-8020-48938f934558
+		summarizeBy: none
+		sourceColumn: run_time_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column mode
+		dataType: string
+		lineageTag: dd5a94d8-25d7-56e2-9a20-516f77194b18
+		summarizeBy: none
+		sourceColumn: mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 81fce0af-f732-52d6-a4ab-537e5c14729e
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column error
+		dataType: string
+		lineageTag: 321daadf-e217-5b2c-8742-d73b93698e23
+		summarizeBy: none
+		sourceColumn: error
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_s
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 19493c4f-f156-56fd-ae26-6c194d8a40f4
+		summarizeBy: none
+		sourceColumn: duration_s
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time_utc_ny
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 1c03384d-3272-54e0-bfd7-34a6fd13e3cc
+		summarizeBy: none
+		sourceColumn: run_time_utc_ny
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_pipeline_runs = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_pipeline_runs"),
+				    Utc = Table.TransformColumns(Source, {{"run_time_utc", each if _ = null then null else if Value.Is(_, type datetimezone) then DateTimeZone.RemoveZone(DateTimeZone.ToUtc(_)) else _, type datetime}}),
+				    Typed = Table.TransformColumnTypes(Utc, {{"run_id", type text}, {"run_time_utc", type datetime}, {"mode", type text}, {"status", type text}, {"error", type text}, {"duration_s", type number}, {"run_time_utc_ny", type datetime}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

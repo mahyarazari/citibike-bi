@@ -1,0 +1,49 @@
+table dim_hour
+	lineageTag: 7c856faf-cdb7-5863-adf4-62f083c986b5
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 8d2f13fc-e0be-5fc6-acfa-a4de9d2d8f75
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour_label
+		dataType: string
+		lineageTag: 5b981c08-7ba3-5c19-ba91-85bef63e8382
+		summarizeBy: none
+		sourceColumn: hour_label
+		sortByColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_part
+		dataType: string
+		lineageTag: 584bead6-040f-5a59-b553-117460b56f7f
+		summarizeBy: none
+		sourceColumn: day_part
+		sortByColumn: day_part_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_part_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f3ebeb8-b2a4-589b-9432-e9e3dde09295
+		summarizeBy: none
+		sourceColumn: day_part_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_hour = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("dim_hour"),
+				    Typed = Table.TransformColumnTypes(Source, {{"hour", Int64.Type}, {"hour_label", type text}, {"day_part", type text}, {"day_part_order", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

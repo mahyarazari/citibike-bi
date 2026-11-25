@@ -1,0 +1,89 @@
+table fact_station_hourly
+	lineageTag: 74053886-77e5-5355-9562-71eb8fced788
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 3607a06b-3112-57f8-b9f6-cb015620bf7c
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: b5884278-e3cd-51e0-8f3e-570c512b1fec
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		isHidden
+		lineageTag: deb523a7-1ae9-55e6-a988-d2ef7600fa0e
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column departures
+		dataType: int64
+		formatString: #,0
+		lineageTag: 629ee407-c8f3-5047-819a-5d59e3073683
+		summarizeBy: none
+		sourceColumn: departures
+
+		annotation SummarizationSetBy = Automatic
+
+	column arrivals
+		dataType: int64
+		formatString: #,0
+		lineageTag: b9e556a1-be73-597a-898e-f96e3ce0f8b1
+		summarizeBy: none
+		sourceColumn: arrivals
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_flow
+		dataType: int64
+		formatString: #,0
+		lineageTag: 9173d6ec-8c34-52e0-9509-de5b9c341d65
+		summarizeBy: none
+		sourceColumn: net_flow
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 5d0e5d10-43ef-53e0-82f7-a11c89a9e4a3
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 6b21d4fa-c2ab-5864-ada5-c8697507120b
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_station_hourly = m
+		mode: import
+		source =
+				let
+				    Source = fnRead("fact_station_hourly"),
+				    Typed = Table.TransformColumnTypes(Source, {{"date", type date}, {"hour", Int64.Type}, {"station_id", type text}, {"departures", Int64.Type}, {"arrivals", Int64.Type}, {"net_flow", Int64.Type}, {"station_key", Int64.Type}, {"date_key", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
