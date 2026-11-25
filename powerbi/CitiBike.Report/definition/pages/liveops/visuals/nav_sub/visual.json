@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "nav_sub",
   "position": {
-    "x": 18,
-    "y": 44,
-    "z": 1300,
-    "width": 150,
+    "x": 60,
+    "y": 38,
+    "z": 1600,
+    "width": 120,
     "height": 18,
-    "tabOrder": 1300
+    "tabOrder": 1600
   },
   "visual": {
     "visualType": "textbox",
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "NYC Live Operations BI",
+                    "value": "Live Ops BI · NYC",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "8pt",
@@ -74,6 +74,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

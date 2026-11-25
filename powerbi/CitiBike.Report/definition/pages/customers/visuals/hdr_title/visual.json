@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "hdr_title",
   "position": {
-    "x": 196,
-    "y": 8,
-    "z": 2100,
+    "x": 204,
+    "y": 10,
+    "z": 2700,
     "width": 760,
-    "height": 36,
-    "tabOrder": 2100
+    "height": 34,
+    "tabOrder": 2700
   },
   "visual": {
     "visualType": "textbox",
@@ -74,6 +74,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

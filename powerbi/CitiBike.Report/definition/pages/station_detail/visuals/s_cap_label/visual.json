@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_cap_label",
   "position": {
-    "x": 658,
-    "y": 86,
+    "x": 656,
+    "y": 88,
     "z": 2600,
-    "width": 272,
+    "width": 276,
     "height": 20,
     "tabOrder": 2600
   },
@@ -19,10 +19,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Capacity (docks)",
+                    "value": "CAPACITY (DOCKS)",
                     "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "8pt",
                       "color": "#5B6478"
                     }
                   }
@@ -74,6 +74,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

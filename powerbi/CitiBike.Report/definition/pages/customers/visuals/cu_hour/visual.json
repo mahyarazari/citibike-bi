@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "cu_hour",
   "position": {
-    "x": 548,
+    "x": 556,
     "y": 188,
-    "z": 5400,
-    "width": 716,
+    "z": 6000,
+    "width": 708,
     "height": 250,
-    "tabOrder": 5400
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "lineChart",

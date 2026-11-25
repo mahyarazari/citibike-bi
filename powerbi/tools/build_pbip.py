@@ -35,6 +35,16 @@ DENEB = "deneb7E15AEF80B9E4D4F8E12924291ECE89A"
 NAVY, BLUE, GREY, BG = "#1F2A44", "#2F6FDE", "#5B6478", "#F3F5F8"
 
 
+def clean_dir(path: Path):
+    """Remove generated content but keep Power BI Desktop's local cache (.pbi: data cache, settings)."""
+    if not path.exists():
+        return
+    for child in path.iterdir():
+        if child.name == ".pbi":
+            continue
+        shutil.rmtree(child) if child.is_dir() else child.unlink()
+
+
 def lt(name: str) -> str:
     return str(uuid.uuid5(NS, name))
 
@@ -186,9 +196,8 @@ def measures_tmdl() -> str:
 
 
 def build_model(base_url: str) -> list[str]:
-    if SM.exists():
-        shutil.rmtree(SM)
-    (SM / "definition" / "tables").mkdir(parents=True)
+    clean_dir(SM)
+    (SM / "definition" / "tables").mkdir(parents=True, exist_ok=True)
     (SM / "definition.pbism").write_text(json.dumps({
         "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/semanticModel/definitionProperties/1.0.0/schema.json",
         "version": "4.2", "settings": {}}, indent=2), encoding="utf-8")
@@ -299,12 +308,16 @@ class Page:
             for role, refs in roles.items():
                 projs = []
                 for r in refs:
+                    r, _, disp = r.partition("|")
                     fld, qr, nq = F(r)
-                    projs.append({"field": fld, "queryRef": qr, "nativeQueryRef": nq})
+                    pr = {"field": fld, "queryRef": qr, "nativeQueryRef": nq}
+                    if disp:
+                        pr["displayName"] = disp
+                    projs.append(pr)
                 qs[role] = {"projections": projs}
             v["query"] = {"queryState": qs}
             if sort:
-                fld, _, _ = F(sort[0])
+                fld, _, _ = F(sort[0].partition("|")[0])
                 v["query"]["sortDefinition"] = {"sort": [{"field": fld, "direction": sort[1]}], "isDefaultSort": False}
         if objects:
             v["objects"] = objects
@@ -340,54 +353,100 @@ class Page:
 
 
 # ------------------------------------------------------------------------ building blocks
+# Buttons/shapes ("new" visuals) need state selectors: {"id": "default"} / "hover" / "selected";
+# properties without a selector only carry the show/hide switch.
+def LI(v: int):
+    return {"expr": {"Literal": {"Value": f"{int(v)}L"}}}
+
+
+def DEF(**kw):
+    return {"properties": {k: (v if isinstance(v, dict) else L(v)) for k, v in kw.items()}, "selector": {"id": "default"}}
+
+
+def STATE(state, **kw):
+    return {"properties": {k: (v if isinstance(v, dict) else L(v)) for k, v in kw.items()}, "selector": {"id": state}}
+
+
 def no_chrome():
     return {"title": props(show=False), "background": props(show=False), "dropShadow": props(show=False),
-            "border": props(show=False), "padding": props(top=0, bottom=0, left=0, right=0)}
+            "border": props(show=False), "visualHeader": props(show=False),
+            "padding": props(top=0, bottom=0, left=0, right=0)}
 
 
-def textbox(p: Page, vname, x, y, w, h, text, size=11, color=NAVY, bold=False, font="Segoe UI"):
+def textbox(p: Page, vname, x, y, w, h, text, size=11, color=NAVY, bold=False, font="Segoe UI", parent=None,
+            hidden=False, center=False):
     style = {"fontFamily": font, "fontSize": f"{size}pt", "color": color}
     if bold:
         style["fontWeight"] = "bold"
-    p.add(vname, "textbox", x, y, w, h,
-          objects={"general": [{"properties": {"paragraphs": [{"textRuns": [{"value": text, "textStyle": style}]}]}}]},
-          vco=no_chrome())
+    para = {"textRuns": [{"value": text, "textStyle": style}]}
+    if center:
+        para["horizontalTextAlignment"] = "center"
+    p.add(vname, "textbox", x, y, w, h, parent=parent, hidden=hidden,
+          objects={"general": [{"properties": {"paragraphs": [para]}}]}, vco=no_chrome())
 
 
-def shape(p: Page, vname, x, y, w, h, fill, radius=0, parent=None):
-    p.add(vname, "shape", x, y, w, h, parent=parent,
-          objects={"shape": props(tileShape="rectangleRounded" if radius else "rectangle", roundEdge=radius),
-                   "fill": [{"properties": {"show": L(True), "fillColor": C(fill), "transparency": L(0)}}],
-                   "outline": props(show=False)},
-          vco=no_chrome())
+def shape(p: Page, vname, x, y, w, h, fill, radius=0, parent=None, hidden=False, outline=None, shadow=False):
+    out_props = {"show": L(bool(outline))}
+    if outline:
+        out_props.update(lineColor=C(outline), weight=LI(1))
+    objs = {"shape": [{"properties": {"tileShape": L("rectangleRounded" if radius else "rectangle")}},
+                      DEF(roundEdge=LI(radius))],
+            "fill": [{"properties": {"show": L(True)}}, DEF(fillColor=C(fill), transparency=L(0))],
+            "outline": [{"properties": {"show": L(bool(outline))}}, {"properties": out_props, "selector": {"id": "default"}}]}
+    vco = no_chrome()
+    if shadow:
+        vco["dropShadow"] = props(show=True, preset="Custom", color=C(NAVY), transparency=90, shadowBlur=12,
+                                  shadowDistance=2, shadowSpread=0, angle=90, position="Outer")
+    p.add(vname, "shape", x, y, w, h, parent=parent, hidden=hidden, objects=objs, vco=vco)
+
+
+def button(p: Page, vname, x, y, w, h, text, link: dict, *, color=GREY, hover_color=NAVY, fill=None,
+           hover_fill="#F3F5F8", outline=None, bold=False, size=10, align="left", margin=14, radius=18,
+           parent=None, hidden=False):
+    out_props = {"show": L(bool(outline))}
+    if outline:
+        out_props.update(lineColor=C(outline), weight=LI(1))
+    objs = {
+        "icon": [{"properties": {"show": L(False)}}],
+        "text": [{"properties": {"show": L(True)}},
+                 DEF(text=text, fontColor=C(color), fontSize=L(size), bold=L(bold), fontFamily="Segoe UI",
+                     horizontalAlignment=align, leftMargin=LI(margin)),
+                 STATE("hover", fontColor=C(hover_color))],
+        "fill": [{"properties": {"show": L(True)}},
+                 DEF(fillColor=C(fill or "#FFFFFF"), transparency=L(0 if fill else 100)),
+                 STATE("hover", fillColor=C(hover_fill), transparency=L(0))],
+        "outline": [{"properties": {"show": L(bool(outline))}}, {"properties": out_props, "selector": {"id": "default"}}],
+        "shape": [DEF(roundEdge=LI(radius))],
+    }
+    vco = no_chrome()
+    vco["visualLink"] = [{"properties": {"show": L(True), **{k: L(v) for k, v in link.items()}}}]
+    p.add(vname, "actionButton", x, y, w, h, objects=objs, vco=vco, parent=parent, hidden=hidden)
 
 
 def dyn_text(p: Page, vname, x, y, w, h, measure, size=9, color=GREY, color_measure=None, bold=False):
     """Left-aligned dynamic text: a transparent shape whose title is bound to a measure."""
     t = {"show": L(True), "text": {"expr": MEAS(measure)}, "fontSize": L(size), "alignment": L("left"),
-         "fontColor": CM(color_measure) if color_measure else C(color), "fontFamily": L("Segoe UI Semibold" if bold else "Segoe UI"),
-         "background": C("#FFFFFF"), "titleWrap": L(True)}
-    p.add(vname, "shape", x, y, w, h,
-          objects={"shape": props(tileShape="rectangle"), "fill": props(show=False), "outline": props(show=False)},
-          vco={"title": [{"properties": t}], "background": props(show=False), "dropShadow": props(show=False),
-               "border": props(show=False), "padding": props(top=0, bottom=0, left=0, right=0)})
-    # title background transparent
-    p.visuals[-1]["visual"]["visualContainerObjects"]["title"][0]["properties"]["background"] = {"solid": {"color": L("#00000000")}}
+         "fontColor": CM(color_measure) if color_measure else C(color),
+         "fontFamily": L("Segoe UI Semibold" if bold else "Segoe UI"), "titleWrap": L(True),
+         }
+    vco = no_chrome()
+    vco["title"] = [{"properties": t}]
+    p.add(vname, "shape", x, y, w, h, vco=vco,
+          objects={"shape": [{"properties": {"tileShape": L("rectangle")}}],
+                   "fill": [{"properties": {"show": L(False)}}, DEF(transparency=L(100))],
+                   "outline": [{"properties": {"show": L(False)}}, DEF(show=L(False))]})
 
 
-def kpi(p: Page, key, x, y, w, label, value_measure, footer_measure, color_measure="KPI Color Neutral"):
-    h = 104
-    shape(p, f"{key}_bg", x, y, w, h, "#FFFFFF", radius=8)
-    p.visuals[-1]["visual"]["visualContainerObjects"]["dropShadow"] = props(show=True, preset="Custom", transparency=92,
-                                                                            shadowBlur=10, shadowDistance=2, angle=90)
-    shape(p, f"{key}_accent", x + 8, y, w - 16, 3, BLUE)
-    textbox(p, f"{key}_label", x + 14, y + 10, w - 28, 20, label, size=9, color=GREY)
-    p.add(f"{key}_value", "card", x + 6, y + 28, w - 12, 46, roles={"Values": [f"Measures[{value_measure}]"]},
-          objects={"labels": props(fontSize=22, fontFamily="Segoe UI Semibold", color=C(NAVY)),
+def kpi(p: Page, key, x, y, w, label, value_measure, footer_measure, color_measure="KPI Color Neutral", h=104):
+    shape(p, f"{key}_bg", x, y, w, h, "#FFFFFF", radius=10, shadow=True)
+    shape(p, f"{key}_accent", x + 14, y, 36, 4, BLUE, radius=2)
+    textbox(p, f"{key}_label", x + 12, y + 12, w - 24, 20, label.upper(), size=8, color=GREY, font="Segoe UI Semibold")
+    p.add(f"{key}_value", "card", x + 4, y + 30, w - 8, 44, roles={"Values": [f"Measures[{value_measure}]"]},
+          objects={"labels": props(fontSize=24, fontFamily="Segoe UI Semibold", color=C(NAVY)),
                    "categoryLabels": props(show=False)},
-          vco={"title": props(show=False), "background": props(show=False), "dropShadow": props(show=False),
-               "padding": props(top=0, bottom=0, left=0, right=0)})
-    dyn_text(p, f"{key}_footer", x + 8, y + 76, w - 16, 22, footer_measure, size=8, color_measure=color_measure)
+          vco=no_chrome())
+    dyn_text(p, f"{key}_footer", x + 6, y + h - 30, w - 12, 24, footer_measure, size=8, color_measure=color_measure,
+             bold=True)
 
 
 def deneb(p: Page, vname, x, y, w, h, roles: list[str], spec: dict, title=None, subtitle=None):
@@ -402,63 +461,47 @@ def deneb(p: Page, vname, x, y, w, h, roles: list[str], spec: dict, title=None, 
 
 
 def nav(p: Page, pages: list[tuple[str, str, str]], active: str):
-    shape(p, "nav_bg", 0, 0, 180, 720, "#FFFFFF")
-    textbox(p, "nav_logo", 18, 18, 150, 26, "CITI BIKE", size=14, color=BLUE, bold=True, font="Segoe UI Black")
-    textbox(p, "nav_sub", 18, 44, 150, 18, "NYC Live Operations BI", size=8, color=GREY)
-    y = 84
+    shape(p, "nav_bg", 0, 0, 184, 720, "#FFFFFF")
+    shape(p, "nav_edge", 184, 0, 1, 720, "#E6EAF0")
+    shape(p, "nav_logo_mark", 18, 20, 34, 34, BLUE, radius=10)
+    textbox(p, "nav_logo_icon", 18, 25, 34, 26, "CB", size=11, color="#FFFFFF", font="Segoe UI Black", center=True)
+    textbox(p, "nav_logo", 60, 18, 120, 22, "Citi Bike", size=12, color=NAVY, font="Segoe UI Semibold")
+    textbox(p, "nav_sub", 60, 38, 120, 18, "Live Ops BI · NYC", size=8, color=GREY)
+    textbox(p, "nav_menu", 22, 80, 140, 18, "MENU", size=7, color="#8A93A6", font="Segoe UI Semibold")
+    y = 100
     for pid, label, icon in pages:
-        is_active = pid == active
-        objs = {
-            "icon": props(show=False),
-            "text": [{"properties": {"show": L(True), "text": L(f"{icon}   {label}"), "fontSize": L(10),
-                                     "fontColor": C(BLUE if is_active else GREY), "horizontalAlignment": L("left"),
-                                     "leftMargin": L(14), "bold": L(is_active), "fontFamily": L("Segoe UI")}}],
-            "fill": [{"properties": {"show": L(is_active), "fillColor": C("#E8F0FD"), "transparency": L(0)}}],
-            "outline": [{"properties": {"show": L(False), "roundEdge": L(18)}}],
-            "shape": props(roundEdge=18),
-        }
-        p.add(f"nav_{pid}", "actionButton", 10, y, 160, 36, objects=objs,
-              vco={"visualLink": props(show=True, type="PageNavigation", navigationSection=pid),
-                   "title": props(show=False), "background": props(show=False), "dropShadow": props(show=False)})
-        y += 42
-    textbox(p, "nav_foot", 18, 676, 150, 30, "Source: Citi Bike GBFS + trip data · NYC Open Data · Open-Meteo",
-            size=7, color="#8A93A6")
+        on = pid == active
+        button(p, f"nav_{pid}", 10, y, 164, 38, f"{icon}    {label}", {"type": "PageNavigation", "navigationSection": pid},
+               color=BLUE if on else GREY, hover_color=BLUE if on else NAVY, fill="#E8F0FD" if on else None,
+               hover_fill="#E8F0FD" if on else "#F3F5F8", bold=on, radius=19)
+        y += 44
+    shape(p, "nav_card", 12, 600, 160, 104, "#F3F5F8", radius=10)
+    textbox(p, "nav_card_t", 22, 610, 140, 18, "DATA SOURCES", size=7, color="#8A93A6", font="Segoe UI Semibold")
+    textbox(p, "nav_card_b", 22, 628, 144, 70,
+            "Citi Bike GBFS (live) · monthly trip files · NYC NTA 2020 · Census 2020 · Open-Meteo", size=7, color=GREY)
 
 
 def header(p: Page, title: str):
-    textbox(p, "hdr_title", 196, 8, 760, 36, title, size=20, color=NAVY, font="Segoe UI Semibold")
-    dyn_text(p, "hdr_asof", 196, 44, 860, 20, "Data As Of Text", size=9, color=GREY)
+    textbox(p, "hdr_title", 204, 10, 760, 34, title, size=20, color=NAVY, font="Segoe UI Semibold")
+    dyn_text(p, "hdr_asof", 204, 44, 860, 20, "Data As Of Text", size=9, color=GREY)
 
 
 def filter_pane(p: Page) -> tuple[list[str], dict]:
     """Hidden slide-in filter panel + open/close buttons. Returns (panel visual names, bookmarks)."""
     open_bm, close_bm = f"bm_{p.name}_filters_open", f"bm_{p.name}_filters_closed"
-    btn = {"icon": props(show=False),
-           "text": [{"properties": {"show": L(True), "text": L("⚲  Filters"), "fontSize": L(10), "fontColor": C(BLUE),
-                                    "fontFamily": L("Segoe UI Semibold")}}],
-           "fill": [{"properties": {"show": L(True), "fillColor": C("#FFFFFF"), "transparency": L(0)}}],
-           "outline": [{"properties": {"show": L(True), "lineColor": C("#D6DEEB"), "roundEdge": L(16)}}]}
-    p.add("btn_filters", "actionButton", 1148, 14, 116, 32, objects=btn,
-          vco={"visualLink": props(show=True, type="Bookmark", bookmark=open_bm), "title": props(show=False),
-               "background": props(show=False), "dropShadow": props(show=False)})
-    gx, gy, gw, gh = 1004, 56, 268, 652
+    button(p, "btn_filters", 1156, 16, 108, 32, "⚲   Filters", {"type": "Bookmark", "bookmark": open_bm},
+           color=BLUE, hover_color=NAVY, fill="#FFFFFF", hover_fill="#E8F0FD", outline="#D6DEEB", bold=True,
+           align="center", margin=0, radius=16)
+    gx, gy, gw, gh = 1004, 58, 268, 650
     names = ["fp_group", "fp_bg", "fp_title", "fp_close", "fp_borough", "fp_date", "fp_member", "fp_ride", "fp_reset"]
     p.group("fp_group", "Filter pane", gx, gy, gw, gh, hidden=True)
-    shape(p, "fp_bg", gx, gy, gw, gh, "#FFFFFF", radius=8, parent="fp_group")
-    p.visuals[-1]["visual"]["visualContainerObjects"]["dropShadow"] = props(show=True, preset="Custom", transparency=80,
-                                                                            shadowBlur=24, shadowDistance=4, angle=180)
-    p.visuals[-1]["isHidden"] = True
-    textbox(p, "fp_title", gx + 16, gy + 12, 160, 26, "Filters", size=13, color=NAVY, font="Segoe UI Semibold")
-    p.visuals[-1]["parentGroupName"] = "fp_group"
-    p.visuals[-1]["isHidden"] = True
-    close = {"icon": props(show=False),
-             "text": [{"properties": {"show": L(True), "text": L("✕"), "fontSize": L(12), "fontColor": C(GREY)}}],
-             "fill": props(show=False), "outline": props(show=False)}
-    p.add("fp_close", "actionButton", gx + gw - 44, gy + 10, 32, 28, objects=close, parent="fp_group", hidden=True,
-          vco={"visualLink": props(show=True, type="Bookmark", bookmark=close_bm), "title": props(show=False),
-               "background": props(show=False), "dropShadow": props(show=False)})
-    sl = [("fp_borough", "dim_neighborhood[borough]", "Borough", "Dropdown", 54),
-          ("fp_date", "dim_date[date]", "Date range (trips)", "Between", 90),
+    shape(p, "fp_bg", gx, gy, gw, gh, "#FFFFFF", radius=10, parent="fp_group", hidden=True, outline="#E6EAF0", shadow=True)
+    textbox(p, "fp_title", gx + 16, gy + 12, 160, 26, "Filters", size=13, color=NAVY, font="Segoe UI Semibold",
+            parent="fp_group", hidden=True)
+    button(p, "fp_close", gx + gw - 44, gy + 10, 32, 28, "✕", {"type": "Bookmark", "bookmark": close_bm},
+           color=GREY, align="center", margin=0, radius=14, parent="fp_group", hidden=True)
+    sl = [("fp_borough", "dim_neighborhood[borough]", "Borough", "Dropdown", 56),
+          ("fp_date", "dim_date[date]", "Date range (trips)", "Between", 92),
           ("fp_member", "fact_trips_hourly[member_casual]", "Rider type", "Basic", 92),
           ("fp_ride", "fact_trips_hourly[rideable_type]", "Bike type", "Basic", 92)]
     y = gy + 50
@@ -466,14 +509,11 @@ def filter_pane(p: Page) -> tuple[list[str], dict]:
         p.add(nm, "slicer", gx + 12, y, gw - 24, h, roles={"Values": [field]}, parent="fp_group", hidden=True,
               objects={"data": props(mode=mode), "header": props(show=True, text=ttl, fontColor=C(GREY), textSize=9),
                        "items": props(fontColor=C(NAVY), textSize=9)},
-              vco={"title": props(show=False), "background": props(show=False), "dropShadow": props(show=False)})
+              vco=no_chrome())
         y += h + 10
-    reset = {"icon": props(show=False),
-             "text": [{"properties": {"show": L(True), "text": L("Reset all filters"), "fontSize": L(9), "fontColor": C(BLUE)}}],
-             "fill": props(show=False), "outline": [{"properties": {"show": L(True), "lineColor": C("#D6DEEB"), "roundEdge": L(14)}}]}
-    p.add("fp_reset", "actionButton", gx + 16, gy + gh - 48, gw - 32, 30, objects=reset, parent="fp_group", hidden=True,
-          vco={"visualLink": props(show=True, type="Bookmark", bookmark=f"bm_{p.name}_reset"), "title": props(show=False),
-               "background": props(show=False), "dropShadow": props(show=False)})
+    button(p, "fp_reset", gx + 16, gy + gh - 48, gw - 32, 32, "Reset filters",
+           {"type": "Bookmark", "bookmark": f"bm_{p.name}_reset"},
+           color=BLUE, align="center", margin=0, outline="#D6DEEB", radius=16, parent="fp_group", hidden=True)
     return names, {"open": open_bm, "close": close_bm, "reset": f"bm_{p.name}_reset"}
 
 
@@ -599,8 +639,8 @@ def spec_routes(topo):
 PAGES = [("overview", "Overview", "◎"), ("liveops", "Live Operations", "⚡"), ("demand", "Demand Patterns", "▦"),
          ("customers", "Customers", "◔"), ("network", "Network & Routes", "⇄"), ("dataquality", "Data Quality", "✓")]
 TOOLTIP, DETAIL = "nta_tooltip", "station_detail"
-X0, W = 196, 1068
-COLS4 = [(X0 + i * (258 + 12), 258) for i in range(4)]
+X0, W = 204, 1060
+COLS4 = [(X0 + i * (256 + 12), 256) for i in range(4)]
 
 
 def page_common(pid, title) -> tuple[Page, list[str], dict]:
@@ -636,7 +676,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
            "dim_station[nta_code]", "dim_station[nta_name]", "Measures[NTA Color Index]", "Measures[NTA Value Text]",
            "Measures[Station Status]", "Measures[Station Capacity]", "Measures[Station Bikes]", "Measures[Station Docks]"],
           spec_overview(topo), title="Live neighborhood health map", subtitle="Action Map")
-    p.add("ov_trend", "lineChart", X0 + 652, 188, 416, 168,
+    p.add("ov_trend", "lineChart", X0 + 652, 188, 408, 168,
           roles={"Category": ["dim_date[date]"],
                  "Y": ["Measures[Classic Trips]", "Measures[E-bike Trips]", "Measures[Trips 7D Rolling Avg]"]},
           title="Daily trips by bike type vs 7-day average", subtitle="Action Trend",
@@ -646,7 +686,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                    "dataPoint": [{"properties": {"fill": C("#92C5DE")}, "selector": {"metadata": "_Measures.Classic Trips"}},
                                  {"properties": {"fill": C("#2F6FDE")}, "selector": {"metadata": "_Measures.E-bike Trips"}},
                                  {"properties": {"fill": C("#B2182B")}, "selector": {"metadata": "_Measures.Trips 7D Rolling Avg"}}]})
-    p.add("ov_borough", "clusteredBarChart", X0 + 652, 366, 416, 168,
+    p.add("ov_borough", "clusteredBarChart", X0 + 652, 366, 408, 168,
           roles={"Category": ["dim_neighborhood[borough]"], "Y": ["Measures[Trips per 1k Residents]"]},
           sort=("Measures[Trips per 1k Residents]", "Descending"),
           title="Trips per 1k residents by borough (bar colour vs city avg)", subtitle="Action Borough",
@@ -665,10 +705,11 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                        "ComparisonKind": 0, "Left": COL("fact_trips_hourly", "member_casual"), "Right": {"Literal": {"Value": "'member'"}}}}}]}},
                        {"properties": {"fill": C("#F4A582")}, "selector": {"data": [{"scopeId": {"Comparison": {
                            "ComparisonKind": 0, "Left": COL("fact_trips_hourly", "member_casual"), "Right": {"Literal": {"Value": "'casual'"}}}}}]}}]})
-    p.add("ov_nbhd", "tableEx", X0 + 312, 546, 756, 162,
-          roles={"Values": ["dim_neighborhood[nta_name]", "dim_neighborhood[borough]", "Measures[Trips per 1k Residents]",
-                            "Measures[Trips per 1k Index]", "Measures[Trips WoW %]", "Measures[% Stations Balanced]",
-                            "Measures[Utilization Index]", "Measures[Recommended Action]"]},
+    p.add("ov_nbhd", "tableEx", X0 + 312, 546, 748, 162,
+          roles={"Values": ["dim_neighborhood[nta_name]|Neighborhood", "dim_neighborhood[borough]|Borough",
+                            "Measures[Trips per 1k Residents]|Trips / 1k res.", "Measures[Trips per 1k Index]|Index (city=100)",
+                            "Measures[Trips WoW %]|WoW", "Measures[% Stations Balanced]|Balanced now",
+                            "Measures[Utilization Index]|Utilization idx", "Measures[Recommended Action]|→ Action"]},
           sort=("Measures[Trips per 1k Index]", "Descending"),
           title="Neighborhoods ranked by trips per 1k residents (index: city = 100)", subtitle="Action Neighborhoods",
           tooltip_page=TOOLTIP,
@@ -696,12 +737,12 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                          {"field": "Station Min to Empty", "title": "Min to empty", "format": ".0f"},
                          {"field": "Station Priority", "title": "Priority", "format": ".0f"}]),
           title="All stations by live status (size = capacity)", subtitle="Action Live Map")
-    p.add("lo_dispatch", "tableEx", X0 + 482, 188, 586, 520,
-          roles={"Values": ["fact_rebalance_list[priority_rank]", "dim_station[name]", "fact_rebalance_list[borough]",
-                            "fact_rebalance_list[status_class]", "fact_rebalance_list[num_bikes_available]",
-                            "fact_rebalance_list[num_docks_available]", "fact_rebalance_list[est_minutes_to_empty]",
-                            "fact_rebalance_list[est_minutes_to_full]", "fact_rebalance_list[rebalance_priority_score]",
-                            "fact_rebalance_list[action]"]},
+    p.add("lo_dispatch", "tableEx", X0 + 482, 188, 578, 520,
+          roles={"Values": ["fact_rebalance_list[priority_rank]|#", "dim_station[name]|Station", "fact_rebalance_list[borough]|Borough",
+                            "fact_rebalance_list[status_class]|Status", "fact_rebalance_list[num_bikes_available]|Bikes",
+                            "fact_rebalance_list[num_docks_available]|Docks", "fact_rebalance_list[est_minutes_to_empty]|Min to empty",
+                            "fact_rebalance_list[est_minutes_to_full]|Min to full", "fact_rebalance_list[rebalance_priority_score]|Priority",
+                            "fact_rebalance_list[action]|→ Action"]},
           sort=("fact_rebalance_list[priority_rank]", "Ascending"),
           title="Rebalancing dispatch list (right-click a station → drill through)", subtitle="Action Dispatch",
           objects={"columnFormatting": [
@@ -724,7 +765,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                                             "metadata": "_Measures.Avg Trips per Hour"}}],
                    "grid": props(gridVertical=False, gridHorizontal=False, rowPadding=2, textSize=7),
                    "columnHeaders": props(fontSize=7), "rowHeaders": props(fontSize=8)})
-    p.add("dm_profile", "lineChart", X0 + 652, 188, 416, 250,
+    p.add("dm_profile", "lineChart", X0 + 652, 188, 408, 250,
           roles={"Category": ["dim_hour[hour]"],
                  "Y": ["Measures[Weekday Avg Trips per Hour]", "Measures[Weekend Avg Trips per Hour]"]},
           title="Hourly profile: weekday vs weekend", subtitle="Action Hourly",
@@ -742,7 +783,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                          {"field": "PM Net Flow per Weekday", "title": "PM net flow / weekday", "format": "+.1f"}],
                         legend_title="AM net flow (red = drains)"),
           title="Weekday 6–10 AM net flow: red stations drain, blue fill", subtitle="Action Net Flow")
-    p.add("dm_weather", "clusteredColumnChart", X0 + 652, 450, 416, 258,
+    p.add("dm_weather", "clusteredColumnChart", X0 + 652, 450, 408, 258,
           roles={"Category": ["fact_weather_hourly[weather_class]"], "Y": ["Measures[Trips vs Normal]"]},
           title="Trips vs normal for the same hour, by weather (100% = normal)", subtitle="Action Weather",
           objects={"dataPoint": [{"properties": {"fill": C("#4393C3")}}], "labels": props(show=True, fontSize=8),
@@ -762,7 +803,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                  "Y": ["Measures[Avg Duration (min)]"]},
           title="Avg ride duration (min): member vs casual", subtitle="Action Duration",
           objects={"labels": props(show=True, fontSize=8)})
-    p.add("cu_hour", "lineChart", X0 + 352, 188, 716, 250,
+    p.add("cu_hour", "lineChart", X0 + 352, 188, 708, 250,
           roles={"Category": ["dim_hour[hour]"], "Y": ["Measures[Casual Share %]"]},
           title="Casual share of trips by hour of day", subtitle="Action Time of Day",
           objects={"dataPoint": props(fill=C("#D6604D")), "lineStyles": props(strokeWidth=2),
@@ -781,9 +822,9 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           vco={"title": props(show=False)})
     kpi(p, "k_targets", X0 + 352, 586, 200, "Casual commuters ≥3 trips/wk (est.)", "Conversion Targets (est. riders)",
         "KPI Footer Revenue")
-    p.add("cu_targets", "tableEx", X0 + 564, 450, 504, 258,
-          roles={"Values": ["dim_station[name]", "dim_station[nta_name]", "Measures[Casual Repeat Commute Trips]",
-                            "Measures[Casual Share %]"]},
+    p.add("cu_targets", "tableEx", X0 + 564, 450, 496, 258,
+          roles={"Values": ["dim_station[name]|Start station", "dim_station[nta_name]|Neighborhood",
+                            "Measures[Casual Repeat Commute Trips]|Repeat casual commute trips", "Measures[Casual Share %]|Casual share"]},
           sort=("Measures[Casual Repeat Commute Trips]", "Descending"),
           title="Where to run the membership campaign (repeat casual commute trips)", subtitle="Action Conversion",
           objects={"columnFormatting": [
@@ -802,10 +843,10 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           ["fact_top_routes[route]", "fact_top_routes[start_lat]", "fact_top_routes[start_lon]",
            "fact_top_routes[end_lat]", "fact_top_routes[end_lon]", "Measures[Route Trips]", "Measures[Route Member Share]"],
           spec_routes(topo), title="Top 60 origin → destination flows", subtitle="Action Routes")
-    p.add("nw_routes", "tableEx", X0 + 432, 188, 636, 290,
-          roles={"Values": ["fact_top_routes[route_rank]", "fact_top_routes[route]", "fact_top_routes[start_borough]",
-                            "Measures[Route Trips per Day]", "Measures[Route Member Share]", "fact_top_routes[avg_distance_km]",
-                            "fact_top_routes[avg_duration_min]"]},
+    p.add("nw_routes", "tableEx", X0 + 432, 188, 628, 290,
+          roles={"Values": ["fact_top_routes[route_rank]|#", "fact_top_routes[route]|Route", "fact_top_routes[start_borough]|Borough",
+                            "Measures[Route Trips per Day]|Trips / day", "Measures[Route Member Share]|Members",
+                            "fact_top_routes[avg_distance_km]|Km", "fact_top_routes[avg_duration_min]|Min"]},
           sort=("fact_top_routes[route_rank]", "Ascending"),
           title="Top routes (rank, trips/day, member share)", subtitle="Action Routes",
           objects={"columnFormatting": [
@@ -835,10 +876,10 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                             {"Name": "d", "Entity": "dim_station", "Type": 0}],
                    "Where": [{"Condition": {"In": {"Expressions": [{"Column": {"Expression": {"SourceRef": {"Source": "d"}}, "Property": "name"}}],
                                                    "Table": {"SourceRef": {"Source": "subquery"}}}}}]}}]}
-    p.add("nw_expand", "tableEx", X0 + 432, 490, 636, 218,
-          roles={"Values": ["dim_neighborhood[nta_name]", "dim_neighborhood[borough]", "Measures[Population]",
-                            "Measures[Docks per 1k Residents]", "Measures[Trips per 1k Index]", "Measures[Utilization Index]",
-                            "Measures[Recommended Action]"]},
+    p.add("nw_expand", "tableEx", X0 + 432, 490, 628, 218,
+          roles={"Values": ["dim_neighborhood[nta_name]|Neighborhood", "dim_neighborhood[borough]|Borough", "Measures[Population]|Residents",
+                            "Measures[Docks per 1k Residents]|Docks / 1k", "Measures[Trips per 1k Index]|Trips idx",
+                            "Measures[Utilization Index]|Utilization idx", "Measures[Recommended Action]|→ Action"]},
           sort=("Measures[Docks per 1k Residents]", "Ascending"),
           title="Expansion candidates: residents per dock (in-service NTAs)", subtitle="Action Expansion",
           tooltip_page=TOOLTIP,
@@ -859,23 +900,24 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                 ("k_rem", "Rows removed by cleaning", "Rows Removed by Cleaning %", "KPI Footer Removed", "KPI Color Neutral"),
                 ("k_unm", "Unmatched station IDs", "Unmatched Station IDs", "KPI Footer Unmatched", "KPI Color Neutral"),
                 ("k_runs", "Pipeline success rate", "Pipeline Success Rate", "KPI Footer Runs", "KPI Color Neutral")])
-    p.add("dq_rules", "clusteredBarChart", X0, 188, 528, 280,
-          roles={"Category": ["fact_trip_cleaning[rule]"], "Series": ["fact_trip_cleaning[action]"],
-                 "Y": ["Measures[Rows Affected]"]},
+    p.add("dq_rules", "clusteredBarChart", X0, 188, 524, 280,
+          roles={"Category": ["fact_trip_cleaning[rule]|Rule"], "Series": ["fact_trip_cleaning[action]|Action"],
+                 "Y": ["Measures[Rows Affected]|Rows affected"]},
           sort=("Measures[Rows Affected]", "Descending"),
           title="Trip rows affected by each cleaning rule (REMOVE / FLAG / FIX)", subtitle="Action Data Quality",
           objects={"labels": props(show=True, fontSize=8)})
-    p.add("dq_live", "lineChart", X0 + 540, 188, 528, 280,
-          roles={"Category": ["fact_data_quality[run_time_utc_ny]"], "Series": ["fact_data_quality[rule]"],
-                 "Y": ["Measures[Live Rows Affected]"]},
-          title="Live data issues per pipeline run (stale / not-installed stations)", subtitle="Action Pipeline")
-    p.add("dq_runs", "tableEx", X0, 480, 528, 228,
-          roles={"Values": ["fact_pipeline_runs[run_time_utc_ny]", "fact_pipeline_runs[mode]", "fact_pipeline_runs[status]",
-                            "fact_pipeline_runs[duration_s]", "fact_pipeline_runs[error]"]},
+    p.add("dq_live", "clusteredBarChart", X0 + 536, 188, 524, 280,
+          roles={"Category": ["fact_data_quality[rule]|Rule"], "Y": ["Measures[Live Rows Affected]|Rows affected"]},
+          sort=("Measures[Live Rows Affected]", "Descending"),
+          title="Live station rows removed per rule (all pipeline runs kept)", subtitle="Action Pipeline",
+          objects={"dataPoint": [{"properties": {"fill": C("#F4A582")}}], "labels": props(show=True, fontSize=8)})
+    p.add("dq_runs", "tableEx", X0, 480, 524, 228,
+          roles={"Values": ["fact_pipeline_runs[run_time_utc_ny]|Run time (ET)", "fact_pipeline_runs[mode]|Mode", "fact_pipeline_runs[status]|Status",
+                            "fact_pipeline_runs[duration_s]|Seconds", "fact_pipeline_runs[error]|Error"]},
           sort=("fact_pipeline_runs[run_time_utc_ny]", "Descending"), title="Pipeline run log (newest first)")
-    p.add("dq_unmatched", "tableEx", X0 + 540, 480, 528, 228,
-          roles={"Values": ["fact_unmatched_stations[station_id]", "fact_unmatched_stations[station_name]",
-                            "fact_unmatched_stations[trips]"]},
+    p.add("dq_unmatched", "tableEx", X0 + 536, 480, 524, 228,
+          roles={"Values": ["fact_unmatched_stations[station_id]|Station ID", "fact_unmatched_stations[station_name]|Name",
+                            "fact_unmatched_stations[trips]|Trips"]},
           sort=("fact_unmatched_stations[trips]", "Descending"),
           title="Unmatched trip station IDs (not in today's GBFS)")
     pages.append(p); bookmarks += make_bookmarks(p, fp, bm)
@@ -913,8 +955,8 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
         "field": {"Aggregation": {"Expression": COL("fact_station_status", "num_bikes_available"), "Function": 0}},
         "queryRef": "Sum(fact_station_status.num_bikes_available)", "nativeQueryRef": "Bikes available"}
     p.add("sd_dest", "tableEx", 20, 454, 1240, 250,
-          roles={"Values": ["fact_top_routes[route]", "Measures[Route Trips per Day]", "Measures[Route Member Share]",
-                            "fact_top_routes[avg_distance_km]"]},
+          roles={"Values": ["fact_top_routes[route]|Route", "Measures[Route Trips per Day]|Trips / day", "Measures[Route Member Share]|Members",
+                            "fact_top_routes[avg_distance_km]|Km"]},
           sort=("Measures[Route Trips per Day]", "Descending"), title="Top routes starting here")
     pages.append(p)
 
@@ -959,10 +1001,9 @@ def make_bookmarks(p: Page, panel: list[str], bm: dict) -> list[dict]:
 
 # =============================================================================== report writer
 def build_report(pages: list[Page], bookmarks: list[dict]):
-    if RP.exists():
-        shutil.rmtree(RP)
+    clean_dir(RP)
     d = RP / "definition"
-    (d / "pages").mkdir(parents=True)
+    (d / "pages").mkdir(parents=True, exist_ok=True)
     (RP / "definition.pbir").write_text(json.dumps({
         "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",
         "version": "4.0", "datasetReference": {"byPath": {"path": f"../{NAME}.SemanticModel"}}}, indent=2), encoding="utf-8")

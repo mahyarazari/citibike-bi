@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "ov_trend",
   "position": {
-    "x": 848,
+    "x": 856,
     "y": 188,
-    "z": 5500,
-    "width": 416,
+    "z": 6100,
+    "width": 408,
     "height": 168,
-    "tabOrder": 5500
+    "tabOrder": 6100
   },
   "visual": {
     "visualType": "lineChart",

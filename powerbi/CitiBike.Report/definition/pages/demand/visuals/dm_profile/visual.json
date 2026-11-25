@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "dm_profile",
   "position": {
-    "x": 848,
+    "x": 856,
     "y": 188,
-    "z": 5400,
-    "width": 416,
+    "z": 6000,
+    "width": 408,
     "height": 250,
-    "tabOrder": 5400
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "lineChart",

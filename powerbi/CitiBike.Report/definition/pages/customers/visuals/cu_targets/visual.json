@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "cu_targets",
   "position": {
-    "x": 760,
+    "x": 768,
     "y": 450,
-    "z": 6300,
-    "width": 504,
+    "z": 6900,
+    "width": 496,
     "height": 258,
-    "tabOrder": 6300
+    "tabOrder": 6900
   },
   "visual": {
     "visualType": "tableEx",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "dim_station.name",
-              "nativeQueryRef": "name"
+              "nativeQueryRef": "name",
+              "displayName": "Start station"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "dim_station.nta_name",
-              "nativeQueryRef": "nta_name"
+              "nativeQueryRef": "nta_name",
+              "displayName": "Neighborhood"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "_Measures.Casual Repeat Commute Trips",
-              "nativeQueryRef": "Casual Repeat Commute Trips"
+              "nativeQueryRef": "Casual Repeat Commute Trips",
+              "displayName": "Repeat casual commute trips"
             },
             {
               "field": {
@@ -69,7 +72,8 @@
                 }
               },
               "queryRef": "_Measures.Casual Share %",
-              "nativeQueryRef": "Casual Share %"
+              "nativeQueryRef": "Casual Share %",
+              "displayName": "Casual share"
             }
           ]
         }

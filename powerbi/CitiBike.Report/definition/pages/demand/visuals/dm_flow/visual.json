@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "dm_flow",
   "position": {
-    "x": 196,
+    "x": 204,
     "y": 450,
-    "z": 5500,
+    "z": 6100,
     "width": 640,
     "height": 258,
-    "tabOrder": 5500
+    "tabOrder": 6100
   },
   "visual": {
     "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",

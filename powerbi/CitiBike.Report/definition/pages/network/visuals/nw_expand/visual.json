@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "nw_expand",
   "position": {
-    "x": 628,
+    "x": 636,
     "y": 490,
-    "z": 5600,
-    "width": 636,
+    "z": 6200,
+    "width": 628,
     "height": 218,
-    "tabOrder": 5600
+    "tabOrder": 6200
   },
   "visual": {
     "visualType": "tableEx",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "dim_neighborhood.nta_name",
-              "nativeQueryRef": "nta_name"
+              "nativeQueryRef": "nta_name",
+              "displayName": "Neighborhood"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "dim_neighborhood.borough",
-              "nativeQueryRef": "borough"
+              "nativeQueryRef": "borough",
+              "displayName": "Borough"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "_Measures.Population",
-              "nativeQueryRef": "Population"
+              "nativeQueryRef": "Population",
+              "displayName": "Residents"
             },
             {
               "field": {
@@ -69,7 +72,8 @@
                 }
               },
               "queryRef": "_Measures.Docks per 1k Residents",
-              "nativeQueryRef": "Docks per 1k Residents"
+              "nativeQueryRef": "Docks per 1k Residents",
+              "displayName": "Docks / 1k"
             },
             {
               "field": {
@@ -83,7 +87,8 @@
                 }
               },
               "queryRef": "_Measures.Trips per 1k Index",
-              "nativeQueryRef": "Trips per 1k Index"
+              "nativeQueryRef": "Trips per 1k Index",
+              "displayName": "Trips idx"
             },
             {
               "field": {
@@ -97,7 +102,8 @@
                 }
               },
               "queryRef": "_Measures.Utilization Index",
-              "nativeQueryRef": "Utilization Index"
+              "nativeQueryRef": "Utilization Index",
+              "displayName": "Utilization idx"
             },
             {
               "field": {
@@ -111,7 +117,8 @@
                 }
               },
               "queryRef": "_Measures.Recommended Action",
-              "nativeQueryRef": "Recommended Action"
+              "nativeQueryRef": "Recommended Action",
+              "displayName": "→ Action"
             }
           ]
         }

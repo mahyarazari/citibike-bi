@@ -3,11 +3,11 @@
   "name": "fp_title",
   "position": {
     "x": 1020,
-    "y": 68,
-    "z": 2600,
+    "y": 70,
+    "z": 3200,
     "width": 160,
     "height": 26,
-    "tabOrder": 2600
+    "tabOrder": 3200
   },
   "visual": {
     "visualType": "textbox",
@@ -74,6 +74,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

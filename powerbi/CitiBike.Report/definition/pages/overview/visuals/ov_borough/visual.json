@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "ov_borough",
   "position": {
-    "x": 848,
+    "x": 856,
     "y": 366,
-    "z": 5600,
-    "width": 416,
+    "z": 6200,
+    "width": 408,
     "height": 168,
-    "tabOrder": 5600
+    "tabOrder": 6200
   },
   "visual": {
     "visualType": "clusteredBarChart",

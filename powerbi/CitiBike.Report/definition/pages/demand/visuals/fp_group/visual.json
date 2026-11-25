@@ -3,11 +3,11 @@
   "name": "fp_group",
   "position": {
     "x": 1004,
-    "y": 56,
-    "z": 2400,
+    "y": 58,
+    "z": 3000,
     "width": 268,
-    "height": 652,
-    "tabOrder": 2400
+    "height": 650,
+    "tabOrder": 3000
   },
   "visualGroup": {
     "displayName": "Filter pane",

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "dq_unmatched",
   "position": {
-    "x": 736,
+    "x": 740,
     "y": 480,
-    "z": 5600,
-    "width": 528,
+    "z": 6200,
+    "width": 524,
     "height": 228,
-    "tabOrder": 5600
+    "tabOrder": 6200
   },
   "visual": {
     "visualType": "tableEx",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "fact_unmatched_stations.station_id",
-              "nativeQueryRef": "station_id"
+              "nativeQueryRef": "station_id",
+              "displayName": "Station ID"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "fact_unmatched_stations.station_name",
-              "nativeQueryRef": "station_name"
+              "nativeQueryRef": "station_name",
+              "displayName": "Name"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "fact_unmatched_stations.trips",
-              "nativeQueryRef": "trips"
+              "nativeQueryRef": "trips",
+              "displayName": "Trips"
             }
           ]
         }

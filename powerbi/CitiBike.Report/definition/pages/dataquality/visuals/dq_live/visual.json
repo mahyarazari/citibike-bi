@@ -2,36 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "dq_live",
   "position": {
-    "x": 736,
+    "x": 740,
     "y": 188,
-    "z": 5400,
-    "width": 528,
+    "z": 6000,
+    "width": 524,
     "height": 280,
-    "tabOrder": 5400
+    "tabOrder": 6000
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "clusteredBarChart",
     "query": {
       "queryState": {
         "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "fact_data_quality"
-                    }
-                  },
-                  "Property": "run_time_utc_ny"
-                }
-              },
-              "queryRef": "fact_data_quality.run_time_utc_ny",
-              "nativeQueryRef": "run_time_utc_ny"
-            }
-          ]
-        },
-        "Series": {
           "projections": [
             {
               "field": {
@@ -45,7 +27,8 @@
                 }
               },
               "queryRef": "fact_data_quality.rule",
-              "nativeQueryRef": "rule"
+              "nativeQueryRef": "rule",
+              "displayName": "Rule"
             }
           ]
         },
@@ -63,11 +46,69 @@
                 }
               },
               "queryRef": "_Measures.Live Rows Affected",
-              "nativeQueryRef": "Live Rows Affected"
+              "nativeQueryRef": "Live Rows Affected",
+              "displayName": "Rows affected"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Measures"
+                  }
+                },
+                "Property": "Live Rows Affected"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
       }
+    },
+    "objects": {
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F4A582'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [
@@ -83,7 +124,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Live data issues per pipeline run (stale / not-installed stations)'"
+                  "Value": "'Live station rows removed per rule (all pipeline runs kept)'"
                 }
               }
             }

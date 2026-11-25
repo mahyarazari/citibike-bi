@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "lo_dispatch",
   "position": {
-    "x": 678,
+    "x": 686,
     "y": 188,
-    "z": 5400,
-    "width": 586,
+    "z": 6000,
+    "width": 578,
     "height": 520,
-    "tabOrder": 5400
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "tableEx",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.priority_rank",
-              "nativeQueryRef": "priority_rank"
+              "nativeQueryRef": "priority_rank",
+              "displayName": "#"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "dim_station.name",
-              "nativeQueryRef": "name"
+              "nativeQueryRef": "name",
+              "displayName": "Station"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.borough",
-              "nativeQueryRef": "borough"
+              "nativeQueryRef": "borough",
+              "displayName": "Borough"
             },
             {
               "field": {
@@ -69,7 +72,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.status_class",
-              "nativeQueryRef": "status_class"
+              "nativeQueryRef": "status_class",
+              "displayName": "Status"
             },
             {
               "field": {
@@ -83,7 +87,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.num_bikes_available",
-              "nativeQueryRef": "num_bikes_available"
+              "nativeQueryRef": "num_bikes_available",
+              "displayName": "Bikes"
             },
             {
               "field": {
@@ -97,7 +102,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.num_docks_available",
-              "nativeQueryRef": "num_docks_available"
+              "nativeQueryRef": "num_docks_available",
+              "displayName": "Docks"
             },
             {
               "field": {
@@ -111,7 +117,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.est_minutes_to_empty",
-              "nativeQueryRef": "est_minutes_to_empty"
+              "nativeQueryRef": "est_minutes_to_empty",
+              "displayName": "Min to empty"
             },
             {
               "field": {
@@ -125,7 +132,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.est_minutes_to_full",
-              "nativeQueryRef": "est_minutes_to_full"
+              "nativeQueryRef": "est_minutes_to_full",
+              "displayName": "Min to full"
             },
             {
               "field": {
@@ -139,7 +147,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.rebalance_priority_score",
-              "nativeQueryRef": "rebalance_priority_score"
+              "nativeQueryRef": "rebalance_priority_score",
+              "displayName": "Priority"
             },
             {
               "field": {
@@ -153,7 +162,8 @@
                 }
               },
               "queryRef": "fact_rebalance_list.action",
-              "nativeQueryRef": "action"
+              "nativeQueryRef": "action",
+              "displayName": "→ Action"
             }
           ]
         }

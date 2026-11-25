@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "cu_whatif_r",
   "position": {
-    "x": 548,
+    "x": 556,
     "y": 518,
-    "z": 5700,
+    "z": 6300,
     "width": 200,
     "height": 60,
-    "tabOrder": 5700
+    "tabOrder": 6300
   },
   "visual": {
     "visualType": "slicer",

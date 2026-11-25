@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "k_peak_footer",
   "position": {
-    "x": 204,
-    "y": 148,
-    "z": 3700,
-    "width": 242,
-    "height": 22,
-    "tabOrder": 3700
+    "x": 210,
+    "y": 146,
+    "z": 4300,
+    "width": 244,
+    "height": 24,
+    "tabOrder": 4300
   },
   "visual": {
     "visualType": "shape",
@@ -36,6 +36,20 @@
               }
             }
           }
+        },
+        {
+          "properties": {
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
         }
       ],
       "outline": [
@@ -48,6 +62,20 @@
                 }
               }
             }
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ]
@@ -108,18 +136,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI'"
-                }
-              }
-            },
-            "background": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#00000000'"
-                    }
-                  }
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
@@ -160,6 +177,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

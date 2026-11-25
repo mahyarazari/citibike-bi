@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "dq_rules",
   "position": {
-    "x": 196,
+    "x": 204,
     "y": 188,
-    "z": 5300,
-    "width": 528,
+    "z": 5900,
+    "width": 524,
     "height": 280,
-    "tabOrder": 5300
+    "tabOrder": 5900
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "fact_trip_cleaning.rule",
-              "nativeQueryRef": "rule"
+              "nativeQueryRef": "rule",
+              "displayName": "Rule"
             }
           ]
         },
@@ -45,7 +46,8 @@
                 }
               },
               "queryRef": "fact_trip_cleaning.action",
-              "nativeQueryRef": "action"
+              "nativeQueryRef": "action",
+              "displayName": "Action"
             }
           ]
         },
@@ -63,7 +65,8 @@
                 }
               },
               "queryRef": "_Measures.Rows Affected",
-              "nativeQueryRef": "Rows Affected"
+              "nativeQueryRef": "Rows Affected",
+              "displayName": "Rows affected"
             }
           ]
         }

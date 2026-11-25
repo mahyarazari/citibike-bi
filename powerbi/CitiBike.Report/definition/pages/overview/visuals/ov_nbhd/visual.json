@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "ov_nbhd",
   "position": {
-    "x": 508,
+    "x": 516,
     "y": 546,
-    "z": 5800,
-    "width": 756,
+    "z": 6400,
+    "width": 748,
     "height": 162,
-    "tabOrder": 5800
+    "tabOrder": 6400
   },
   "visual": {
     "visualType": "tableEx",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "dim_neighborhood.nta_name",
-              "nativeQueryRef": "nta_name"
+              "nativeQueryRef": "nta_name",
+              "displayName": "Neighborhood"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "dim_neighborhood.borough",
-              "nativeQueryRef": "borough"
+              "nativeQueryRef": "borough",
+              "displayName": "Borough"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "_Measures.Trips per 1k Residents",
-              "nativeQueryRef": "Trips per 1k Residents"
+              "nativeQueryRef": "Trips per 1k Residents",
+              "displayName": "Trips / 1k res."
             },
             {
               "field": {
@@ -69,7 +72,8 @@
                 }
               },
               "queryRef": "_Measures.Trips per 1k Index",
-              "nativeQueryRef": "Trips per 1k Index"
+              "nativeQueryRef": "Trips per 1k Index",
+              "displayName": "Index (city=100)"
             },
             {
               "field": {
@@ -83,7 +87,8 @@
                 }
               },
               "queryRef": "_Measures.Trips WoW %",
-              "nativeQueryRef": "Trips WoW %"
+              "nativeQueryRef": "Trips WoW %",
+              "displayName": "WoW"
             },
             {
               "field": {
@@ -97,7 +102,8 @@
                 }
               },
               "queryRef": "_Measures.% Stations Balanced",
-              "nativeQueryRef": "% Stations Balanced"
+              "nativeQueryRef": "% Stations Balanced",
+              "displayName": "Balanced now"
             },
             {
               "field": {
@@ -111,7 +117,8 @@
                 }
               },
               "queryRef": "_Measures.Utilization Index",
-              "nativeQueryRef": "Utilization Index"
+              "nativeQueryRef": "Utilization Index",
+              "displayName": "Utilization idx"
             },
             {
               "field": {
@@ -125,7 +132,8 @@
                 }
               },
               "queryRef": "_Measures.Recommended Action",
-              "nativeQueryRef": "Recommended Action"
+              "nativeQueryRef": "Recommended Action",
+              "displayName": "→ Action"
             }
           ]
         }

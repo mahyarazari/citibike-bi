@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "cu_dur",
   "position": {
-    "x": 196,
+    "x": 204,
     "y": 188,
-    "z": 5300,
+    "z": 5900,
     "width": 340,
     "height": 250,
-    "tabOrder": 5300
+    "tabOrder": 5900
   },
   "visual": {
     "visualType": "clusteredBarChart",

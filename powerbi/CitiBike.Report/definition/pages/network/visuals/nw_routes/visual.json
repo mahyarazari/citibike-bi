@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "nw_routes",
   "position": {
-    "x": 628,
+    "x": 636,
     "y": 188,
-    "z": 5400,
-    "width": 636,
+    "z": 6000,
+    "width": 628,
     "height": 290,
-    "tabOrder": 5400
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "tableEx",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "fact_top_routes.route_rank",
-              "nativeQueryRef": "route_rank"
+              "nativeQueryRef": "route_rank",
+              "displayName": "#"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "fact_top_routes.route",
-              "nativeQueryRef": "route"
+              "nativeQueryRef": "route",
+              "displayName": "Route"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "fact_top_routes.start_borough",
-              "nativeQueryRef": "start_borough"
+              "nativeQueryRef": "start_borough",
+              "displayName": "Borough"
             },
             {
               "field": {
@@ -69,7 +72,8 @@
                 }
               },
               "queryRef": "_Measures.Route Trips per Day",
-              "nativeQueryRef": "Route Trips per Day"
+              "nativeQueryRef": "Route Trips per Day",
+              "displayName": "Trips / day"
             },
             {
               "field": {
@@ -83,7 +87,8 @@
                 }
               },
               "queryRef": "_Measures.Route Member Share",
-              "nativeQueryRef": "Route Member Share"
+              "nativeQueryRef": "Route Member Share",
+              "displayName": "Members"
             },
             {
               "field": {
@@ -97,7 +102,8 @@
                 }
               },
               "queryRef": "fact_top_routes.avg_distance_km",
-              "nativeQueryRef": "avg_distance_km"
+              "nativeQueryRef": "avg_distance_km",
+              "displayName": "Km"
             },
             {
               "field": {
@@ -111,7 +117,8 @@
                 }
               },
               "queryRef": "fact_top_routes.avg_duration_min",
-              "nativeQueryRef": "avg_duration_min"
+              "nativeQueryRef": "avg_duration_min",
+              "displayName": "Min"
             }
           ]
         }

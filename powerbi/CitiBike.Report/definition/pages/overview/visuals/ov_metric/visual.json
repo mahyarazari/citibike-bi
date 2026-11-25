@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "ov_metric",
   "position": {
-    "x": 196,
+    "x": 204,
     "y": 188,
-    "z": 5300,
+    "z": 5900,
     "width": 640,
     "height": 40,
-    "tabOrder": 5300
+    "tabOrder": 5900
   },
   "visual": {
     "visualType": "slicer",

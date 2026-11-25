@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "nav_logo",
   "position": {
-    "x": 18,
+    "x": 60,
     "y": 18,
-    "z": 1200,
-    "width": 150,
-    "height": 26,
-    "tabOrder": 1200
+    "z": 1500,
+    "width": 120,
+    "height": 22,
+    "tabOrder": 1500
   },
   "visual": {
     "visualType": "textbox",
@@ -19,12 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "CITI BIKE",
+                    "value": "Citi Bike",
                     "textStyle": {
-                      "fontFamily": "Segoe UI Black",
-                      "fontSize": "14pt",
-                      "color": "#2F6FDE",
-                      "fontWeight": "bold"
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "12pt",
+                      "color": "#1F2A44"
                     }
                   }
                 ]
@@ -75,6 +74,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {
