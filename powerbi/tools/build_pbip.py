@@ -161,7 +161,7 @@ def helper_tmdl(table: str, spec: dict) -> str:
 
 
 def measures_tmdl() -> str:
-    out = ["table Measures", f"\tlineageTag: {lt('Measures')}", ""]
+    out = ["table _Measures", f"\tlineageTag: {lt('Measures')}", ""]
     for name, folder, fmt, dax, hidden in MD.M:
         lines = dax.split("\n")
         if len(lines) == 1:
@@ -179,7 +179,7 @@ def measures_tmdl() -> str:
         out.append("")
     out += ["\tcolumn Dummy", "\t\tdataType: string", "\t\tisHidden", f"\t\tlineageTag: {lt('Measures.Dummy')}",
             "\t\tsummarizeBy: none", "\t\tsourceColumn: Dummy", "", "\t\tannotation SummarizationSetBy = Automatic", "",
-            "\tpartition Measures = m", "\t\tmode: import", "\t\tsource =",
+            "\tpartition _Measures = m", "\t\tmode: import", "\t\tsource =",
             m_block(["let", '    Source = #table(type table [Dummy = text], {})', "in", "    Source"], 4), "",
             "\tannotation PBI_ResultType = Table", ""]
     return "\n".join(out)
@@ -202,8 +202,8 @@ def build_model(base_url: str) -> list[str]:
     for t, spec in MD.HELPER_TABLES.items():
         (d / "tables" / f"{t}.tmdl").write_text(helper_tmdl(t, spec), encoding="utf-8")
         tables.append(t)
-    (d / "tables" / "Measures.tmdl").write_text(measures_tmdl(), encoding="utf-8")
-    tables.append("Measures")
+    (d / "tables" / "_Measures.tmdl").write_text(measures_tmdl(), encoding="utf-8")
+    tables.append("_Measures")
 
     fn = [
         "(name as text) as table =>",
@@ -253,7 +253,7 @@ def L(v):
     return {"expr": {"Literal": {"Value": s}}}
 
 
-def MEAS(name, entity="Measures"):
+def MEAS(name, entity="_Measures"):
     return {"Measure": {"Expression": {"SourceRef": {"Entity": entity}}, "Property": name}}
 
 
@@ -272,7 +272,9 @@ def CM(measure):
 def F(ref: str):
     """'Measures[Total Trips]' or 'dim_station[name]' -> (field, queryRef, nativeQueryRef)."""
     t, c = ref[:-1].split("[", 1)
-    field = MEAS(c, t) if t == "Measures" else COL(t, c)
+    if t == "Measures":  # report shorthand; the model table is "_Measures" ("Measures" is reserved)
+        t = "_Measures"
+    field = MEAS(c, t) if t == "_Measures" else COL(t, c)
     return field, f"{t}.{c}", c
 
 
@@ -640,10 +642,10 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           title="Daily trips by bike type vs 7-day average", subtitle="Action Trend",
           objects={"lineStyles": [{"properties": {"strokeWidth": L(2)}},
                                   {"properties": {"strokeWidth": L(2), "lineStyle": L("dashed")},
-                                   "selector": {"metadata": "Measures.Trips 7D Rolling Avg"}}],
-                   "dataPoint": [{"properties": {"fill": C("#92C5DE")}, "selector": {"metadata": "Measures.Classic Trips"}},
-                                 {"properties": {"fill": C("#2F6FDE")}, "selector": {"metadata": "Measures.E-bike Trips"}},
-                                 {"properties": {"fill": C("#B2182B")}, "selector": {"metadata": "Measures.Trips 7D Rolling Avg"}}]})
+                                   "selector": {"metadata": "_Measures.Trips 7D Rolling Avg"}}],
+                   "dataPoint": [{"properties": {"fill": C("#92C5DE")}, "selector": {"metadata": "_Measures.Classic Trips"}},
+                                 {"properties": {"fill": C("#2F6FDE")}, "selector": {"metadata": "_Measures.E-bike Trips"}},
+                                 {"properties": {"fill": C("#B2182B")}, "selector": {"metadata": "_Measures.Trips 7D Rolling Avg"}}]})
     p.add("ov_borough", "clusteredBarChart", X0 + 652, 366, 416, 168,
           roles={"Category": ["dim_neighborhood[borough]"], "Y": ["Measures[Trips per 1k Residents]"]},
           sort=("Measures[Trips per 1k Residents]", "Descending"),
@@ -673,9 +675,9 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
-               "selector": {"metadata": "Measures.Trips per 1k Index"}}],
+               "selector": {"metadata": "_Measures.Trips per 1k Index"}}],
               "values": [{"properties": {"backColor": CM("Action Color")},
-                          "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}], "metadata": "Measures.Recommended Action"}}]})
+                          "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}], "metadata": "_Measures.Recommended Action"}}]})
     pages.append(p); bookmarks += make_bookmarks(p, fp, bm)
 
     # ---------------------------------------------------------------- 2 Live operations
@@ -719,15 +721,15 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           title="Average trips per hour: weekday × hour", subtitle="Action Heatmap",
           objects={"values": [{"properties": {"backColor": CM("Heat Color"), "fontColor": CM("Heat Font Color")},
                                "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
-                                            "metadata": "Measures.Avg Trips per Hour"}}],
+                                            "metadata": "_Measures.Avg Trips per Hour"}}],
                    "grid": props(gridVertical=False, gridHorizontal=False, rowPadding=2, textSize=7),
                    "columnHeaders": props(fontSize=7), "rowHeaders": props(fontSize=8)})
     p.add("dm_profile", "lineChart", X0 + 652, 188, 416, 250,
           roles={"Category": ["dim_hour[hour]"],
                  "Y": ["Measures[Weekday Avg Trips per Hour]", "Measures[Weekend Avg Trips per Hour]"]},
           title="Hourly profile: weekday vs weekend", subtitle="Action Hourly",
-          objects={"dataPoint": [{"properties": {"fill": C("#2166AC")}, "selector": {"metadata": "Measures.Weekday Avg Trips per Hour"}},
-                                 {"properties": {"fill": C("#F4A582")}, "selector": {"metadata": "Measures.Weekend Avg Trips per Hour"}}],
+          objects={"dataPoint": [{"properties": {"fill": C("#2166AC")}, "selector": {"metadata": "_Measures.Weekday Avg Trips per Hour"}},
+                                 {"properties": {"fill": C("#F4A582")}, "selector": {"metadata": "_Measures.Weekend Avg Trips per Hour"}}],
                    "lineStyles": props(strokeWidth=2)})
     deneb(p, "dm_flow", X0, 450, 640, 258,
           ["dim_station[short_name]", "dim_station[name]", "dim_station[lat]", "dim_station[lon]",
@@ -787,7 +789,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
-               "selector": {"metadata": "Measures.Casual Repeat Commute Trips"}}]})
+               "selector": {"metadata": "_Measures.Casual Repeat Commute Trips"}}]})
     pages.append(p); bookmarks += make_bookmarks(p, fp, bm)
 
     # ---------------------------------------------------------------- 5 Network & routes
@@ -809,7 +811,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
-               "selector": {"metadata": "Measures.Route Trips per Day"}}]})
+               "selector": {"metadata": "_Measures.Route Trips per Day"}}]})
     p.add("nw_util", "clusteredBarChart", X0, 490, 420, 218,
           roles={"Category": ["dim_station[name]"], "Y": ["Measures[Trips per Dock per Day]"]},
           sort=("Measures[Trips per Dock per Day]", "Descending"),
@@ -825,7 +827,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
         "filter": {"Version": 2,
                    "From": [{"Name": "subquery", "Expression": {"Subquery": {"Query": {
                        "Version": 2, "From": [{"Name": "d", "Entity": "dim_station", "Type": 0},
-                                              {"Name": "m", "Entity": "Measures", "Type": 0}],
+                                              {"Name": "m", "Entity": "_Measures", "Type": 0}],
                        "Select": [{"Column": {"Expression": {"SourceRef": {"Source": "d"}}, "Property": "name"}, "Name": "field"}],
                        "OrderBy": [{"Direction": 2, "Expression": {"Measure": {"Expression": {"SourceRef": {"Source": "m"}},
                                                                                "Property": "Trips per Dock per Day"}}}],
@@ -842,7 +844,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           tooltip_page=TOOLTIP,
           objects={"values": [{"properties": {"backColor": CM("Action Color")},
                                "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
-                                            "metadata": "Measures.Recommended Action"}}]})
+                                            "metadata": "_Measures.Recommended Action"}}]})
     p.visuals[-1]["filterConfig"] = {"filters": [{
         "name": "svc_area", "type": "Categorical", "howCreated": "User", "field": COL("dim_neighborhood", "in_service_area"),
         "filter": {"Version": 2, "From": [{"Name": "n", "Entity": "dim_neighborhood", "Type": 0}],

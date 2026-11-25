@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Peak Hour Label"
                 }
               },
-              "queryRef": "Measures.Peak Hour Label",
+              "queryRef": "_Measures.Peak Hour Label",
               "nativeQueryRef": "Peak Hour Label"
             }
           ]

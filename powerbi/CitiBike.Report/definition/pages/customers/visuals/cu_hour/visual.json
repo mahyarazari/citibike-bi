@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Casual Share %"
                 }
               },
-              "queryRef": "Measures.Casual Share %",
+              "queryRef": "_Measures.Casual Share %",
               "nativeQueryRef": "Casual Share %"
             }
           ]
@@ -97,7 +97,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Casual Share %"
@@ -172,7 +172,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Time of Day"

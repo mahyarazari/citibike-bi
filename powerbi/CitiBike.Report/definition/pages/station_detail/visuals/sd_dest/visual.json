@@ -34,13 +34,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Route Trips per Day"
                 }
               },
-              "queryRef": "Measures.Route Trips per Day",
+              "queryRef": "_Measures.Route Trips per Day",
               "nativeQueryRef": "Route Trips per Day"
             },
             {
@@ -48,13 +48,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Route Member Share"
                 }
               },
-              "queryRef": "Measures.Route Member Share",
+              "queryRef": "_Measures.Route Member Share",
               "nativeQueryRef": "Route Member Share"
             },
             {
@@ -81,7 +81,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Route Trips per Day"

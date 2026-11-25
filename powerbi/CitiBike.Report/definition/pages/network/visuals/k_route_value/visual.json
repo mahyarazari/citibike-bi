@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Top Route Trips per Day"
                 }
               },
-              "queryRef": "Measures.Top Route Trips per Day",
+              "queryRef": "_Measures.Top Route Trips per Day",
               "nativeQueryRef": "Top Route Trips per Day"
             }
           ]

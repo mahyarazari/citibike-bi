@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "E-bike Share %"
                 }
               },
-              "queryRef": "Measures.E-bike Share %",
+              "queryRef": "_Measures.E-bike Share %",
               "nativeQueryRef": "E-bike Share %"
             }
           ]

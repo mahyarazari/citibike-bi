@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips per 1k Residents"
                 }
               },
-              "queryRef": "Measures.Trips per 1k Residents",
+              "queryRef": "_Measures.Trips per 1k Residents",
               "nativeQueryRef": "Trips per 1k Residents"
             }
           ]
@@ -57,7 +57,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Trips per 1k Residents"
@@ -80,7 +80,7 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "Measures"
+                          "Entity": "_Measures"
                         }
                       },
                       "Property": "Bar Color vs City (trips per 1k)"
@@ -136,7 +136,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "City Trips per 1k Residents"
@@ -218,7 +218,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Borough"

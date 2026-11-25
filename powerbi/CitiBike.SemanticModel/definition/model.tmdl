@@ -7,7 +7,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["BaseUrl", "fnRead", "dim_date", "dim_hour", "dim_station", "dim_neighborhood", "dim_region", "meta_refresh", "fact_trips_hourly", "fact_station_hourly", "fact_od_monthly", "fact_top_routes", "fact_customer_profile", "fact_casual_repeat_od", "fact_station_profile", "fact_station_live", "fact_station_status", "fact_rebalance_list", "fact_neighborhood_live", "fact_weather_hourly", "fact_trip_cleaning", "fact_data_quality", "fact_pipeline_runs", "fact_unmatched_stations", "fact_stations_outside_nta", "Map Metric", "Membership Price", "Conversion Rate", "Status Class", "Measures"]
+annotation PBI_QueryOrder = ["BaseUrl", "fnRead", "dim_date", "dim_hour", "dim_station", "dim_neighborhood", "dim_region", "meta_refresh", "fact_trips_hourly", "fact_station_hourly", "fact_od_monthly", "fact_top_routes", "fact_customer_profile", "fact_casual_repeat_od", "fact_station_profile", "fact_station_live", "fact_station_status", "fact_rebalance_list", "fact_neighborhood_live", "fact_weather_hourly", "fact_trip_cleaning", "fact_data_quality", "fact_pipeline_runs", "fact_unmatched_stations", "fact_stations_outside_nta", "Map Metric", "Membership Price", "Conversion Rate", "Status Class", "_Measures"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -38,4 +38,4 @@ ref table 'Map Metric'
 ref table 'Membership Price'
 ref table 'Conversion Rate'
 ref table 'Status Class'
-ref table Measures
+ref table _Measures

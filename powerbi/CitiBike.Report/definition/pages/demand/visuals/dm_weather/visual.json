@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips vs Normal"
                 }
               },
-              "queryRef": "Measures.Trips vs Normal",
+              "queryRef": "_Measures.Trips vs Normal",
               "nativeQueryRef": "Trips vs Normal"
             }
           ]
@@ -174,7 +174,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Weather"

@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Weekday Avg Trips per Hour"
                 }
               },
-              "queryRef": "Measures.Weekday Avg Trips per Hour",
+              "queryRef": "_Measures.Weekday Avg Trips per Hour",
               "nativeQueryRef": "Weekday Avg Trips per Hour"
             },
             {
@@ -52,13 +52,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Weekend Avg Trips per Hour"
                 }
               },
-              "queryRef": "Measures.Weekend Avg Trips per Hour",
+              "queryRef": "_Measures.Weekend Avg Trips per Hour",
               "nativeQueryRef": "Weekend Avg Trips per Hour"
             }
           ]
@@ -82,7 +82,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Weekday Avg Trips per Hour"
+            "metadata": "_Measures.Weekday Avg Trips per Hour"
           }
         },
         {
@@ -100,7 +100,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Weekend Avg Trips per Hour"
+            "metadata": "_Measures.Weekend Avg Trips per Hour"
           }
         }
       ],
@@ -154,7 +154,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Hourly"

@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Departures"
                 }
               },
-              "queryRef": "Measures.Departures",
+              "queryRef": "_Measures.Departures",
               "nativeQueryRef": "Departures"
             },
             {
@@ -52,13 +52,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Arrivals"
                 }
               },
-              "queryRef": "Measures.Arrivals",
+              "queryRef": "_Measures.Arrivals",
               "nativeQueryRef": "Arrivals"
             }
           ]
@@ -101,7 +101,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Hourly"

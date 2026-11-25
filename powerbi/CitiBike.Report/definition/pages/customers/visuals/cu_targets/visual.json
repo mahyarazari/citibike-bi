@@ -48,13 +48,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Casual Repeat Commute Trips"
                 }
               },
-              "queryRef": "Measures.Casual Repeat Commute Trips",
+              "queryRef": "_Measures.Casual Repeat Commute Trips",
               "nativeQueryRef": "Casual Repeat Commute Trips"
             },
             {
@@ -62,13 +62,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Casual Share %"
                 }
               },
-              "queryRef": "Measures.Casual Share %",
+              "queryRef": "_Measures.Casual Share %",
               "nativeQueryRef": "Casual Share %"
             }
           ]
@@ -81,7 +81,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Casual Repeat Commute Trips"
@@ -148,7 +148,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Casual Repeat Commute Trips"
+            "metadata": "_Measures.Casual Repeat Commute Trips"
           }
         }
       ]
@@ -189,7 +189,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Conversion"

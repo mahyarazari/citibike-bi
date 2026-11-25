@@ -1,4 +1,4 @@
-table Measures
+table _Measures
 	lineageTag: 4f8ff8b2-11d5-5de9-80f0-4aa1f78cc0bc
 
 	measure 'Total Trips' = SUM ( fact_trips_hourly[trip_count] )
@@ -1051,7 +1051,7 @@ table Measures
 
 		annotation SummarizationSetBy = Automatic
 
-	partition Measures = m
+	partition _Measures = m
 		mode: import
 		source =
 				let

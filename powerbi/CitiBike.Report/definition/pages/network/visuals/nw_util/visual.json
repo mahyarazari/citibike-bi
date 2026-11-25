@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips per Dock per Day"
                 }
               },
-              "queryRef": "Measures.Trips per Dock per Day",
+              "queryRef": "_Measures.Trips per Dock per Day",
               "nativeQueryRef": "Trips per Dock per Day"
             }
           ]
@@ -57,7 +57,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Trips per Dock per Day"
@@ -80,7 +80,7 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "Measures"
+                          "Entity": "_Measures"
                         }
                       },
                       "Property": "Bar Color vs City (utilization)"
@@ -116,7 +116,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "City Trips per Dock per Day"
@@ -191,7 +191,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Utilization"
@@ -237,7 +237,7 @@
                       },
                       {
                         "Name": "m",
-                        "Entity": "Measures",
+                        "Entity": "_Measures",
                         "Type": 0
                       }
                     ],

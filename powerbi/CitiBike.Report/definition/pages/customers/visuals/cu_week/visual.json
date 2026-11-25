@@ -56,13 +56,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Total Trips"
                 }
               },
-              "queryRef": "Measures.Total Trips",
+              "queryRef": "_Measures.Total Trips",
               "nativeQueryRef": "Total Trips"
             }
           ]
@@ -105,7 +105,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Ebike"

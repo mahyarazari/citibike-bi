@@ -76,13 +76,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Status"
                 }
               },
-              "queryRef": "Measures.Station Status",
+              "queryRef": "_Measures.Station Status",
               "nativeQueryRef": "Station Status"
             },
             {
@@ -90,13 +90,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Capacity"
                 }
               },
-              "queryRef": "Measures.Station Capacity",
+              "queryRef": "_Measures.Station Capacity",
               "nativeQueryRef": "Station Capacity"
             },
             {
@@ -104,13 +104,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Bikes"
                 }
               },
-              "queryRef": "Measures.Station Bikes",
+              "queryRef": "_Measures.Station Bikes",
               "nativeQueryRef": "Station Bikes"
             },
             {
@@ -118,13 +118,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Docks"
                 }
               },
-              "queryRef": "Measures.Station Docks",
+              "queryRef": "_Measures.Station Docks",
               "nativeQueryRef": "Station Docks"
             },
             {
@@ -132,13 +132,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Min to Empty"
                 }
               },
-              "queryRef": "Measures.Station Min to Empty",
+              "queryRef": "_Measures.Station Min to Empty",
               "nativeQueryRef": "Station Min to Empty"
             },
             {
@@ -146,13 +146,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Priority"
                 }
               },
-              "queryRef": "Measures.Station Priority",
+              "queryRef": "_Measures.Station Priority",
               "nativeQueryRef": "Station Priority"
             }
           ]
@@ -286,7 +286,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Live Map"

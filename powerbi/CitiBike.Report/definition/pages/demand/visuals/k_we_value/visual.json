@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Weekend vs Weekday"
                 }
               },
-              "queryRef": "Measures.Weekend vs Weekday",
+              "queryRef": "_Measures.Weekend vs Weekday",
               "nativeQueryRef": "Weekend vs Weekday"
             }
           ]

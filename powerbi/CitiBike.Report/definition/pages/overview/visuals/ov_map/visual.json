@@ -104,13 +104,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "NTA Color Index"
                 }
               },
-              "queryRef": "Measures.NTA Color Index",
+              "queryRef": "_Measures.NTA Color Index",
               "nativeQueryRef": "NTA Color Index"
             },
             {
@@ -118,13 +118,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "NTA Value Text"
                 }
               },
-              "queryRef": "Measures.NTA Value Text",
+              "queryRef": "_Measures.NTA Value Text",
               "nativeQueryRef": "NTA Value Text"
             },
             {
@@ -132,13 +132,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Status"
                 }
               },
-              "queryRef": "Measures.Station Status",
+              "queryRef": "_Measures.Station Status",
               "nativeQueryRef": "Station Status"
             },
             {
@@ -146,13 +146,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Capacity"
                 }
               },
-              "queryRef": "Measures.Station Capacity",
+              "queryRef": "_Measures.Station Capacity",
               "nativeQueryRef": "Station Capacity"
             },
             {
@@ -160,13 +160,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Bikes"
                 }
               },
-              "queryRef": "Measures.Station Bikes",
+              "queryRef": "_Measures.Station Bikes",
               "nativeQueryRef": "Station Bikes"
             },
             {
@@ -174,13 +174,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Station Docks"
                 }
               },
-              "queryRef": "Measures.Station Docks",
+              "queryRef": "_Measures.Station Docks",
               "nativeQueryRef": "Station Docks"
             }
           ]
@@ -314,7 +314,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Map"

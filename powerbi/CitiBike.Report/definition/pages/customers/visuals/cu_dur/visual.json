@@ -56,13 +56,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Duration (min)"
                 }
               },
-              "queryRef": "Measures.Avg Duration (min)",
+              "queryRef": "_Measures.Avg Duration (min)",
               "nativeQueryRef": "Avg Duration (min)"
             }
           ]
@@ -127,7 +127,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Duration"

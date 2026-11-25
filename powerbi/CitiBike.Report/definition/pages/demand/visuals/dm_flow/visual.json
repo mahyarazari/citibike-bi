@@ -76,13 +76,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "AM Net Flow per Weekday"
                 }
               },
-              "queryRef": "Measures.AM Net Flow per Weekday",
+              "queryRef": "_Measures.AM Net Flow per Weekday",
               "nativeQueryRef": "AM Net Flow per Weekday"
             },
             {
@@ -90,13 +90,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "PM Net Flow per Weekday"
                 }
               },
-              "queryRef": "Measures.PM Net Flow per Weekday",
+              "queryRef": "_Measures.PM Net Flow per Weekday",
               "nativeQueryRef": "PM Net Flow per Weekday"
             }
           ]
@@ -230,7 +230,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Net Flow"

@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "City Trips per Dock per Day"
                 }
               },
-              "queryRef": "Measures.City Trips per Dock per Day",
+              "queryRef": "_Measures.City Trips per Dock per Day",
               "nativeQueryRef": "City Trips per Dock per Day"
             }
           ]

@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Classic Trips"
                 }
               },
-              "queryRef": "Measures.Classic Trips",
+              "queryRef": "_Measures.Classic Trips",
               "nativeQueryRef": "Classic Trips"
             },
             {
@@ -52,13 +52,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "E-bike Trips"
                 }
               },
-              "queryRef": "Measures.E-bike Trips",
+              "queryRef": "_Measures.E-bike Trips",
               "nativeQueryRef": "E-bike Trips"
             },
             {
@@ -66,13 +66,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips 7D Rolling Avg"
                 }
               },
-              "queryRef": "Measures.Trips 7D Rolling Avg",
+              "queryRef": "_Measures.Trips 7D Rolling Avg",
               "nativeQueryRef": "Trips 7D Rolling Avg"
             }
           ]
@@ -110,7 +110,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Trips 7D Rolling Avg"
+            "metadata": "_Measures.Trips 7D Rolling Avg"
           }
         }
       ],
@@ -130,7 +130,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Classic Trips"
+            "metadata": "_Measures.Classic Trips"
           }
         },
         {
@@ -148,7 +148,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.E-bike Trips"
+            "metadata": "_Measures.E-bike Trips"
           }
         },
         {
@@ -166,7 +166,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Trips 7D Rolling Avg"
+            "metadata": "_Measures.Trips 7D Rolling Avg"
           }
         }
       ]
@@ -207,7 +207,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Trend"

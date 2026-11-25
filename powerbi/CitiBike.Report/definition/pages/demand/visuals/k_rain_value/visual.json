@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Rain Impact %"
                 }
               },
-              "queryRef": "Measures.Rain Impact %",
+              "queryRef": "_Measures.Rain Impact %",
               "nativeQueryRef": "Rain Impact %"
             }
           ]

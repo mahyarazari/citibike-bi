@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "% Stations Balanced"
                 }
               },
-              "queryRef": "Measures.% Stations Balanced",
+              "queryRef": "_Measures.% Stations Balanced",
               "nativeQueryRef": "% Stations Balanced"
             }
           ]

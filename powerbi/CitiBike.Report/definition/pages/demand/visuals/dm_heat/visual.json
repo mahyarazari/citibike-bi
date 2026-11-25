@@ -56,13 +56,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Trips per Hour"
                 }
               },
-              "queryRef": "Measures.Avg Trips per Hour",
+              "queryRef": "_Measures.Avg Trips per Hour",
               "nativeQueryRef": "Avg Trips per Hour"
             }
           ]
@@ -80,7 +80,7 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "Measures"
+                          "Entity": "_Measures"
                         }
                       },
                       "Property": "Heat Color"
@@ -96,7 +96,7 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "Measures"
+                          "Entity": "_Measures"
                         }
                       },
                       "Property": "Heat Font Color"
@@ -114,7 +114,7 @@
                 }
               }
             ],
-            "metadata": "Measures.Avg Trips per Hour"
+            "metadata": "_Measures.Avg Trips per Hour"
           }
         }
       ],
@@ -215,7 +215,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Heatmap"

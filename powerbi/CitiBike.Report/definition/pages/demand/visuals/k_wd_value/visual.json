@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Peak Weekday Label"
                 }
               },
-              "queryRef": "Measures.Peak Weekday Label",
+              "queryRef": "_Measures.Peak Weekday Label",
               "nativeQueryRef": "Peak Weekday Label"
             }
           ]

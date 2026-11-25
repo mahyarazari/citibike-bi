@@ -90,13 +90,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Route Trips"
                 }
               },
-              "queryRef": "Measures.Route Trips",
+              "queryRef": "_Measures.Route Trips",
               "nativeQueryRef": "Route Trips"
             },
             {
@@ -104,13 +104,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Route Member Share"
                 }
               },
-              "queryRef": "Measures.Route Member Share",
+              "queryRef": "_Measures.Route Member Share",
               "nativeQueryRef": "Route Member Share"
             }
           ]
@@ -244,7 +244,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Routes"

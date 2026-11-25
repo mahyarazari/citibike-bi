@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Distance (km)"
                 }
               },
-              "queryRef": "Measures.Avg Distance (km)",
+              "queryRef": "_Measures.Avg Distance (km)",
               "nativeQueryRef": "Avg Distance (km)"
             }
           ]

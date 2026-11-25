@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Unmatched Station IDs"
                 }
               },
-              "queryRef": "Measures.Unmatched Station IDs",
+              "queryRef": "_Measures.Unmatched Station IDs",
               "nativeQueryRef": "Unmatched Station IDs"
             }
           ]

@@ -48,13 +48,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips per 1k Residents"
                 }
               },
-              "queryRef": "Measures.Trips per 1k Residents",
+              "queryRef": "_Measures.Trips per 1k Residents",
               "nativeQueryRef": "Trips per 1k Residents"
             },
             {
@@ -62,13 +62,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips per 1k Index"
                 }
               },
-              "queryRef": "Measures.Trips per 1k Index",
+              "queryRef": "_Measures.Trips per 1k Index",
               "nativeQueryRef": "Trips per 1k Index"
             },
             {
@@ -76,13 +76,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Trips WoW %"
                 }
               },
-              "queryRef": "Measures.Trips WoW %",
+              "queryRef": "_Measures.Trips WoW %",
               "nativeQueryRef": "Trips WoW %"
             },
             {
@@ -90,13 +90,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "% Stations Balanced"
                 }
               },
-              "queryRef": "Measures.% Stations Balanced",
+              "queryRef": "_Measures.% Stations Balanced",
               "nativeQueryRef": "% Stations Balanced"
             },
             {
@@ -104,13 +104,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Utilization Index"
                 }
               },
-              "queryRef": "Measures.Utilization Index",
+              "queryRef": "_Measures.Utilization Index",
               "nativeQueryRef": "Utilization Index"
             },
             {
@@ -118,13 +118,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Recommended Action"
                 }
               },
-              "queryRef": "Measures.Recommended Action",
+              "queryRef": "_Measures.Recommended Action",
               "nativeQueryRef": "Recommended Action"
             }
           ]
@@ -137,7 +137,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Trips per 1k Index"
@@ -204,7 +204,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Trips per 1k Index"
+            "metadata": "_Measures.Trips per 1k Index"
           }
         }
       ],
@@ -218,7 +218,7 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "Measures"
+                          "Entity": "_Measures"
                         }
                       },
                       "Property": "Action Color"
@@ -236,7 +236,7 @@
                 }
               }
             ],
-            "metadata": "Measures.Recommended Action"
+            "metadata": "_Measures.Recommended Action"
           }
         }
       ]
@@ -277,7 +277,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Neighborhoods"

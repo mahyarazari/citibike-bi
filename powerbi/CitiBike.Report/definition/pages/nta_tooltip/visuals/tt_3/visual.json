@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Full Stations (now)"
                 }
               },
-              "queryRef": "Measures.Full Stations (now)",
+              "queryRef": "_Measures.Full Stations (now)",
               "nativeQueryRef": "Full Stations (now)"
             }
           ]

@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Conversion Targets (est. riders)"
                 }
               },
-              "queryRef": "Measures.Conversion Targets (est. riders)",
+              "queryRef": "_Measures.Conversion Targets (est. riders)",
               "nativeQueryRef": "Conversion Targets (est. riders)"
             }
           ]

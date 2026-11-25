@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Under-served NTAs"
                 }
               },
-              "queryRef": "Measures.Under-served NTAs",
+              "queryRef": "_Measures.Under-served NTAs",
               "nativeQueryRef": "Under-served NTAs"
             }
           ]

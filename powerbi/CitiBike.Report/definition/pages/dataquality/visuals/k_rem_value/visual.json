@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Rows Removed by Cleaning %"
                 }
               },
-              "queryRef": "Measures.Rows Removed by Cleaning %",
+              "queryRef": "_Measures.Rows Removed by Cleaning %",
               "nativeQueryRef": "Rows Removed by Cleaning %"
             }
           ]

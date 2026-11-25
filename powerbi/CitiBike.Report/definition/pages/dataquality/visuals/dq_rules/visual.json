@@ -56,13 +56,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Rows Affected"
                 }
               },
-              "queryRef": "Measures.Rows Affected",
+              "queryRef": "_Measures.Rows Affected",
               "nativeQueryRef": "Rows Affected"
             }
           ]
@@ -75,7 +75,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Rows Affected"
@@ -145,7 +145,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Action Data Quality"
