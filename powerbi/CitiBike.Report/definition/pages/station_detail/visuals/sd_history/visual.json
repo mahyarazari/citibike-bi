@@ -99,7 +99,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Bikes available across live snapshots'"
+                  "Value": "'Bikes over time'"
                 }
               }
             },

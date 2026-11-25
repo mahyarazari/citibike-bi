@@ -222,7 +222,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top 60 origin → destination flows'"
+                  "Value": "'Top flows'"
                 }
               }
             },

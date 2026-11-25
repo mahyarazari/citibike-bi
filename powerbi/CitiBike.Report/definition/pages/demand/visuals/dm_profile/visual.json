@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Hourly profile: weekday vs weekend'"
+                  "Value": "'Weekday vs weekend'"
                 }
               }
             },

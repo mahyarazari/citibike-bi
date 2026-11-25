@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Avg ride duration (min): member vs casual'"
+                  "Value": "'Ride length (min)'"
                 }
               }
             },

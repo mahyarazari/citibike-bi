@@ -83,7 +83,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'E-bike vs classic mix by weekday'"
+                  "Value": "'Bike mix by day'"
                 }
               }
             },

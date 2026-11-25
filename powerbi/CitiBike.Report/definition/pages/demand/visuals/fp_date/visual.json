@@ -60,7 +60,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Date range (trips)'"
+                  "Value": "'Dates'"
                 }
               }
             },

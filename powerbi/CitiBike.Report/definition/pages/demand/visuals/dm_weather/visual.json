@@ -152,7 +152,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Trips vs normal for the same hour, by weather (100% = normal)'"
+                  "Value": "'Weather impact'"
                 }
               }
             },

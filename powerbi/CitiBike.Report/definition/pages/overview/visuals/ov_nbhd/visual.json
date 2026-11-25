@@ -263,7 +263,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Neighborhoods ranked by trips per 1k residents (index: city = 100)'"
+                  "Value": "'Neighborhoods (city = 100)'"
                 }
               }
             },

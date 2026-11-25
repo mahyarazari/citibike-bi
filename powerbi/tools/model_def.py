@@ -305,9 +305,9 @@ m("Data Freshness (min)", "Data Quality", FMT_INT,
   "DATEDIFF ( MAX ( fact_station_live[snapshot_utc] ), UTCNOW (), MINUTE )")
 m("Snapshots Kept", "Data Quality", FMT_INT, "DISTINCTCOUNT ( fact_station_status[snapshot_utc] )")
 m("Data As Of Text", "Data Quality", "", """
-"Data as of " & FORMAT ( [Live Snapshot (ET)], "mmm d, yyyy h:nn AM/PM" ) & " ET  ·  live snapshot every 30 min  ·  trips "
-    & FORMAT ( CALCULATE ( MIN ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d" ) & " – "
-    & FORMAT ( CALCULATE ( MAX ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d, yyyy" )""")
+"Live " & FORMAT ( [Live Snapshot (ET)], "mmm d, h:nn AM/PM" ) & " ET  ·  Trips "
+    & FORMAT ( CALCULATE ( MIN ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d" ) & "–"
+    & FORMAT ( CALCULATE ( MAX ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d" )""")
 
 # ---- Routes ---------------------------------------------------------------------------------
 m("Route Trips", "Trips", FMT_INT, "SUM ( fact_top_routes[trips] )")
@@ -349,61 +349,74 @@ SWITCH ( [Recommended Action],
     "Rebalance now", "#FDDBC7", "Add docks", "#F4A582", "Expand / promote", "#D1E5F0", "#FFFFFF" )""")
 
 # ---- KPI footers (text) -----------------------------------------------------------------------
-m("KPI Footer Trips", "Trips", "", f"""
+m("KPI Footer Trips", "Trips", "", """
 VAR w = [Trips WoW %]
-RETURN IF ( w >= 0, "{UP} ", "{DOWN} " ) & FORMAT ( ABS ( w ), "0.0%" ) & " vs prev 7 days  ·  "
-    & FORMAT ( [Trips per Day], "#,0" ) & "/day" """)
-m("KPI Footer Duration", "Duration", "", f"""
+RETURN IF ( w >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( w ), "0.0%" ) & " vs last week" """)
+m("KPI Footer Duration", "Duration", "", """
 VAR c = [Avg Duration WoW Change]
-RETURN IF ( c >= 0, "{UP} ", "{DOWN} " ) & FORMAT ( ABS ( c ), "0.0" ) & " min vs prev 7 days  ·  "
-    & FORMAT ( [Avg Distance (km)], "0.0" ) & " km avg" """)
-m("KPI Footer Member", "Customers", "", f"""
+RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " min vs last week" """)
+m("KPI Footer Member", "Customers", "", """
 VAR c = ( [Member Share Last 7D] - [Member Share Prev 7D] ) * 100
-RETURN IF ( c >= 0, "{UP} ", "{DOWN} " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs prev 7 days  ·  target 75%" """)
-m("KPI Footer Balanced", "Live Ops", "", f"""
+RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp · target 75%" """)
+m("KPI Footer Balanced", "Live Ops", "", """
 VAR c = ( [% Stations Balanced] - [% Balanced 1h Ago] ) * 100
-RETURN "Target ≥ 85%  ·  " & IF ( ISBLANK ( [% Balanced 1h Ago] ), "no 1h history yet",
-    IF ( c >= 0, "{UP} ", "{DOWN} " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs 1h ago" )""")
-m("KPI Footer Empty", "Live Ops", "", 'FORMAT ( [% Empty Stations], "0.0%" ) & " of stations  ·  target ≤ 5%"')
-m("KPI Footer Full", "Live Ops", "", 'FORMAT ( [% Full Stations], "0.0%" ) & " of stations  ·  target ≤ 5%"')
-m("KPI Footer Bikes", "Live Ops", "", f"""
+RETURN "Target 85% · " & IF ( ISBLANK ( [% Balanced 1h Ago] ), "no 1h data",
+    IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp / 1h" )""")
+m("KPI Footer Empty", "Live Ops", "", """
+FORMAT ( [% Empty Stations], "0.0%" ) & " · target ≤ 5%" """)
+m("KPI Footer Full", "Live Ops", "", """
+FORMAT ( [% Full Stations], "0.0%" ) & " · target ≤ 5%" """)
+m("KPI Footer Bikes", "Live Ops", "", """
 VAR c = [Bikes Change 1h]
-RETURN IF ( ISBLANK ( c ), "no 1h history yet", IF ( c >= 0, "{UP} ", "{DOWN} " ) & FORMAT ( ABS ( c ), "#,0" ) & " vs 1h ago" )
-    & "  ·  " & FORMAT ( [E-bikes Available], "#,0" ) & " e-bikes" """)
-m("KPI Footer Docks", "Live Ops", "", '"Backlog: " & FORMAT ( [Rebalance Backlog], "#,0" ) & " stations need a truck ≤ 60 min"')
+RETURN IF ( ISBLANK ( c ), FORMAT ( [E-bikes Available], "#,0" ) & " e-bikes",
+    IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "#,0" ) & " vs 1h ago" )""")
+m("KPI Footer Docks", "Live Ops", "", """
+FORMAT ( [Rebalance Backlog], "#,0" ) & " stations need a truck" """)
 m("KPI Color Empty", "Live Ops", "", f'IF ( [% Empty Stations] <= 0.05, "{BLUE}", "{RED}" )')
 m("KPI Color Full", "Live Ops", "", f'IF ( [% Full Stations] <= 0.05, "{BLUE}", "{RED}" )')
 m("KPI Footer Peak", "Trips", "", """
-"weekday peak  ·  " & FORMAT ( DIVIDE ( [Weekday Avg Trips per Hour], [Weekend Avg Trips per Hour] ), "0.0" ) & "× weekend level" """)
+FORMAT ( DIVIDE ( [Weekday Avg Trips per Hour], [Weekend Avg Trips per Hour] ), "0.0" ) & "× weekend" """)
 m("Peak Hour Label", "Trips", "", """
 VAR t = ADDCOLUMNS ( VALUES ( dim_hour[hour_label] ), "@v", CALCULATE ( [Weekday Avg Trips per Hour] ) )
 RETURN MAXX ( TOPN ( 1, t, [@v], DESC ), dim_hour[hour_label] )""")
 m("Peak Weekday Label", "Trips", "", """
 VAR t = ADDCOLUMNS ( VALUES ( dim_date[weekday_name] ), "@v", CALCULATE ( [Trips per Day] ) )
 RETURN MAXX ( TOPN ( 1, t, [@v], DESC ), dim_date[weekday_name] )""")
-m("KPI Footer Weekday", "Trips", "", '"busiest weekday  ·  " & FORMAT ( MAXX ( VALUES ( dim_date[weekday_name] ), CALCULATE ( [Trips per Day] ) ), "#,0" ) & " trips/day"')
+m("KPI Footer Weekday", "Trips", "", """
+FORMAT ( MAXX ( VALUES ( dim_date[weekday_name] ), CALCULATE ( [Trips per Day] ) ), "#,0" ) & " trips/day" """)
 m("Weekend vs Weekday", "Trips", "0.00", "DIVIDE ( [Weekend Avg Trips per Hour], [Weekday Avg Trips per Hour] )")
-m("KPI Footer Weekend", "Trips", "", '"weekend hourly demand vs weekday  ·  1.00 = equal"')
-m("KPI Footer Rain", "Trips", "", '"trips in rainy hours vs normal for the same hour"')
-m("KPI Footer Casual", "Customers", "", 'FORMAT ( [Casual Avg Duration], "0.0" ) & " min avg ride vs " & FORMAT ( [Member Avg Duration], "0.0" ) & " for members"')
-m("KPI Footer Ebike", "Customers", "", f"""
+m("KPI Footer Weekend", "Trips", "", """
+"1.00 = same as weekday" """)
+m("KPI Footer Rain", "Trips", "", """
+"vs normal for that hour" """)
+m("KPI Footer Casual", "Customers", "", """
+FORMAT ( [Casual Avg Duration], "0" ) & " vs " & FORMAT ( [Member Avg Duration], "0" ) & " min rides" """)
+m("KPI Footer Ebike", "Customers", "", """
 VAR c = ( [E-bike Share Last 7D] - [E-bike Share Prev 7D] ) * 100
-RETURN IF ( c >= 0, "{UP} ", "{DOWN} " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs prev 7 days" """)
+RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs last week" """)
 m("KPI Footer Revenue", "Customers", "", """
-FORMAT ( [Conversion Targets (est. riders)], "#,0" ) & " riders × " & FORMAT ( [Conversion Rate], "0%" ) & " × " & FORMAT ( [Membership Price], "$#,0" ) & "/yr" """)
-m("KPI Footer Routes", "Trips", "", '"busiest route  ·  " & FORMAT ( MAXX ( TOPN ( 1, fact_top_routes, fact_top_routes[trips] ), fact_top_routes[member_share] ), "0%" ) & " members"')
+FORMAT ( [Conversion Rate], "0%" ) & " × " & FORMAT ( [Membership Price], "$#,0" ) & " per year" """)
+m("KPI Footer Routes", "Trips", "", """
+FORMAT ( MAXX ( TOPN ( 1, fact_top_routes, fact_top_routes[trips] ), fact_top_routes[member_share] ), "0%" ) & " members" """)
 m("Top Route Trips per Day", "Trips", FMT_DEC1, "MAXX ( TOPN ( 1, fact_top_routes, fact_top_routes[trips] ), fact_top_routes[trips_per_day] )")
-m("KPI Footer Distance", "Duration", "", '"straight-line start → end  ·  " & FORMAT ( [Avg Duration (min)], "0.0" ) & " min avg"')
-m("KPI Footer Utilization", "Stations", "", '"city average  ·  target band 3–8 per dock"')
+m("KPI Footer Distance", "Duration", "", """
+FORMAT ( [Avg Duration (min)], "0" ) & " min avg" """)
+m("KPI Footer Utilization", "Stations", "", """
+"city average" """)
 m("Under-served NTAs", "Stations", FMT_INT, """
 COUNTROWS ( FILTER ( VALUES ( dim_neighborhood[nta_code] ),
     CALCULATE ( SUM ( dim_neighborhood[population] ) ) >= 20000
     && CALCULATE ( [Docks per 1k Residents] ) < 0.5 * [City Docks per 1k Residents] ) )""")
-m("KPI Footer Underserved", "Stations", "", '"NTAs ≥ 20k residents with < 50% of city docks per 1k"')
-m("KPI Footer Freshness", "Data Quality", "", '"minutes since last live snapshot  ·  target ≤ 60"')
-m("KPI Footer Removed", "Data Quality", "", 'FORMAT ( [Rows Removed], "#,0" ) & " of " & FORMAT ( [Rows In (trips)], "#,0" ) & " trips  ·  tolerance ≤ 1%"')
-m("KPI Footer Unmatched", "Data Quality", "", 'FORMAT ( [Unmatched Trips], "#,0" ) & " trips at retired / renamed stations"')
-m("KPI Footer Runs", "Data Quality", "", 'FORMAT ( [Pipeline Runs], "#,0" ) & " runs logged  ·  " & FORMAT ( [Snapshots Kept], "#,0" ) & " live snapshots kept"')
+m("KPI Footer Underserved", "Stations", "", """
+"≥20k residents, few docks" """)
+m("KPI Footer Freshness", "Data Quality", "", """
+"target ≤ 60 min" """)
+m("KPI Footer Removed", "Data Quality", "", """
+FORMAT ( [Rows Removed], "#,0" ) & " rows · limit 1%" """)
+m("KPI Footer Unmatched", "Data Quality", "", """
+FORMAT ( [Unmatched Trips], "#,0" ) & " trips" """)
+m("KPI Footer Runs", "Data Quality", "", """
+FORMAT ( [Pipeline Runs], "#,0" ) & " runs logged" """)
 
 # ---- Recommended action per neighborhood (table column) --------------------------------------
 m("Recommended Action", "Stations", "", """
@@ -422,134 +435,97 @@ RETURN SWITCH ( TRUE (),
 m("Action Map", "Live Ops", "", """
 VAR t = FILTER (
     ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_name] ),
-        "@n", CALCULATE ( [Stations Reporting] ), "@pb", CALCULATE ( [% Stations Balanced] ),
-        "@e", CALCULATE ( [Empty Stations (now)] ), "@f", CALCULATE ( [Full Stations (now)] ) ),
+        "@n", CALCULATE ( [Stations Reporting] ), "@pb", CALCULATE ( [% Stations Balanced] ) ),
     [@n] >= 5 )
 VAR w = TOPN ( 1, t, [@pb], ASC )
-RETURN "→ Action: send a rebalancing crew to " & MAXX ( w, dim_neighborhood[nta_name] ) & " — only "
-    & FORMAT ( MAXX ( w, [@pb] ), "0%" ) & " of stations balanced (" & MAXX ( w, [@e] ) & " empty, "
-    & MAXX ( w, [@f] ) & " full) vs " & FORMAT ( [% Stations Balanced], "0%" ) & " city-wide" """)
+RETURN "→ Rebalance " & MAXX ( w, dim_neighborhood[nta_name] ) & " first: " & FORMAT ( MAXX ( w, [@pb] ), "0%" )
+    & " balanced vs " & FORMAT ( [% Stations Balanced], "0%" ) & " city" """)
 m("Action Trend", "Trips", "", """
-VAR w = [Trips WoW %]
-RETURN "→ Action: trips " & FORMAT ( w, "+0.0%;-0.0%" ) & " week over week; e-bikes are "
-    & FORMAT ( [E-bike Share %], "0%" ) & " of rides — "
-    & IF ( w < 0, "check whether empty/full stations are suppressing demand on the weakest days",
-        "add early-morning rebalancing shifts to keep pace with demand" )""")
+"→ Trips " & FORMAT ( [Trips WoW %], "+0%;-0%" ) & " WoW · e-bikes " & FORMAT ( [E-bike Share %], "0%" )""")
 m("Action Borough", "Stations", "", """
 VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_neighborhood[borough] ),
-        "@i", CALCULATE ( [Trips per 1k Index] ), "@v", CALCULATE ( [Trips per 1k Residents] ),
-        "@d", CALCULATE ( [Docks] ) ), [@d] > 0 && NOT ISBLANK ( [@i] ) )
+        "@i", CALCULATE ( [Trips per 1k Index] ), "@d", CALCULATE ( [Docks] ) ), [@d] > 0 && NOT ISBLANK ( [@i] ) )
 VAR w = TOPN ( 1, t, [@i], ASC )
-RETURN "→ Action: grow ridership in " & MAXX ( w, dim_neighborhood[borough] ) & " — "
-    & FORMAT ( MAXX ( w, [@v] ), "#,0" ) & " trips per 1k residents (index " & FORMAT ( MAXX ( w, [@i] ), "0" )
-    & " vs city 100); add stations near its densest neighborhoods" """)
+RETURN "→ Grow " & MAXX ( w, dim_neighborhood[borough] ) & ": index " & FORMAT ( MAXX ( w, [@i] ), "0" ) & " vs 100" """)
 m("Action Members", "Customers", "", """
-"→ Action: target ≈" & FORMAT ( [Conversion Targets (est. riders)], "#,0" )
-    & " casual commuters (≥3 repeat trips/week) with a membership offer — est. "
-    & FORMAT ( [Revenue Opportunity], "$#,0" ) & "/yr at " & FORMAT ( [Conversion Rate], "0%" ) & " conversion" """)
+"→ Target " & FORMAT ( [Conversion Targets (est. riders)], "#,0" ) & " commuters · " & FORMAT ( [Revenue Opportunity], "$#,0" ) & "/yr" """)
 m("Action Neighborhoods", "Stations", "", """
 VAR t = ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_code] ), "@a", [Recommended Action] )
-RETURN "→ Action: rebalance " & COUNTROWS ( FILTER ( t, [@a] = "Rebalance now" ) ) & " NTAs now  ·  add docks in "
-    & COUNTROWS ( FILTER ( t, [@a] = "Add docks" ) ) & "  ·  " & COUNTROWS ( FILTER ( t, [@a] = "Expand / promote" ) )
-    & " expansion candidates" """)
+RETURN "→ Rebalance " & COUNTROWS ( FILTER ( t, [@a] = "Rebalance now" ) ) & " · add docks "
+    & COUNTROWS ( FILTER ( t, [@a] = "Add docks" ) ) & " · expand " & COUNTROWS ( FILTER ( t, [@a] = "Expand / promote" ) )""")
 m("Action Dispatch", "Live Ops", "", """
 VAR top1 = TOPN ( 1, fact_rebalance_list, fact_rebalance_list[rebalance_priority_score], DESC, fact_rebalance_list[priority_rank], ASC )
-RETURN "→ Action: dispatch trucks to the top " & COUNTROWS ( fact_rebalance_list ) & " stations — deliver "
-    & FORMAT ( [Bikes to Deliver], "#,0" ) & " bikes, pick up " & FORMAT ( [Bikes to Pick Up], "#,0" )
-    & "; first stop: " & MAXX ( top1, fact_rebalance_list[name] ) & " (" & MAXX ( top1, fact_rebalance_list[status_class] ) & ")" """)
+RETURN "→ Deliver " & FORMAT ( [Bikes to Deliver], "#,0" ) & " · pick up " & FORMAT ( [Bikes to Pick Up], "#,0" )
+    & " · start: " & MAXX ( top1, fact_rebalance_list[name] )""")
 m("Action Live Map", "Live Ops", "", """
 VAR t = ADDCOLUMNS ( VALUES ( dim_station[borough] ), "@e", CALCULATE ( [Empty Stations (now)] ) )
 VAR w = TOPN ( 1, t, [@e], DESC )
-RETURN "→ Action: " & [Empty Stations (now)] & " empty / " & [Full Stations (now)] & " full now — most empties in "
-    & MAXX ( w, dim_station[borough] ) & " (" & MAXX ( w, [@e] ) & "); route the first truck there" """)
+RETURN "→ " & [Empty Stations (now)] & " empty, " & [Full Stations (now)] & " full · first truck: " & MAXX ( w, dim_station[borough] )""")
 m("Action Heatmap", "Trips", "", """
-"→ Action: pre-position bikes before " & [Peak Hour Label] & " on " & [Peak Weekday Label]
-    & "s — the busiest hour averages " & FORMAT ( MAXX ( ADDCOLUMNS ( CROSSJOIN ( VALUES ( dim_date[weekday_name] ), VALUES ( dim_hour[hour] ) ), "@v", CALCULATE ( [Avg Trips per Hour] ) ), [@v] ), "#,0" )
-    & " trips city-wide" """)
+"→ Stock bikes before " & [Peak Hour Label] & " on " & [Peak Weekday Label] & "s" """)
 m("Action Hourly", "Trips", "", """
-"→ Action: weekday peak at " & [Peak Hour Label] & " is " & FORMAT ( DIVIDE (
-    MAXX ( VALUES ( dim_hour[hour] ), CALCULATE ( [Weekday Avg Trips per Hour] ) ),
-    MAXX ( VALUES ( dim_hour[hour] ), CALCULATE ( [Weekend Avg Trips per Hour] ) ) ), "0.0" )
-    & "× the weekend peak — schedule crews 60 min before it" """)
+"→ Crews ready before " & [Peak Hour Label] & " (weekday peak)" """)
 m("Action Net Flow", "Live Ops", "", """
 VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_name] ), "@f", CALCULATE ( [AM Net Flow per Weekday] ) ), NOT ISBLANK ( [@f] ) )
 VAR w = TOPN ( 1, t, [@f], ASC )
-RETURN "→ Action: pre-position " & FORMAT ( -MAXX ( w, [@f] ), "#,0" ) & " bikes in " & MAXX ( w, dim_neighborhood[nta_name] )
-    & " before 7 AM (weekday morning drain)" """)
+RETURN "→ Add " & FORMAT ( -MAXX ( w, [@f] ), "#,0" ) & " bikes in " & MAXX ( w, dim_neighborhood[nta_name] ) & " before 7 AM" """)
 m("Action Weather", "Trips", "", """
-"→ Action: rain cuts trips to " & FORMAT ( 1 + [Rain Impact %], "0%" )
-    & " of normal for the same hour — scale down crews and shift to charging on rainy forecasts" """)
+"→ Rain = " & FORMAT ( 1 + [Rain Impact %], "0%" ) & " of normal · cut crews" """)
 m("Action Duration", "Customers", "", """
-"→ Action: casual rides are " & FORMAT ( DIVIDE ( [Casual Avg Duration], [Member Avg Duration] ), "0.0" )
-    & "× longer than member rides — sell day passes to leisure riders, memberships to commuters" """)
+"→ Casual rides " & FORMAT ( DIVIDE ( [Casual Avg Duration], [Member Avg Duration] ), "0.0" ) & "× longer · sell day passes" """)
 m("Action Time of Day", "Customers", "", """
 VAR t = ADDCOLUMNS ( VALUES ( dim_hour[hour_label] ), "@c", CALCULATE ( [Casual Share %] ) )
 VAR w = TOPN ( 1, t, [@c], DESC )
-RETURN "→ Action: casual share peaks at " & MAXX ( w, dim_hour[hour_label] ) & " (" & FORMAT ( MAXX ( w, [@c] ), "0%" )
-    & ") — time in-app membership offers to that hour" """)
+RETURN "→ Push offers at " & MAXX ( w, dim_hour[hour_label] ) & " (" & FORMAT ( MAXX ( w, [@c] ), "0%" ) & " casual)" """)
 m("Action Ebike", "Customers", "", """
-"→ Action: e-bikes are " & FORMAT ( [E-bike Share %], "0%" ) & " of trips — prioritise e-bike charging and swaps at the busiest stations" """)
+"→ E-bikes " & FORMAT ( [E-bike Share %], "0%" ) & " · prioritise charging" """)
 m("Action Conversion", "Customers", "", """
 VAR t = TOPN ( 1, ADDCOLUMNS ( VALUES ( dim_station[name] ), "@t", CALCULATE ( [Casual Repeat Commute Trips] ) ), [@t], DESC )
-RETURN "→ Action: start the membership campaign at " & MAXX ( t, dim_station[name] ) & " ("
-    & FORMAT ( MAXX ( t, [@t] ), "#,0" ) & " repeat casual commute trips)" """)
+RETURN "→ Start campaign at " & MAXX ( t, dim_station[name] )""")
 m("Action Routes", "Trips", "", """
 VAR t = TOPN ( 1, fact_top_routes, fact_top_routes[trips], DESC )
-RETURN "→ Action: busiest route " & MAXX ( t, fact_top_routes[route] ) & " carries " & FORMAT ( MAXX ( t, fact_top_routes[trips_per_day] ), "0" )
-    & " trips/day (" & FORMAT ( MAXX ( t, fact_top_routes[member_share] ), "0%" ) & " members) — keep docks free at both ends" """)
+RETURN "→ Keep docks free on top route · " & FORMAT ( MAXX ( t, fact_top_routes[trips_per_day] ), "0" ) & "/day" """)
 m("Action Utilization", "Stations", "", """
 VAR c = [City Trips per Dock per Day]
 VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_station[name] ), "@u", CALCULATE ( [Trips per Dock per Day] ), "@cap", CALCULATE ( [Docks] ) ), [@cap] > 0 )
 VAR w = TOPN ( 1, t, [@u], DESC )
 VAR ratio = DIVIDE ( MAXX ( w, [@u] ), c )
 VAR add = ROUNDUP ( MAXX ( w, [@cap] ) * ( ratio / 1.5 - 1 ), 0 )
-RETURN "→ Action: add " & add & " docks at " & MAXX ( w, dim_station[name] ) & " (utilization " & FORMAT ( ratio, "0.0" )
-    & "× city avg) to bring it to 1.5× city" """)
+RETURN "→ Add " & add & " docks at " & MAXX ( w, dim_station[name] ) & " (" & FORMAT ( ratio, "0.0" ) & "× city)" """)
 m("Action Expansion", "Stations", "", """
-VAR c = [City Docks per 1k Residents]
 VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_name] ),
-        "@p", CALCULATE ( [Population] ), "@d", CALCULATE ( [Docks per 1k Residents] ) ),
-        [@p] >= 20000 )
+        "@p", CALCULATE ( [Population] ), "@d", CALCULATE ( [Docks per 1k Residents] ) ), [@p] >= 20000 )
 VAR w = TOPN ( 1, t, [@d], ASC, [@p], DESC )
-RETURN "→ Action: add stations in " & MAXX ( w, dim_neighborhood[nta_name] ) & " — " & FORMAT ( MAXX ( w, [@p] ), "#,0" )
-    & " residents, " & FORMAT ( MAXX ( w, [@d] ), "0.0" ) & " docks per 1k vs city " & FORMAT ( c, "0.0" ) """)
+RETURN "→ New stations: " & MAXX ( w, dim_neighborhood[nta_name] ) & " (" & FORMAT ( MAXX ( w, [@d] ), "0.0" ) & " docks/1k)" """)
 m("Action Data Quality", "Data Quality", "", """
-"→ Action: map " & [Unmatched Station IDs] & " unmatched station IDs (" & FORMAT ( [Unmatched Trips], "#,0" )
-    & " trips) to current GBFS stations; " & FORMAT ( [Rows Removed by Cleaning %], "0.00%" ) & " of rows removed — "
-    & IF ( [Rows Removed by Cleaning %] <= 0.01, "within", "above" ) & " the 1% tolerance" """)
+"→ Map " & [Unmatched Station IDs] & " unmatched IDs · " & FORMAT ( [Rows Removed by Cleaning %], "0.0%" ) & " removed" """)
 m("Action Pipeline", "Data Quality", "", """
-"→ Action: " & IF ( [Data Freshness (min)] > 60, "live data is stale (" & [Data Freshness (min)] & " min) — check the GitHub Actions run",
-    "pipeline healthy: " & FORMAT ( [Pipeline Success Rate], "0%" ) & " of runs succeeded" )""")
+IF ( [Data Freshness (min)] > 60, "→ Stale data: check GitHub Actions", "→ Pipeline healthy" )""")
 m("Action Station", "Live Ops", "", """
 VAR b = SELECTEDVALUE ( fact_station_live[bikes_to_target] )
-RETURN "→ Action: " & SELECTEDVALUE ( dim_station[name], "select a station" ) & " is " & [Station Status]
-    & IF ( ISBLANK ( b ), "", IF ( b > 0, " — deliver " & b & " bikes", " — pick up " & -b & " bikes" ) )
-    & IF ( ISBLANK ( [Station Min to Empty] ), "", "; empty in ≈" & FORMAT ( [Station Min to Empty], "0" ) & " min" )""")
+RETURN "→ " & SELECTEDVALUE ( dim_station[name], "Pick a station" )
+    & IF ( ISBLANK ( b ), "", IF ( b > 0, ": deliver " & b & " bikes", ": pick up " & -b & " bikes" ) )""")
 m("Insights Overview", "Live Ops", "", """
-[Empty Stations (now)] + [Full Stations (now)] & " stations need rebalancing now; top priority: "
-    & MAXX ( TOPN ( 1, fact_rebalance_list, fact_rebalance_list[rebalance_priority_score], DESC, fact_rebalance_list[priority_rank], ASC ), fact_rebalance_list[name] )
-    & ".  Trips " & FORMAT ( [Trips WoW %], "+0.0%;-0.0%" ) & " WoW.  Members ride " & FORMAT ( [Member Share %], "0%" ) & " of trips." """)
+[Empty Stations (now)] + [Full Stations (now)] & " stations need trucks · trips " & FORMAT ( [Trips WoW %], "+0%;-0%" ) & " WoW" """)
 
 # ---- tooltip page -----------------------------------------------------------------------------
 m("Tooltip Rank", "Stations", "", """
 VAR v = [% Stations Balanced]
 VAR r = RANKX ( FILTER ( ALL ( dim_neighborhood[nta_name] ), CALCULATE ( [Stations Reporting] ) >= 3 ), CALCULATE ( [% Stations Balanced] ), v, DESC, DENSE )
-RETURN IF ( ISBLANK ( v ), "no live stations", "#" & r & " of " & COUNTROWS ( FILTER ( ALL ( dim_neighborhood[nta_name] ), CALCULATE ( [Stations Reporting] ) >= 3 ) ) & " NTAs by balance" )""")
+RETURN IF ( ISBLANK ( v ), "No live stations", "Balance rank #" & r )""")
 
 # ---- detail / tooltip helpers ------------------------------------------------------------------
 m("Snapshot Bikes", "Live Ops", FMT_INT, "SUM ( fact_station_status[num_bikes_available] )")
 m("Tooltip Title", "Live Ops", "", """
 SELECTEDVALUE ( dim_neighborhood[nta_name], SELECTEDVALUE ( dim_neighborhood[borough], "New York City" ) )""")
 m("Station Footer Status", "Live Ops", "", """
-"fill " & FORMAT ( DIVIDE ( [Station Bikes], [Station Capacity] ), "0%" ) & "  ·  priority "
-    & FORMAT ( [Station Priority], "0" ) & " / 100" """)
+"fill " & FORMAT ( DIVIDE ( [Station Bikes], [Station Capacity] ), "0%" )""")
 m("Station Footer Bikes", "Live Ops", "", """
-FORMAT ( [Station Docks], "#,0" ) & " free docks  ·  " & FORMAT ( SUM ( fact_station_live[num_ebikes_available] ), "#,0" ) & " e-bikes" """)
+FORMAT ( [Station Docks], "#,0" ) & " free docks" """)
 m("Station Footer Capacity", "Live Ops", "", """
-FORMAT ( [Trips per Dock per Day], "0.0" ) & " trips per dock per day vs city " & FORMAT ( [City Trips per Dock per Day], "0.0" ) """)
+FORMAT ( [Trips per Dock per Day], "0.0" ) & " trips/dock/day" """)
 m("Action Station Flow", "Live Ops", "", """
 VAR am = [AM Net Flow per Weekday]
-RETURN "→ Action: weekday mornings this station " & IF ( am < 0, "loses " & FORMAT ( -am, "0" ) & " bikes/day — restock before 7 AM",
-    "gains " & FORMAT ( am, "0" ) & " bikes/day — clear docks before 9 AM" )""")
+RETURN IF ( am < 0, "→ Restock before 7 AM (" & FORMAT ( am, "0" ) & "/day)", "→ Clear docks before 9 AM (+" & FORMAT ( am, "0" ) & "/day)" )""")
 m("Action Snapshot", "Live Ops", "", """
-"→ Action: " & FORMAT ( [Snapshots Kept], "#,0" ) & " live snapshots so far (rolling 14 days); a falling line means the station is draining now" """)
+"→ Falling line = draining now" """)

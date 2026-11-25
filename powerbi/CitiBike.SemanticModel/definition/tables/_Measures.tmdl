@@ -572,9 +572,9 @@ table _Measures
 		lineageTag: 0327f3dc-2cf6-5395-864c-190eb917b693
 
 	measure 'Data As Of Text' = ```
-			"Data as of " & FORMAT ( [Live Snapshot (ET)], "mmm d, yyyy h:nn AM/PM" ) & " ET  ·  live snapshot every 30 min  ·  trips "
-			    & FORMAT ( CALCULATE ( MIN ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d" ) & " – "
-			    & FORMAT ( CALCULATE ( MAX ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d, yyyy" )
+			"Live " & FORMAT ( [Live Snapshot (ET)], "mmm d, h:nn AM/PM" ) & " ET  ·  Trips "
+			    & FORMAT ( CALCULATE ( MIN ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d" ) & "–"
+			    & FORMAT ( CALCULATE ( MAX ( fact_trips_hourly[date] ), REMOVEFILTERS () ), "mmm d" )
 			```
 		displayFolder: Data Quality
 		lineageTag: 8a1e21ba-cded-57bb-a1ea-cd511088c249
@@ -670,52 +670,50 @@ table _Measures
 
 	measure 'KPI Footer Trips' = ```
 			VAR w = [Trips WoW %]
-			RETURN IF ( w >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( w ), "0.0%" ) & " vs prev 7 days  ·  "
-			    & FORMAT ( [Trips per Day], "#,0" ) & "/day" 
+			RETURN IF ( w >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( w ), "0.0%" ) & " vs last week" 
 			```
 		displayFolder: Trips
 		lineageTag: a85e882d-6660-5f8b-a30f-8d82d5683b4b
 
 	measure 'KPI Footer Duration' = ```
 			VAR c = [Avg Duration WoW Change]
-			RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " min vs prev 7 days  ·  "
-			    & FORMAT ( [Avg Distance (km)], "0.0" ) & " km avg" 
+			RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " min vs last week" 
 			```
 		displayFolder: Duration
 		lineageTag: 8399e1a2-a792-5718-a846-c37e9fcf603b
 
 	measure 'KPI Footer Member' = ```
 			VAR c = ( [Member Share Last 7D] - [Member Share Prev 7D] ) * 100
-			RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs prev 7 days  ·  target 75%" 
+			RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp · target 75%" 
 			```
 		displayFolder: Customers
 		lineageTag: 1682707e-4758-516a-9fe2-13097211944e
 
 	measure 'KPI Footer Balanced' = ```
 			VAR c = ( [% Stations Balanced] - [% Balanced 1h Ago] ) * 100
-			RETURN "Target ≥ 85%  ·  " & IF ( ISBLANK ( [% Balanced 1h Ago] ), "no 1h history yet",
-			    IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs 1h ago" )
+			RETURN "Target 85% · " & IF ( ISBLANK ( [% Balanced 1h Ago] ), "no 1h data",
+			    IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp / 1h" )
 			```
 		displayFolder: Live Ops
 		lineageTag: 70a4e5a7-0b19-55e0-ab94-d4268525807c
 
-	measure 'KPI Footer Empty' = FORMAT ( [% Empty Stations], "0.0%" ) & " of stations  ·  target ≤ 5%"
+	measure 'KPI Footer Empty' = FORMAT ( [% Empty Stations], "0.0%" ) & " · target ≤ 5%" 
 		displayFolder: Live Ops
 		lineageTag: 7780cf6a-ca36-56fd-9be9-a6a1ed952f75
 
-	measure 'KPI Footer Full' = FORMAT ( [% Full Stations], "0.0%" ) & " of stations  ·  target ≤ 5%"
+	measure 'KPI Footer Full' = FORMAT ( [% Full Stations], "0.0%" ) & " · target ≤ 5%" 
 		displayFolder: Live Ops
 		lineageTag: 9cd23172-2be1-598d-9475-d82d2c4812de
 
 	measure 'KPI Footer Bikes' = ```
 			VAR c = [Bikes Change 1h]
-			RETURN IF ( ISBLANK ( c ), "no 1h history yet", IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "#,0" ) & " vs 1h ago" )
-			    & "  ·  " & FORMAT ( [E-bikes Available], "#,0" ) & " e-bikes" 
+			RETURN IF ( ISBLANK ( c ), FORMAT ( [E-bikes Available], "#,0" ) & " e-bikes",
+			    IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "#,0" ) & " vs 1h ago" )
 			```
 		displayFolder: Live Ops
 		lineageTag: 986bdcbf-4561-5227-93b8-4c4c56c76de5
 
-	measure 'KPI Footer Docks' = "Backlog: " & FORMAT ( [Rebalance Backlog], "#,0" ) & " stations need a truck ≤ 60 min"
+	measure 'KPI Footer Docks' = FORMAT ( [Rebalance Backlog], "#,0" ) & " stations need a truck" 
 		displayFolder: Live Ops
 		lineageTag: 28289cff-5999-56e4-9a55-d75878f8d69f
 
@@ -727,7 +725,7 @@ table _Measures
 		displayFolder: Live Ops
 		lineageTag: ded6dde6-2e44-53f7-9138-6445da0e361c
 
-	measure 'KPI Footer Peak' = "weekday peak  ·  " & FORMAT ( DIVIDE ( [Weekday Avg Trips per Hour], [Weekend Avg Trips per Hour] ), "0.0" ) & "× weekend level" 
+	measure 'KPI Footer Peak' = FORMAT ( DIVIDE ( [Weekday Avg Trips per Hour], [Weekend Avg Trips per Hour] ), "0.0" ) & "× weekend" 
 		displayFolder: Trips
 		lineageTag: d4320dec-0f39-5d2a-aaaa-51533cc9179b
 
@@ -745,7 +743,7 @@ table _Measures
 		displayFolder: Trips
 		lineageTag: d1f74699-67e0-5967-8b62-6992bfb668a8
 
-	measure 'KPI Footer Weekday' = "busiest weekday  ·  " & FORMAT ( MAXX ( VALUES ( dim_date[weekday_name] ), CALCULATE ( [Trips per Day] ) ), "#,0" ) & " trips/day"
+	measure 'KPI Footer Weekday' = FORMAT ( MAXX ( VALUES ( dim_date[weekday_name] ), CALCULATE ( [Trips per Day] ) ), "#,0" ) & " trips/day" 
 		displayFolder: Trips
 		lineageTag: 88b3b5a4-0b03-57ea-8ce1-a6dc826713dd
 
@@ -754,30 +752,30 @@ table _Measures
 		displayFolder: Trips
 		lineageTag: 8e2d77d1-e071-5cca-a6c7-c6cf7c13e480
 
-	measure 'KPI Footer Weekend' = "weekend hourly demand vs weekday  ·  1.00 = equal"
+	measure 'KPI Footer Weekend' = "1.00 = same as weekday" 
 		displayFolder: Trips
 		lineageTag: 239afdc3-bed7-5e5d-96ff-6a96d106651c
 
-	measure 'KPI Footer Rain' = "trips in rainy hours vs normal for the same hour"
+	measure 'KPI Footer Rain' = "vs normal for that hour" 
 		displayFolder: Trips
 		lineageTag: d05021ba-e2a0-554e-b979-5f1cdfb78cd5
 
-	measure 'KPI Footer Casual' = FORMAT ( [Casual Avg Duration], "0.0" ) & " min avg ride vs " & FORMAT ( [Member Avg Duration], "0.0" ) & " for members"
+	measure 'KPI Footer Casual' = FORMAT ( [Casual Avg Duration], "0" ) & " vs " & FORMAT ( [Member Avg Duration], "0" ) & " min rides" 
 		displayFolder: Customers
 		lineageTag: 05446068-b26b-5a04-b67a-d20dae1a620a
 
 	measure 'KPI Footer Ebike' = ```
 			VAR c = ( [E-bike Share Last 7D] - [E-bike Share Prev 7D] ) * 100
-			RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs prev 7 days" 
+			RETURN IF ( c >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( c ), "0.0" ) & " pp vs last week" 
 			```
 		displayFolder: Customers
 		lineageTag: 2c234fde-2b70-57f4-b64f-d01d834c2b33
 
-	measure 'KPI Footer Revenue' = FORMAT ( [Conversion Targets (est. riders)], "#,0" ) & " riders × " & FORMAT ( [Conversion Rate], "0%" ) & " × " & FORMAT ( [Membership Price], "$#,0" ) & "/yr" 
+	measure 'KPI Footer Revenue' = FORMAT ( [Conversion Rate], "0%" ) & " × " & FORMAT ( [Membership Price], "$#,0" ) & " per year" 
 		displayFolder: Customers
 		lineageTag: 946e93d2-4d26-50a5-9f93-c5e94c3435a1
 
-	measure 'KPI Footer Routes' = "busiest route  ·  " & FORMAT ( MAXX ( TOPN ( 1, fact_top_routes, fact_top_routes[trips] ), fact_top_routes[member_share] ), "0%" ) & " members"
+	measure 'KPI Footer Routes' = FORMAT ( MAXX ( TOPN ( 1, fact_top_routes, fact_top_routes[trips] ), fact_top_routes[member_share] ), "0%" ) & " members" 
 		displayFolder: Trips
 		lineageTag: 5c0e5c16-f542-5294-8b8f-319f4bddcfd1
 
@@ -786,11 +784,11 @@ table _Measures
 		displayFolder: Trips
 		lineageTag: 850ed9ac-f24a-5362-b050-a97d3e9687d0
 
-	measure 'KPI Footer Distance' = "straight-line start → end  ·  " & FORMAT ( [Avg Duration (min)], "0.0" ) & " min avg"
+	measure 'KPI Footer Distance' = FORMAT ( [Avg Duration (min)], "0" ) & " min avg" 
 		displayFolder: Duration
 		lineageTag: cf2d3acf-21a0-5d69-93da-e12b08ca2427
 
-	measure 'KPI Footer Utilization' = "city average  ·  target band 3–8 per dock"
+	measure 'KPI Footer Utilization' = "city average" 
 		displayFolder: Stations
 		lineageTag: fbb2c61d-5193-5dd5-b832-137a974834ee
 
@@ -803,23 +801,23 @@ table _Measures
 		displayFolder: Stations
 		lineageTag: 43a6f541-16ed-5916-9e08-8707e1081941
 
-	measure 'KPI Footer Underserved' = "NTAs ≥ 20k residents with < 50% of city docks per 1k"
+	measure 'KPI Footer Underserved' = "≥20k residents, few docks" 
 		displayFolder: Stations
 		lineageTag: 1e7ff503-ee9e-5eef-b7e8-39426b3d3d01
 
-	measure 'KPI Footer Freshness' = "minutes since last live snapshot  ·  target ≤ 60"
+	measure 'KPI Footer Freshness' = "target ≤ 60 min" 
 		displayFolder: Data Quality
 		lineageTag: 4dd7c564-614b-5b5d-bc23-d43c5241dbf6
 
-	measure 'KPI Footer Removed' = FORMAT ( [Rows Removed], "#,0" ) & " of " & FORMAT ( [Rows In (trips)], "#,0" ) & " trips  ·  tolerance ≤ 1%"
+	measure 'KPI Footer Removed' = FORMAT ( [Rows Removed], "#,0" ) & " rows · limit 1%" 
 		displayFolder: Data Quality
 		lineageTag: 8a2b4caf-14e2-53f8-a0de-9e4a7c77a65c
 
-	measure 'KPI Footer Unmatched' = FORMAT ( [Unmatched Trips], "#,0" ) & " trips at retired / renamed stations"
+	measure 'KPI Footer Unmatched' = FORMAT ( [Unmatched Trips], "#,0" ) & " trips" 
 		displayFolder: Data Quality
 		lineageTag: d2a4aa7e-3faa-5d23-8313-5c494b7e2b64
 
-	measure 'KPI Footer Runs' = FORMAT ( [Pipeline Runs], "#,0" ) & " runs logged  ·  " & FORMAT ( [Snapshots Kept], "#,0" ) & " live snapshots kept"
+	measure 'KPI Footer Runs' = FORMAT ( [Pipeline Runs], "#,0" ) & " runs logged" 
 		displayFolder: Data Quality
 		lineageTag: 746e3831-3271-5618-a29d-d3fe9142aafe
 
@@ -841,61 +839,44 @@ table _Measures
 	measure 'Action Map' = ```
 			VAR t = FILTER (
 			    ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_name] ),
-			        "@n", CALCULATE ( [Stations Reporting] ), "@pb", CALCULATE ( [% Stations Balanced] ),
-			        "@e", CALCULATE ( [Empty Stations (now)] ), "@f", CALCULATE ( [Full Stations (now)] ) ),
+			        "@n", CALCULATE ( [Stations Reporting] ), "@pb", CALCULATE ( [% Stations Balanced] ) ),
 			    [@n] >= 5 )
 			VAR w = TOPN ( 1, t, [@pb], ASC )
-			RETURN "→ Action: send a rebalancing crew to " & MAXX ( w, dim_neighborhood[nta_name] ) & " — only "
-			    & FORMAT ( MAXX ( w, [@pb] ), "0%" ) & " of stations balanced (" & MAXX ( w, [@e] ) & " empty, "
-			    & MAXX ( w, [@f] ) & " full) vs " & FORMAT ( [% Stations Balanced], "0%" ) & " city-wide" 
+			RETURN "→ Rebalance " & MAXX ( w, dim_neighborhood[nta_name] ) & " first: " & FORMAT ( MAXX ( w, [@pb] ), "0%" )
+			    & " balanced vs " & FORMAT ( [% Stations Balanced], "0%" ) & " city" 
 			```
 		displayFolder: Live Ops
 		lineageTag: 4327cb34-5e17-5ba4-8192-b97e93be36f9
 
-	measure 'Action Trend' = ```
-			VAR w = [Trips WoW %]
-			RETURN "→ Action: trips " & FORMAT ( w, "+0.0%;-0.0%" ) & " week over week; e-bikes are "
-			    & FORMAT ( [E-bike Share %], "0%" ) & " of rides — "
-			    & IF ( w < 0, "check whether empty/full stations are suppressing demand on the weakest days",
-			        "add early-morning rebalancing shifts to keep pace with demand" )
-			```
+	measure 'Action Trend' = "→ Trips " & FORMAT ( [Trips WoW %], "+0%;-0%" ) & " WoW · e-bikes " & FORMAT ( [E-bike Share %], "0%" )
 		displayFolder: Trips
 		lineageTag: 57563de5-b528-59d6-9d57-5070b3b18397
 
 	measure 'Action Borough' = ```
 			VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_neighborhood[borough] ),
-			        "@i", CALCULATE ( [Trips per 1k Index] ), "@v", CALCULATE ( [Trips per 1k Residents] ),
-			        "@d", CALCULATE ( [Docks] ) ), [@d] > 0 && NOT ISBLANK ( [@i] ) )
+			        "@i", CALCULATE ( [Trips per 1k Index] ), "@d", CALCULATE ( [Docks] ) ), [@d] > 0 && NOT ISBLANK ( [@i] ) )
 			VAR w = TOPN ( 1, t, [@i], ASC )
-			RETURN "→ Action: grow ridership in " & MAXX ( w, dim_neighborhood[borough] ) & " — "
-			    & FORMAT ( MAXX ( w, [@v] ), "#,0" ) & " trips per 1k residents (index " & FORMAT ( MAXX ( w, [@i] ), "0" )
-			    & " vs city 100); add stations near its densest neighborhoods" 
+			RETURN "→ Grow " & MAXX ( w, dim_neighborhood[borough] ) & ": index " & FORMAT ( MAXX ( w, [@i] ), "0" ) & " vs 100" 
 			```
 		displayFolder: Stations
 		lineageTag: 92df00fb-730c-554a-bd2a-63f83c31a520
 
-	measure 'Action Members' = ```
-			"→ Action: target ≈" & FORMAT ( [Conversion Targets (est. riders)], "#,0" )
-			    & " casual commuters (≥3 repeat trips/week) with a membership offer — est. "
-			    & FORMAT ( [Revenue Opportunity], "$#,0" ) & "/yr at " & FORMAT ( [Conversion Rate], "0%" ) & " conversion" 
-			```
+	measure 'Action Members' = "→ Target " & FORMAT ( [Conversion Targets (est. riders)], "#,0" ) & " commuters · " & FORMAT ( [Revenue Opportunity], "$#,0" ) & "/yr" 
 		displayFolder: Customers
 		lineageTag: 5d1a65eb-7976-5120-a898-0b9f311d7977
 
 	measure 'Action Neighborhoods' = ```
 			VAR t = ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_code] ), "@a", [Recommended Action] )
-			RETURN "→ Action: rebalance " & COUNTROWS ( FILTER ( t, [@a] = "Rebalance now" ) ) & " NTAs now  ·  add docks in "
-			    & COUNTROWS ( FILTER ( t, [@a] = "Add docks" ) ) & "  ·  " & COUNTROWS ( FILTER ( t, [@a] = "Expand / promote" ) )
-			    & " expansion candidates" 
+			RETURN "→ Rebalance " & COUNTROWS ( FILTER ( t, [@a] = "Rebalance now" ) ) & " · add docks "
+			    & COUNTROWS ( FILTER ( t, [@a] = "Add docks" ) ) & " · expand " & COUNTROWS ( FILTER ( t, [@a] = "Expand / promote" ) )
 			```
 		displayFolder: Stations
 		lineageTag: 57d328c9-1141-57d9-a847-6173806d0f99
 
 	measure 'Action Dispatch' = ```
 			VAR top1 = TOPN ( 1, fact_rebalance_list, fact_rebalance_list[rebalance_priority_score], DESC, fact_rebalance_list[priority_rank], ASC )
-			RETURN "→ Action: dispatch trucks to the top " & COUNTROWS ( fact_rebalance_list ) & " stations — deliver "
-			    & FORMAT ( [Bikes to Deliver], "#,0" ) & " bikes, pick up " & FORMAT ( [Bikes to Pick Up], "#,0" )
-			    & "; first stop: " & MAXX ( top1, fact_rebalance_list[name] ) & " (" & MAXX ( top1, fact_rebalance_list[status_class] ) & ")" 
+			RETURN "→ Deliver " & FORMAT ( [Bikes to Deliver], "#,0" ) & " · pick up " & FORMAT ( [Bikes to Pick Up], "#,0" )
+			    & " · start: " & MAXX ( top1, fact_rebalance_list[name] )
 			```
 		displayFolder: Live Ops
 		lineageTag: 0bfd47b9-1f5a-557a-a65b-68538eee42a7
@@ -903,77 +884,57 @@ table _Measures
 	measure 'Action Live Map' = ```
 			VAR t = ADDCOLUMNS ( VALUES ( dim_station[borough] ), "@e", CALCULATE ( [Empty Stations (now)] ) )
 			VAR w = TOPN ( 1, t, [@e], DESC )
-			RETURN "→ Action: " & [Empty Stations (now)] & " empty / " & [Full Stations (now)] & " full now — most empties in "
-			    & MAXX ( w, dim_station[borough] ) & " (" & MAXX ( w, [@e] ) & "); route the first truck there" 
+			RETURN "→ " & [Empty Stations (now)] & " empty, " & [Full Stations (now)] & " full · first truck: " & MAXX ( w, dim_station[borough] )
 			```
 		displayFolder: Live Ops
 		lineageTag: 3081dfb0-3c46-592f-adc8-734b02bcc288
 
-	measure 'Action Heatmap' = ```
-			"→ Action: pre-position bikes before " & [Peak Hour Label] & " on " & [Peak Weekday Label]
-			    & "s — the busiest hour averages " & FORMAT ( MAXX ( ADDCOLUMNS ( CROSSJOIN ( VALUES ( dim_date[weekday_name] ), VALUES ( dim_hour[hour] ) ), "@v", CALCULATE ( [Avg Trips per Hour] ) ), [@v] ), "#,0" )
-			    & " trips city-wide" 
-			```
+	measure 'Action Heatmap' = "→ Stock bikes before " & [Peak Hour Label] & " on " & [Peak Weekday Label] & "s" 
 		displayFolder: Trips
 		lineageTag: 7a04b025-3aa7-536a-b8d8-6ce5f2d3d40c
 
-	measure 'Action Hourly' = ```
-			"→ Action: weekday peak at " & [Peak Hour Label] & " is " & FORMAT ( DIVIDE (
-			    MAXX ( VALUES ( dim_hour[hour] ), CALCULATE ( [Weekday Avg Trips per Hour] ) ),
-			    MAXX ( VALUES ( dim_hour[hour] ), CALCULATE ( [Weekend Avg Trips per Hour] ) ) ), "0.0" )
-			    & "× the weekend peak — schedule crews 60 min before it" 
-			```
+	measure 'Action Hourly' = "→ Crews ready before " & [Peak Hour Label] & " (weekday peak)" 
 		displayFolder: Trips
 		lineageTag: 4076c5e8-b06f-5f29-9e14-dbe996e900b7
 
 	measure 'Action Net Flow' = ```
 			VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_name] ), "@f", CALCULATE ( [AM Net Flow per Weekday] ) ), NOT ISBLANK ( [@f] ) )
 			VAR w = TOPN ( 1, t, [@f], ASC )
-			RETURN "→ Action: pre-position " & FORMAT ( -MAXX ( w, [@f] ), "#,0" ) & " bikes in " & MAXX ( w, dim_neighborhood[nta_name] )
-			    & " before 7 AM (weekday morning drain)" 
+			RETURN "→ Add " & FORMAT ( -MAXX ( w, [@f] ), "#,0" ) & " bikes in " & MAXX ( w, dim_neighborhood[nta_name] ) & " before 7 AM" 
 			```
 		displayFolder: Live Ops
 		lineageTag: 3909a9d3-587f-5ebf-ac5c-20fef71c8d2a
 
-	measure 'Action Weather' = ```
-			"→ Action: rain cuts trips to " & FORMAT ( 1 + [Rain Impact %], "0%" )
-			    & " of normal for the same hour — scale down crews and shift to charging on rainy forecasts" 
-			```
+	measure 'Action Weather' = "→ Rain = " & FORMAT ( 1 + [Rain Impact %], "0%" ) & " of normal · cut crews" 
 		displayFolder: Trips
 		lineageTag: ca7a979f-45ab-5dc2-b9a6-2e71a816ad6e
 
-	measure 'Action Duration' = ```
-			"→ Action: casual rides are " & FORMAT ( DIVIDE ( [Casual Avg Duration], [Member Avg Duration] ), "0.0" )
-			    & "× longer than member rides — sell day passes to leisure riders, memberships to commuters" 
-			```
+	measure 'Action Duration' = "→ Casual rides " & FORMAT ( DIVIDE ( [Casual Avg Duration], [Member Avg Duration] ), "0.0" ) & "× longer · sell day passes" 
 		displayFolder: Customers
 		lineageTag: 3312e57b-1eb7-51f9-8514-9d161c1dea47
 
 	measure 'Action Time of Day' = ```
 			VAR t = ADDCOLUMNS ( VALUES ( dim_hour[hour_label] ), "@c", CALCULATE ( [Casual Share %] ) )
 			VAR w = TOPN ( 1, t, [@c], DESC )
-			RETURN "→ Action: casual share peaks at " & MAXX ( w, dim_hour[hour_label] ) & " (" & FORMAT ( MAXX ( w, [@c] ), "0%" )
-			    & ") — time in-app membership offers to that hour" 
+			RETURN "→ Push offers at " & MAXX ( w, dim_hour[hour_label] ) & " (" & FORMAT ( MAXX ( w, [@c] ), "0%" ) & " casual)" 
 			```
 		displayFolder: Customers
 		lineageTag: 22479f2c-cd63-5195-9669-9ca29d524e25
 
-	measure 'Action Ebike' = "→ Action: e-bikes are " & FORMAT ( [E-bike Share %], "0%" ) & " of trips — prioritise e-bike charging and swaps at the busiest stations" 
+	measure 'Action Ebike' = "→ E-bikes " & FORMAT ( [E-bike Share %], "0%" ) & " · prioritise charging" 
 		displayFolder: Customers
 		lineageTag: c23622b3-4aa7-5a51-a4a4-5ae6620ef6b7
 
 	measure 'Action Conversion' = ```
 			VAR t = TOPN ( 1, ADDCOLUMNS ( VALUES ( dim_station[name] ), "@t", CALCULATE ( [Casual Repeat Commute Trips] ) ), [@t], DESC )
-			RETURN "→ Action: start the membership campaign at " & MAXX ( t, dim_station[name] ) & " ("
-			    & FORMAT ( MAXX ( t, [@t] ), "#,0" ) & " repeat casual commute trips)" 
+			RETURN "→ Start campaign at " & MAXX ( t, dim_station[name] )
 			```
 		displayFolder: Customers
 		lineageTag: 26782e1b-58f5-53ff-8691-fbabbca978cf
 
 	measure 'Action Routes' = ```
 			VAR t = TOPN ( 1, fact_top_routes, fact_top_routes[trips], DESC )
-			RETURN "→ Action: busiest route " & MAXX ( t, fact_top_routes[route] ) & " carries " & FORMAT ( MAXX ( t, fact_top_routes[trips_per_day] ), "0" )
-			    & " trips/day (" & FORMAT ( MAXX ( t, fact_top_routes[member_share] ), "0%" ) & " members) — keep docks free at both ends" 
+			RETURN "→ Keep docks free on top route · " & FORMAT ( MAXX ( t, fact_top_routes[trips_per_day] ), "0" ) & "/day" 
 			```
 		displayFolder: Trips
 		lineageTag: d207bcb6-97ee-5681-ab4b-fd2208ae5899
@@ -984,60 +945,44 @@ table _Measures
 			VAR w = TOPN ( 1, t, [@u], DESC )
 			VAR ratio = DIVIDE ( MAXX ( w, [@u] ), c )
 			VAR add = ROUNDUP ( MAXX ( w, [@cap] ) * ( ratio / 1.5 - 1 ), 0 )
-			RETURN "→ Action: add " & add & " docks at " & MAXX ( w, dim_station[name] ) & " (utilization " & FORMAT ( ratio, "0.0" )
-			    & "× city avg) to bring it to 1.5× city" 
+			RETURN "→ Add " & add & " docks at " & MAXX ( w, dim_station[name] ) & " (" & FORMAT ( ratio, "0.0" ) & "× city)" 
 			```
 		displayFolder: Stations
 		lineageTag: e4e23030-0426-53de-b748-fa8d1178c645
 
 	measure 'Action Expansion' = ```
-			VAR c = [City Docks per 1k Residents]
 			VAR t = FILTER ( ADDCOLUMNS ( VALUES ( dim_neighborhood[nta_name] ),
-			        "@p", CALCULATE ( [Population] ), "@d", CALCULATE ( [Docks per 1k Residents] ) ),
-			        [@p] >= 20000 )
+			        "@p", CALCULATE ( [Population] ), "@d", CALCULATE ( [Docks per 1k Residents] ) ), [@p] >= 20000 )
 			VAR w = TOPN ( 1, t, [@d], ASC, [@p], DESC )
-			RETURN "→ Action: add stations in " & MAXX ( w, dim_neighborhood[nta_name] ) & " — " & FORMAT ( MAXX ( w, [@p] ), "#,0" )
-			    & " residents, " & FORMAT ( MAXX ( w, [@d] ), "0.0" ) & " docks per 1k vs city " & FORMAT ( c, "0.0" ) 
+			RETURN "→ New stations: " & MAXX ( w, dim_neighborhood[nta_name] ) & " (" & FORMAT ( MAXX ( w, [@d] ), "0.0" ) & " docks/1k)" 
 			```
 		displayFolder: Stations
 		lineageTag: 602925bc-84ff-5553-8e83-58002c624b9d
 
-	measure 'Action Data Quality' = ```
-			"→ Action: map " & [Unmatched Station IDs] & " unmatched station IDs (" & FORMAT ( [Unmatched Trips], "#,0" )
-			    & " trips) to current GBFS stations; " & FORMAT ( [Rows Removed by Cleaning %], "0.00%" ) & " of rows removed — "
-			    & IF ( [Rows Removed by Cleaning %] <= 0.01, "within", "above" ) & " the 1% tolerance" 
-			```
+	measure 'Action Data Quality' = "→ Map " & [Unmatched Station IDs] & " unmatched IDs · " & FORMAT ( [Rows Removed by Cleaning %], "0.0%" ) & " removed" 
 		displayFolder: Data Quality
 		lineageTag: 8a9ef7af-6cff-5089-8ad0-b67c9ccf8646
 
-	measure 'Action Pipeline' = ```
-			"→ Action: " & IF ( [Data Freshness (min)] > 60, "live data is stale (" & [Data Freshness (min)] & " min) — check the GitHub Actions run",
-			    "pipeline healthy: " & FORMAT ( [Pipeline Success Rate], "0%" ) & " of runs succeeded" )
-			```
+	measure 'Action Pipeline' = IF ( [Data Freshness (min)] > 60, "→ Stale data: check GitHub Actions", "→ Pipeline healthy" )
 		displayFolder: Data Quality
 		lineageTag: ed6f52b7-0f1f-57b0-8706-e0bd76970198
 
 	measure 'Action Station' = ```
 			VAR b = SELECTEDVALUE ( fact_station_live[bikes_to_target] )
-			RETURN "→ Action: " & SELECTEDVALUE ( dim_station[name], "select a station" ) & " is " & [Station Status]
-			    & IF ( ISBLANK ( b ), "", IF ( b > 0, " — deliver " & b & " bikes", " — pick up " & -b & " bikes" ) )
-			    & IF ( ISBLANK ( [Station Min to Empty] ), "", "; empty in ≈" & FORMAT ( [Station Min to Empty], "0" ) & " min" )
+			RETURN "→ " & SELECTEDVALUE ( dim_station[name], "Pick a station" )
+			    & IF ( ISBLANK ( b ), "", IF ( b > 0, ": deliver " & b & " bikes", ": pick up " & -b & " bikes" ) )
 			```
 		displayFolder: Live Ops
 		lineageTag: 4637e870-ecf4-5ab1-acf8-f86dcbc531e4
 
-	measure 'Insights Overview' = ```
-			[Empty Stations (now)] + [Full Stations (now)] & " stations need rebalancing now; top priority: "
-			    & MAXX ( TOPN ( 1, fact_rebalance_list, fact_rebalance_list[rebalance_priority_score], DESC, fact_rebalance_list[priority_rank], ASC ), fact_rebalance_list[name] )
-			    & ".  Trips " & FORMAT ( [Trips WoW %], "+0.0%;-0.0%" ) & " WoW.  Members ride " & FORMAT ( [Member Share %], "0%" ) & " of trips." 
-			```
+	measure 'Insights Overview' = [Empty Stations (now)] + [Full Stations (now)] & " stations need trucks · trips " & FORMAT ( [Trips WoW %], "+0%;-0%" ) & " WoW" 
 		displayFolder: Live Ops
 		lineageTag: b32066c5-13da-5e8e-8e14-926e4ab56687
 
 	measure 'Tooltip Rank' = ```
 			VAR v = [% Stations Balanced]
 			VAR r = RANKX ( FILTER ( ALL ( dim_neighborhood[nta_name] ), CALCULATE ( [Stations Reporting] ) >= 3 ), CALCULATE ( [% Stations Balanced] ), v, DESC, DENSE )
-			RETURN IF ( ISBLANK ( v ), "no live stations", "#" & r & " of " & COUNTROWS ( FILTER ( ALL ( dim_neighborhood[nta_name] ), CALCULATE ( [Stations Reporting] ) >= 3 ) ) & " NTAs by balance" )
+			RETURN IF ( ISBLANK ( v ), "No live stations", "Balance rank #" & r )
 			```
 		displayFolder: Stations
 		lineageTag: 3b26e223-1c05-506d-9bc6-75778bbb27d6
@@ -1051,30 +996,26 @@ table _Measures
 		displayFolder: Live Ops
 		lineageTag: e085b5df-ba32-582b-bacf-a052de599bf2
 
-	measure 'Station Footer Status' = ```
-			"fill " & FORMAT ( DIVIDE ( [Station Bikes], [Station Capacity] ), "0%" ) & "  ·  priority "
-			    & FORMAT ( [Station Priority], "0" ) & " / 100" 
-			```
+	measure 'Station Footer Status' = "fill " & FORMAT ( DIVIDE ( [Station Bikes], [Station Capacity] ), "0%" )
 		displayFolder: Live Ops
 		lineageTag: 17465899-10c4-5eb4-8cdc-d6a32c58b329
 
-	measure 'Station Footer Bikes' = FORMAT ( [Station Docks], "#,0" ) & " free docks  ·  " & FORMAT ( SUM ( fact_station_live[num_ebikes_available] ), "#,0" ) & " e-bikes" 
+	measure 'Station Footer Bikes' = FORMAT ( [Station Docks], "#,0" ) & " free docks" 
 		displayFolder: Live Ops
 		lineageTag: c39fd540-6052-58d5-93e5-1ef70a37121b
 
-	measure 'Station Footer Capacity' = FORMAT ( [Trips per Dock per Day], "0.0" ) & " trips per dock per day vs city " & FORMAT ( [City Trips per Dock per Day], "0.0" ) 
+	measure 'Station Footer Capacity' = FORMAT ( [Trips per Dock per Day], "0.0" ) & " trips/dock/day" 
 		displayFolder: Live Ops
 		lineageTag: 2de0db5e-156b-5fd8-9856-5ea2dcb83f8a
 
 	measure 'Action Station Flow' = ```
 			VAR am = [AM Net Flow per Weekday]
-			RETURN "→ Action: weekday mornings this station " & IF ( am < 0, "loses " & FORMAT ( -am, "0" ) & " bikes/day — restock before 7 AM",
-			    "gains " & FORMAT ( am, "0" ) & " bikes/day — clear docks before 9 AM" )
+			RETURN IF ( am < 0, "→ Restock before 7 AM (" & FORMAT ( am, "0" ) & "/day)", "→ Clear docks before 9 AM (+" & FORMAT ( am, "0" ) & "/day)" )
 			```
 		displayFolder: Live Ops
 		lineageTag: 795d0d6e-ffba-53da-8bb7-672db1409c8d
 
-	measure 'Action Snapshot' = "→ Action: " & FORMAT ( [Snapshots Kept], "#,0" ) & " live snapshots so far (rolling 14 days); a falling line means the station is draining now" 
+	measure 'Action Snapshot' = "→ Falling line = draining now" 
 		displayFolder: Live Ops
 		lineageTag: 79ebdf69-4a5b-5f7f-96c1-00c0085de8b4
 

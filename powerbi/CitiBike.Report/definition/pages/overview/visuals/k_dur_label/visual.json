@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "AVG TRIP DURATION (MIN)",
+                    "value": "AVG RIDE (MIN)",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

@@ -208,7 +208,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Weekday 6–10 AM net flow: red stations drain, blue fill'"
+                  "Value": "'Morning drain (red) / fill (blue)'"
                 }
               }
             },

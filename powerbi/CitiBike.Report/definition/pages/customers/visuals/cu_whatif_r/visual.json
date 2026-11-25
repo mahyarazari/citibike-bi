@@ -60,7 +60,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Assumed conversion rate'"
+                  "Value": "'Conversion rate'"
                 }
               }
             },

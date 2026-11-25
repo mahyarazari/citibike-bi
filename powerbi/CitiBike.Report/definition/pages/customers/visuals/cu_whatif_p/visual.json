@@ -60,7 +60,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Annual membership price ($)'"
+                  "Value": "'Membership price'"
                 }
               }
             },

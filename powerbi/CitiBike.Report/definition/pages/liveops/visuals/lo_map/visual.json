@@ -264,7 +264,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'All stations by live status (size = capacity)'"
+                  "Value": "'Stations now'"
                 }
               }
             },

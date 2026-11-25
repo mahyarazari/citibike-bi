@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "TOTAL TRIPS (MONTH)",
+                    "value": "TRIPS",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

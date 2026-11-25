@@ -261,7 +261,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Rebalancing dispatch list (right-click a station → drill through)'"
+                  "Value": "'Dispatch list'"
                 }
               }
             },

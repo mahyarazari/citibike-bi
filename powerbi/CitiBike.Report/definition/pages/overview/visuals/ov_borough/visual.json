@@ -196,7 +196,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Trips per 1k residents by borough (bar colour vs city avg)'"
+                  "Value": "'Trips per 1k residents'"
                 }
               }
             },

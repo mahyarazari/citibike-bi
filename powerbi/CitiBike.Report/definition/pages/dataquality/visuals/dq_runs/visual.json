@@ -126,7 +126,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Pipeline run log (newest first)'"
+                  "Value": "'Run log'"
                 }
               }
             },

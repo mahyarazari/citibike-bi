@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "DATA FRESHNESS (MIN)",
+                    "value": "DATA AGE (MIN)",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Citi Bike GBFS (live) · monthly trip files · NYC NTA 2020 · Census 2020 · Open-Meteo",
+                    "value": "GBFS · trip files · NYC Open Data · Open-Meteo",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "8pt",

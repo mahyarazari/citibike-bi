@@ -185,7 +185,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Daily trips by bike type vs 7-day average'"
+                  "Value": "'Daily trips'"
                 }
               }
             },

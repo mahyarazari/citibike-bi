@@ -126,7 +126,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Trip rows affected by each cleaning rule (REMOVE / FLAG / FIX)'"
+                  "Value": "'Cleaning rules'"
                 }
               }
             },

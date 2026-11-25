@@ -190,7 +190,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Expansion candidates: residents per dock (in-service NTAs)'"
+                  "Value": "'Expansion candidates'"
                 }
               }
             },

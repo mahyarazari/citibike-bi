@@ -191,7 +191,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Member vs casual trips'"
+                  "Value": "'Members vs casual'"
                 }
               }
             },

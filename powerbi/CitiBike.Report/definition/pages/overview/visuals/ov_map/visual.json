@@ -292,7 +292,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Live neighborhood health map'"
+                  "Value": "'Neighborhood health (live)'"
                 }
               }
             },

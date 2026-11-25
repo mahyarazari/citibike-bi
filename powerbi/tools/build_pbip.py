@@ -479,7 +479,7 @@ def nav(p: Page, pages: list[tuple[str, str, str]], active: str):
     shape(p, "nav_card", 12, 600, 160, 104, "#F3F5F8", radius=10)
     textbox(p, "nav_card_t", 22, 610, 140, 18, "DATA SOURCES", size=7, color="#8A93A6", font="Segoe UI Semibold")
     textbox(p, "nav_card_b", 22, 628, 144, 70,
-            "Citi Bike GBFS (live) · monthly trip files · NYC NTA 2020 · Census 2020 · Open-Meteo", size=8, color=GREY)
+            "GBFS · trip files · NYC Open Data · Open-Meteo", size=8, color=GREY)
 
 
 def header(p: Page, title: str):
@@ -502,7 +502,7 @@ def filter_pane(p: Page) -> tuple[list[str], dict]:
     button(p, "fp_close", gx + gw - 44, gy + 10, 32, 28, "✕", {"type": "Bookmark", "bookmark": close_bm},
            color=GREY, align="center", margin=0, radius=14, parent="fp_group", hidden=True)
     sl = [("fp_borough", "dim_neighborhood[borough]", "Borough", "Dropdown", 56),
-          ("fp_date", "dim_date[date]", "Date range (trips)", "Between", 92),
+          ("fp_date", "dim_date[date]", "Dates", "Between", 92),
           ("fp_member", "fact_trips_hourly[member_casual]", "Rider type", "Basic", 92),
           ("fp_ride", "fact_trips_hourly[rideable_type]", "Bike type", "Basic", 92)]
     y = gy + 50
@@ -662,10 +662,10 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
 
     # ---------------------------------------------------------------- 1 Overview
     p, fp, bm = page_common("overview", "Overview")
-    kpi_row(p, [("k_trips", "Total trips (month)", "Total Trips", "KPI Footer Trips", "KPI Color Trips"),
-                ("k_dur", "Avg trip duration (min)", "Avg Duration (min)", "KPI Footer Duration", "KPI Color Neutral"),
+    kpi_row(p, [("k_trips", "Trips", "Total Trips", "KPI Footer Trips", "KPI Color Trips"),
+                ("k_dur", "Avg ride (min)", "Avg Duration (min)", "KPI Footer Duration", "KPI Color Neutral"),
                 ("k_mem", "Member share", "Member Share %", "KPI Footer Member", "KPI Color Member"),
-                ("k_bal", "Stations balanced (now)", "% Stations Balanced", "KPI Footer Balanced", "KPI Color Balanced")])
+                ("k_bal", "Balanced now", "% Stations Balanced", "KPI Footer Balanced", "KPI Color Balanced")])
     p.add("ov_metric", "slicer", X0, 188, 640, 40, roles={"Values": ["Map Metric[Metric]"]},
           objects={"data": props(mode="Basic"), "general": props(orientation=1, responsive=True),
                    "selection": props(singleSelect=True, strictSingleSelect=True, selectAllCheckboxEnabled=False),
@@ -676,11 +676,11 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           ["dim_station[short_name]", "dim_station[name]", "dim_station[lat]", "dim_station[lon]",
            "dim_station[nta_code]", "dim_station[nta_name]", "Measures[NTA Color Index]", "Measures[NTA Value Text]",
            "Measures[Station Status]", "Measures[Station Capacity]", "Measures[Station Bikes]", "Measures[Station Docks]"],
-          spec_overview(topo), title="Live neighborhood health map", subtitle="Action Map")
+          spec_overview(topo), title="Neighborhood health (live)", subtitle="Action Map")
     p.add("ov_trend", "lineChart", X0 + 652, 188, 408, 168,
           roles={"Category": ["dim_date[date]"],
                  "Y": ["Measures[Classic Trips]", "Measures[E-bike Trips]", "Measures[Trips 7D Rolling Avg]"]},
-          title="Daily trips by bike type vs 7-day average", subtitle="Action Trend",
+          title="Daily trips", subtitle="Action Trend",
           objects={"lineStyles": [{"properties": {"strokeWidth": L(2)}},
                                   {"properties": {"strokeWidth": L(2), "lineStyle": L("dashed")},
                                    "selector": {"metadata": "_Measures.Trips 7D Rolling Avg"}}],
@@ -690,7 +690,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     p.add("ov_borough", "clusteredBarChart", X0 + 652, 366, 408, 168,
           roles={"Category": ["dim_neighborhood[borough]"], "Y": ["Measures[Trips per 1k Residents]"]},
           sort=("Measures[Trips per 1k Residents]", "Descending"),
-          title="Trips per 1k residents by borough (bar colour vs city avg)", subtitle="Action Borough",
+          title="Trips per 1k residents", subtitle="Action Borough",
           tooltip_page=TOOLTIP,
           objects={"dataPoint": [{"properties": {"fill": CM("Bar Color vs City (trips per 1k)")},
                                   "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}]}}],
@@ -700,7 +700,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                                                           "dataLabelShow": L(True)}, "selector": {"id": "1"}}]})
     p.add("ov_donut", "donutChart", X0, 546, 300, 162,
           roles={"Category": ["fact_trips_hourly[member_casual]"], "Y": ["Measures[Total Trips]"]},
-          title="Member vs casual trips", subtitle="Action Members",
+          title="Members vs casual", subtitle="Action Members",
           objects={"legend": props(show=True, position="Right"), "labels": props(show=True, labelStyle="Percent of total"),
                    "dataPoint": [{"properties": {"fill": C("#2166AC")}, "selector": {"data": [{"scopeId": {"Comparison": {
                        "ComparisonKind": 0, "Left": COL("fact_trips_hourly", "member_casual"), "Right": {"Literal": {"Value": "'member'"}}}}}]}},
@@ -712,7 +712,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                             "Measures[Trips WoW %]|WoW", "Measures[% Stations Balanced]|Balanced now",
                             "Measures[Utilization Index]|Utilization idx", "Measures[Recommended Action]|→ Action"]},
           sort=("Measures[Trips per 1k Index]", "Descending"),
-          title="Neighborhoods ranked by trips per 1k residents (index: city = 100)", subtitle="Action Neighborhoods",
+          title="Neighborhoods (city = 100)", subtitle="Action Neighborhoods",
           tooltip_page=TOOLTIP,
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
@@ -724,10 +724,10 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
 
     # ---------------------------------------------------------------- 2 Live operations
     p, fp, bm = page_common("liveops", "Live Operations")
-    kpi_row(p, [("k_empty", "Empty stations (now)", "Empty Stations (now)", "KPI Footer Empty", "KPI Color Empty"),
-                ("k_full", "Full stations (now)", "Full Stations (now)", "KPI Footer Full", "KPI Color Full"),
-                ("k_bikes", "Bikes available", "Bikes Available", "KPI Footer Bikes", "KPI Color Neutral"),
-                ("k_docks", "Docks available", "Docks Available", "KPI Footer Docks", "KPI Color Neutral")])
+    kpi_row(p, [("k_empty", "Empty now", "Empty Stations (now)", "KPI Footer Empty", "KPI Color Empty"),
+                ("k_full", "Full now", "Full Stations (now)", "KPI Footer Full", "KPI Color Full"),
+                ("k_bikes", "Bikes", "Bikes Available", "KPI Footer Bikes", "KPI Color Neutral"),
+                ("k_docks", "Docks", "Docks Available", "KPI Footer Docks", "KPI Color Neutral")])
     deneb(p, "lo_map", X0, 188, 470, 520,
           ["dim_station[short_name]", "dim_station[name]", "dim_station[lat]", "dim_station[lon]",
            "Measures[Station Status]", "Measures[Station Capacity]", "Measures[Station Bikes]", "Measures[Station Docks]",
@@ -737,7 +737,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                          {"field": "Station Bikes", "title": "Bikes"}, {"field": "Station Docks", "title": "Docks"},
                          {"field": "Station Min to Empty", "title": "Min to empty", "format": ".0f"},
                          {"field": "Station Priority", "title": "Priority", "format": ".0f"}]),
-          title="All stations by live status (size = capacity)", subtitle="Action Live Map")
+          title="Stations now", subtitle="Action Live Map")
     p.add("lo_dispatch", "tableEx", X0 + 482, 188, 578, 520,
           roles={"Values": ["fact_rebalance_list[priority_rank]|#", "dim_station[name]|Station", "fact_rebalance_list[borough]|Borough",
                             "fact_rebalance_list[status_class]|Status", "fact_rebalance_list[num_bikes_available]|Bikes",
@@ -745,7 +745,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                             "fact_rebalance_list[est_minutes_to_full]|Min to full", "fact_rebalance_list[rebalance_priority_score]|Priority",
                             "fact_rebalance_list[action]|→ Action"]},
           sort=("fact_rebalance_list[priority_rank]", "Ascending"),
-          title="Rebalancing dispatch list (right-click a station → drill through)", subtitle="Action Dispatch",
+          title="Dispatch list", subtitle="Action Dispatch",
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#F4A582"), "negativeColor": C("#92C5DE"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
@@ -754,13 +754,13 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
 
     # ---------------------------------------------------------------- 3 Demand patterns
     p, fp, bm = page_common("demand", "Demand Patterns")
-    kpi_row(p, [("k_peak", "Weekday peak hour", "Peak Hour Label", "KPI Footer Peak", "KPI Color Neutral"),
+    kpi_row(p, [("k_peak", "Peak hour", "Peak Hour Label", "KPI Footer Peak", "KPI Color Neutral"),
                 ("k_wd", "Busiest weekday", "Peak Weekday Label", "KPI Footer Weekday", "KPI Color Neutral"),
-                ("k_we", "Weekend vs weekday (hourly)", "Weekend vs Weekday", "KPI Footer Weekend", "KPI Color Neutral"),
-                ("k_rain", "Rain impact on trips", "Rain Impact %", "KPI Footer Rain", "KPI Color Neutral")])
+                ("k_we", "Weekend / weekday", "Weekend vs Weekday", "KPI Footer Weekend", "KPI Color Neutral"),
+                ("k_rain", "Rain impact", "Rain Impact %", "KPI Footer Rain", "KPI Color Neutral")])
     p.add("dm_heat", "pivotTable", X0, 188, 640, 250,
           roles={"Rows": ["dim_date[weekday_name]"], "Columns": ["dim_hour[hour]"], "Values": ["Measures[Avg Trips per Hour]"]},
-          title="Average trips per hour: weekday × hour", subtitle="Action Heatmap",
+          title="Trips per hour", subtitle="Action Heatmap",
           objects={"values": [{"properties": {"backColor": CM("Heat Color"), "fontColor": CM("Heat Font Color")},
                                "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
                                             "metadata": "_Measures.Avg Trips per Hour"}}],
@@ -769,7 +769,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     p.add("dm_profile", "lineChart", X0 + 652, 188, 408, 250,
           roles={"Category": ["dim_hour[hour]"],
                  "Y": ["Measures[Weekday Avg Trips per Hour]", "Measures[Weekend Avg Trips per Hour]"]},
-          title="Hourly profile: weekday vs weekend", subtitle="Action Hourly",
+          title="Weekday vs weekend", subtitle="Action Hourly",
           objects={"dataPoint": [{"properties": {"fill": C("#2166AC")}, "selector": {"metadata": "_Measures.Weekday Avg Trips per Hour"}},
                                  {"properties": {"fill": C("#F4A582")}, "selector": {"metadata": "_Measures.Weekend Avg Trips per Hour"}}],
                    "lineStyles": props(strokeWidth=2)})
@@ -783,10 +783,10 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                          {"field": "AM Net Flow per Weekday", "title": "AM net flow / weekday", "format": "+.1f"},
                          {"field": "PM Net Flow per Weekday", "title": "PM net flow / weekday", "format": "+.1f"}],
                         legend_title="AM net flow (red = drains)"),
-          title="Weekday 6–10 AM net flow: red stations drain, blue fill", subtitle="Action Net Flow")
+          title="Morning drain (red) / fill (blue)", subtitle="Action Net Flow")
     p.add("dm_weather", "clusteredColumnChart", X0 + 652, 450, 408, 258,
           roles={"Category": ["fact_weather_hourly[weather_class]"], "Y": ["Measures[Trips vs Normal]"]},
-          title="Trips vs normal for the same hour, by weather (100% = normal)", subtitle="Action Weather",
+          title="Weather impact", subtitle="Action Weather",
           objects={"dataPoint": [{"properties": {"fill": C("#4393C3")}}], "labels": props(show=True, fontSize=8),
                    "y1AxisReferenceLine": [{"properties": {"show": L(True), "value": L(1), "lineColor": C(NAVY),
                                                            "style": L("dashed"), "displayName": L("Normal")},
@@ -798,15 +798,15 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     kpi_row(p, [("k_mem", "Member share", "Member Share %", "KPI Footer Member", "KPI Color Member"),
                 ("k_cas", "Casual share", "Casual Share %", "KPI Footer Casual", "KPI Color Neutral"),
                 ("k_ebk", "E-bike share", "E-bike Share %", "KPI Footer Ebike", "KPI Color Neutral"),
-                ("k_rev", "Membership revenue opportunity", "Revenue Opportunity", "KPI Footer Revenue", "KPI Color Neutral")])
+                ("k_rev", "Revenue upside", "Revenue Opportunity", "KPI Footer Revenue", "KPI Color Neutral")])
     p.add("cu_dur", "clusteredBarChart", X0, 188, 340, 250,
           roles={"Category": ["fact_trips_hourly[rideable_type]"], "Series": ["fact_trips_hourly[member_casual]"],
                  "Y": ["Measures[Avg Duration (min)]"]},
-          title="Avg ride duration (min): member vs casual", subtitle="Action Duration",
+          title="Ride length (min)", subtitle="Action Duration",
           objects={"labels": props(show=True, fontSize=8)})
     p.add("cu_hour", "lineChart", X0 + 352, 188, 708, 250,
           roles={"Category": ["dim_hour[hour]"], "Y": ["Measures[Casual Share %]"]},
-          title="Casual share of trips by hour of day", subtitle="Action Time of Day",
+          title="Casual share by hour", subtitle="Action Time of Day",
           objects={"dataPoint": props(fill=C("#D6604D")), "lineStyles": props(strokeWidth=2),
                    "y1AxisReferenceLine": [{"properties": {"show": L(True), "value": {"expr": MEAS("Casual Share %")},
                                                            "lineColor": C(GREY), "style": L("dashed"), "displayName": L("Day avg")},
@@ -814,20 +814,20 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     p.add("cu_week", "hundredPercentStackedColumnChart", X0, 450, 340, 258,
           roles={"Category": ["dim_date[weekday_name]"], "Series": ["fact_trips_hourly[rideable_type]"],
                  "Y": ["Measures[Total Trips]"]},
-          title="E-bike vs classic mix by weekday", subtitle="Action Ebike")
+          title="Bike mix by day", subtitle="Action Ebike")
     p.add("cu_whatif_p", "slicer", X0 + 352, 450, 200, 60, roles={"Values": ["Membership Price[Price]"]},
-          objects={"data": props(mode="Dropdown"), "header": props(show=True, text="Annual membership price ($)", textSize=9)},
+          objects={"data": props(mode="Dropdown"), "header": props(show=True, text="Membership price", textSize=9)},
           vco={"title": props(show=False)})
     p.add("cu_whatif_r", "slicer", X0 + 352, 518, 200, 60, roles={"Values": ["Conversion Rate[Rate]"]},
-          objects={"data": props(mode="Dropdown"), "header": props(show=True, text="Assumed conversion rate", textSize=9)},
+          objects={"data": props(mode="Dropdown"), "header": props(show=True, text="Conversion rate", textSize=9)},
           vco={"title": props(show=False)})
-    kpi(p, "k_targets", X0 + 352, 586, 200, "Casual commuters ≥3 trips/wk (est.)", "Conversion Targets (est. riders)",
+    kpi(p, "k_targets", X0 + 352, 586, 200, "Target riders", "Conversion Targets (est. riders)",
         "KPI Footer Revenue")
     p.add("cu_targets", "tableEx", X0 + 564, 450, 496, 258,
           roles={"Values": ["dim_station[name]|Start station", "dim_station[nta_name]|Neighborhood",
                             "Measures[Casual Repeat Commute Trips]|Repeat casual commute trips", "Measures[Casual Share %]|Casual share"]},
           sort=("Measures[Casual Repeat Commute Trips]", "Descending"),
-          title="Where to run the membership campaign (repeat casual commute trips)", subtitle="Action Conversion",
+          title="Campaign targets", subtitle="Action Conversion",
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
@@ -836,20 +836,20 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
 
     # ---------------------------------------------------------------- 5 Network & routes
     p, fp, bm = page_common("network", "Network & Routes")
-    kpi_row(p, [("k_route", "Top route trips/day", "Top Route Trips per Day", "KPI Footer Routes", "KPI Color Neutral"),
-                ("k_dist", "Avg trip distance (km)", "Avg Distance (km)", "KPI Footer Distance", "KPI Color Neutral"),
-                ("k_util", "Trips per dock per day", "City Trips per Dock per Day", "KPI Footer Utilization", "KPI Color Neutral"),
-                ("k_under", "Under-served neighborhoods", "Under-served NTAs", "KPI Footer Underserved", "KPI Color Neutral")])
+    kpi_row(p, [("k_route", "Top route / day", "Top Route Trips per Day", "KPI Footer Routes", "KPI Color Neutral"),
+                ("k_dist", "Avg distance (km)", "Avg Distance (km)", "KPI Footer Distance", "KPI Color Neutral"),
+                ("k_util", "Trips / dock / day", "City Trips per Dock per Day", "KPI Footer Utilization", "KPI Color Neutral"),
+                ("k_under", "Under-served areas", "Under-served NTAs", "KPI Footer Underserved", "KPI Color Neutral")])
     deneb(p, "nw_flows", X0, 188, 420, 290,
           ["fact_top_routes[route]", "fact_top_routes[start_lat]", "fact_top_routes[start_lon]",
            "fact_top_routes[end_lat]", "fact_top_routes[end_lon]", "Measures[Route Trips]", "Measures[Route Member Share]"],
-          spec_routes(topo), title="Top 60 origin → destination flows", subtitle="Action Routes")
+          spec_routes(topo), title="Top flows", subtitle="Action Routes")
     p.add("nw_routes", "tableEx", X0 + 432, 188, 628, 290,
           roles={"Values": ["fact_top_routes[route_rank]|#", "fact_top_routes[route]|Route", "fact_top_routes[start_borough]|Borough",
                             "Measures[Route Trips per Day]|Trips / day", "Measures[Route Member Share]|Members",
                             "fact_top_routes[avg_distance_km]|Km", "fact_top_routes[avg_duration_min]|Min"]},
           sort=("fact_top_routes[route_rank]", "Ascending"),
-          title="Top routes (rank, trips/day, member share)", subtitle="Action Routes",
+          title="Top routes", subtitle="Action Routes",
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
@@ -857,7 +857,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     p.add("nw_util", "clusteredBarChart", X0, 490, 420, 218,
           roles={"Category": ["dim_station[name]"], "Y": ["Measures[Trips per Dock per Day]"]},
           sort=("Measures[Trips per Dock per Day]", "Descending"),
-          title="Busiest stations: trips per dock per day vs city avg", subtitle="Action Utilization",
+          title="Busiest docks", subtitle="Action Utilization",
           objects={"dataPoint": [{"properties": {"fill": CM("Bar Color vs City (utilization)")},
                                   "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}]}}],
                    "xAxisReferenceLine": [{"properties": {"show": L(True), "value": {"expr": MEAS("City Trips per Dock per Day")},
@@ -882,7 +882,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                             "Measures[Docks per 1k Residents]|Docks / 1k", "Measures[Trips per 1k Index]|Trips idx",
                             "Measures[Utilization Index]|Utilization idx", "Measures[Recommended Action]|→ Action"]},
           sort=("Measures[Docks per 1k Residents]", "Ascending"),
-          title="Expansion candidates: residents per dock (in-service NTAs)", subtitle="Action Expansion",
+          title="Expansion candidates", subtitle="Action Expansion",
           tooltip_page=TOOLTIP,
           objects={"values": [{"properties": {"backColor": CM("Action Color")},
                                "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
@@ -897,30 +897,30 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
 
     # ---------------------------------------------------------------- 6 Data quality
     p, fp, bm = page_common("dataquality", "Data Quality & Pipeline")
-    kpi_row(p, [("k_fresh", "Data freshness (min)", "Data Freshness (min)", "KPI Footer Freshness", "KPI Color Freshness"),
-                ("k_rem", "Rows removed by cleaning", "Rows Removed by Cleaning %", "KPI Footer Removed", "KPI Color Neutral"),
-                ("k_unm", "Unmatched station IDs", "Unmatched Station IDs", "KPI Footer Unmatched", "KPI Color Neutral"),
-                ("k_runs", "Pipeline success rate", "Pipeline Success Rate", "KPI Footer Runs", "KPI Color Neutral")])
+    kpi_row(p, [("k_fresh", "Data age (min)", "Data Freshness (min)", "KPI Footer Freshness", "KPI Color Freshness"),
+                ("k_rem", "Rows removed", "Rows Removed by Cleaning %", "KPI Footer Removed", "KPI Color Neutral"),
+                ("k_unm", "Unmatched IDs", "Unmatched Station IDs", "KPI Footer Unmatched", "KPI Color Neutral"),
+                ("k_runs", "Run success", "Pipeline Success Rate", "KPI Footer Runs", "KPI Color Neutral")])
     p.add("dq_rules", "clusteredBarChart", X0, 188, 524, 280,
           roles={"Category": ["fact_trip_cleaning[rule]|Rule"], "Series": ["fact_trip_cleaning[action]|Action"],
                  "Y": ["Measures[Rows Affected]|Rows affected"]},
           sort=("Measures[Rows Affected]", "Descending"),
-          title="Trip rows affected by each cleaning rule (REMOVE / FLAG / FIX)", subtitle="Action Data Quality",
+          title="Cleaning rules", subtitle="Action Data Quality",
           objects={"labels": props(show=True, fontSize=8)})
     p.add("dq_live", "clusteredBarChart", X0 + 536, 188, 524, 280,
           roles={"Category": ["fact_data_quality[rule]|Rule"], "Y": ["Measures[Live Rows Affected]|Rows affected"]},
           sort=("Measures[Live Rows Affected]", "Descending"),
-          title="Live station rows removed per rule (all pipeline runs kept)", subtitle="Action Pipeline",
+          title="Live data checks", subtitle="Action Pipeline",
           objects={"dataPoint": [{"properties": {"fill": C("#F4A582")}}], "labels": props(show=True, fontSize=8)})
     p.add("dq_runs", "tableEx", X0, 480, 524, 228,
           roles={"Values": ["fact_pipeline_runs[run_time_utc_ny]|Run time (ET)", "fact_pipeline_runs[mode]|Mode", "fact_pipeline_runs[status]|Status",
                             "fact_pipeline_runs[duration_s]|Seconds", "fact_pipeline_runs[error]|Error"]},
-          sort=("fact_pipeline_runs[run_time_utc_ny]", "Descending"), title="Pipeline run log (newest first)")
+          sort=("fact_pipeline_runs[run_time_utc_ny]", "Descending"), title="Run log")
     p.add("dq_unmatched", "tableEx", X0 + 536, 480, 524, 228,
           roles={"Values": ["fact_unmatched_stations[station_id]|Station ID", "fact_unmatched_stations[station_name]|Name",
                             "fact_unmatched_stations[trips]|Trips"]},
           sort=("fact_unmatched_stations[trips]", "Descending"),
-          title="Unmatched trip station IDs (not in today's GBFS)")
+          title="Unmatched stations")
     pages.append(p); bookmarks += make_bookmarks(p, fp, bm)
 
     # ---------------------------------------------------------------- Station detail (drill-through)
@@ -941,24 +941,24 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
                    "items": props(fontColor=C(NAVY), textSize=10)},
           vco=no_chrome())
     kpi_row(p, [("s_status", "Status now", "Station Status", "Station Footer Status", "KPI Color Neutral"),
-                ("s_bikes", "Bikes available now", "Station Bikes", "Station Footer Bikes", "KPI Color Neutral"),
-                ("s_cap", "Capacity (docks)", "Station Capacity", "Station Footer Capacity", "KPI Color Neutral"),
-                ("s_trips", "Trips per day (started here)", "Trips per Day", "KPI Footer Trips", "KPI Color Trips")])
+                ("s_bikes", "Bikes now", "Station Bikes", "Station Footer Bikes", "KPI Color Neutral"),
+                ("s_cap", "Docks", "Station Capacity", "Station Footer Capacity", "KPI Color Neutral"),
+                ("s_trips", "Trips / day", "Trips per Day", "KPI Footer Trips", "KPI Color Trips")])
     p.add("sd_profile", "lineChart", X0, 188, 524, 250,
           roles={"Category": ["dim_hour[hour]|Hour"],
                  "Y": ["Measures[Departures]|Departures", "Measures[Arrivals]|Arrivals"]},
-          title="Departures vs arrivals by hour (month total)", subtitle="Action Station Flow",
+          title="Departures vs arrivals", subtitle="Action Station Flow",
           objects={"dataPoint": [{"properties": {"fill": C("#D6604D")}, "selector": {"metadata": "_Measures.Departures"}},
                                  {"properties": {"fill": C("#2166AC")}, "selector": {"metadata": "_Measures.Arrivals"}}],
                    "lineStyles": props(strokeWidth=3)})
     p.add("sd_history", "areaChart", X0 + 536, 188, 524, 250,
           roles={"Category": ["fact_station_status[snapshot_utc_ny]|Snapshot (ET)"], "Y": ["Measures[Snapshot Bikes]|Bikes"]},
-          title="Bikes available across live snapshots", subtitle="Action Snapshot",
+          title="Bikes over time", subtitle="Action Snapshot",
           objects={"dataPoint": props(fill=C(BLUE)), "lineStyles": props(strokeWidth=2)})
     p.add("sd_heat", "pivotTable", X0, 450, 524, 258,
           roles={"Rows": ["dim_date[weekday_name]|Day"], "Columns": ["dim_hour[hour]|Hour"],
                  "Values": ["Measures[Avg Trips per Hour]|Trips"]},
-          title="When this station is busy: avg trips started per hour",
+          title="Busy hours",
           objects={"values": [{"properties": {"backColor": CM("Heat Color"), "fontColor": CM("Heat Font Color")},
                                "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
                                             "metadata": "_Measures.Avg Trips per Hour"}}],
@@ -967,7 +967,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     p.add("sd_dest", "tableEx", X0 + 536, 450, 524, 258,
           roles={"Values": ["fact_top_routes[route]|Route", "Measures[Route Trips per Day]|Trips / day",
                             "Measures[Route Member Share]|Members", "fact_top_routes[avg_distance_km]|Km"]},
-          sort=("Measures[Route Trips per Day]", "Descending"), title="Top routes starting here",
+          sort=("Measures[Route Trips per Day]", "Descending"), title="Top routes from here",
           objects={"columnFormatting": [
               {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
                                            "reverseDirection": L(False), "hideText": L(False)}},
@@ -981,7 +981,7 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
     shape(p, "tt_accent", 14, 0, 40, 4, BLUE, radius=2)
     dyn_text(p, "tt_name", 12, 10, 316, 26, "Tooltip Title", size=13, color=NAVY, bold=True)
     dyn_text(p, "tt_rank", 12, 36, 316, 20, "Tooltip Rank", size=9, color=GREY)
-    tiles = [("Bikes available", "Bikes Available"), ("Docks available", "Docks Available"),
+    tiles = [("Bikes", "Bikes Available"), ("Docks available", "Docks Available"),
              ("Empty stations", "Empty Stations (now)"), ("Full stations", "Full Stations (now)")]
     for i, (lab, meas) in enumerate(tiles):
         x, y = 12 + (i % 2) * 160, 60 + (i // 2) * 58

@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "TRIPS PER DOCK PER DAY",
+                    "value": "TRIPS / DOCK / DAY",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

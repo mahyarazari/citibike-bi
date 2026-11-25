@@ -124,7 +124,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Live station rows removed per rule (all pipeline runs kept)'"
+                  "Value": "'Live data checks'"
                 }
               }
             },

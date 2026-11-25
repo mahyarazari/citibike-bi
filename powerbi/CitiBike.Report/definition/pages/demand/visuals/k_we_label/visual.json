@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "WEEKEND VS WEEKDAY (HOURLY)",
+                    "value": "WEEKEND / WEEKDAY",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

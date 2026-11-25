@@ -135,7 +135,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Departures vs arrivals by hour (month total)'"
+                  "Value": "'Departures vs arrivals'"
                 }
               }
             },

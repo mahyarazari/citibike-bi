@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "WEEKDAY PEAK HOUR",
+                    "value": "PEAK HOUR",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

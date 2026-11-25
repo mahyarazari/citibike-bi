@@ -150,7 +150,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Casual share of trips by hour of day'"
+                  "Value": "'Casual share by hour'"
                 }
               }
             },

@@ -193,7 +193,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average trips per hour: weekday × hour'"
+                  "Value": "'Trips per hour'"
                 }
               }
             },

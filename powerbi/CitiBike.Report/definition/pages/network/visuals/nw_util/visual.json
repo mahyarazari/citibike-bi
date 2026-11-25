@@ -169,7 +169,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Busiest stations: trips per dock per day vs city avg'"
+                  "Value": "'Busiest docks'"
                 }
               }
             },

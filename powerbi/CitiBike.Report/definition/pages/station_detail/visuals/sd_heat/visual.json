@@ -196,7 +196,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'When this station is busy: avg trips started per hour'"
+                  "Value": "'Busy hours'"
                 }
               }
             },

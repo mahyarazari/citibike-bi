@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "TRIPS PER DAY (STARTED HERE)",
+                    "value": "TRIPS / DAY",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9pt",

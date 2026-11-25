@@ -216,7 +216,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top routes (rank, trips/day, member share)'"
+                  "Value": "'Top routes'"
                 }
               }
             },
