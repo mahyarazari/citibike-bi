@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_trips_value",
   "position": {
-    "x": 960,
-    "y": 106,
-    "z": 3200,
-    "width": 292,
+    "x": 1012,
+    "y": 102,
+    "z": 4900,
+    "width": 248,
     "height": 44,
-    "tabOrder": 3200
+    "tabOrder": 4900
   },
   "visual": {
     "visualType": "card",

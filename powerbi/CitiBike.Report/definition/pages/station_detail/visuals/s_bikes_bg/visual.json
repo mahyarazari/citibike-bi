@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_bikes_bg",
   "position": {
-    "x": 332,
-    "y": 76,
-    "z": 1900,
-    "width": 300,
+    "x": 472,
+    "y": 72,
+    "z": 3600,
+    "width": 256,
     "height": 104,
-    "tabOrder": 1900
+    "tabOrder": 3600
   },
   "visual": {
     "visualType": "shape",

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "sd_action",
   "position": {
-    "x": 120,
-    "y": 46,
-    "z": 1300,
-    "width": 1100,
-    "height": 20,
-    "tabOrder": 1300
+    "x": 204,
+    "y": 44,
+    "z": 2800,
+    "width": 700,
+    "height": 22,
+    "tabOrder": 2800
   },
   "visual": {
     "visualType": "shape",
@@ -106,7 +106,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "11D"
                 }
               }
             },

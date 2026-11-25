@@ -535,3 +535,21 @@ m("Tooltip Rank", "Stations", "", """
 VAR v = [% Stations Balanced]
 VAR r = RANKX ( FILTER ( ALL ( dim_neighborhood[nta_name] ), CALCULATE ( [Stations Reporting] ) >= 3 ), CALCULATE ( [% Stations Balanced] ), v, DESC, DENSE )
 RETURN IF ( ISBLANK ( v ), "no live stations", "#" & r & " of " & COUNTROWS ( FILTER ( ALL ( dim_neighborhood[nta_name] ), CALCULATE ( [Stations Reporting] ) >= 3 ) ) & " NTAs by balance" )""")
+
+# ---- detail / tooltip helpers ------------------------------------------------------------------
+m("Snapshot Bikes", "Live Ops", FMT_INT, "SUM ( fact_station_status[num_bikes_available] )")
+m("Tooltip Title", "Live Ops", "", """
+SELECTEDVALUE ( dim_neighborhood[nta_name], SELECTEDVALUE ( dim_neighborhood[borough], "New York City" ) )""")
+m("Station Footer Status", "Live Ops", "", """
+"fill " & FORMAT ( DIVIDE ( [Station Bikes], [Station Capacity] ), "0%" ) & "  ·  priority "
+    & FORMAT ( [Station Priority], "0" ) & " / 100" """)
+m("Station Footer Bikes", "Live Ops", "", """
+FORMAT ( [Station Docks], "#,0" ) & " free docks  ·  " & FORMAT ( SUM ( fact_station_live[num_ebikes_available] ), "#,0" ) & " e-bikes" """)
+m("Station Footer Capacity", "Live Ops", "", """
+FORMAT ( [Trips per Dock per Day], "0.0" ) & " trips per dock per day vs city " & FORMAT ( [City Trips per Dock per Day], "0.0" ) """)
+m("Action Station Flow", "Live Ops", "", """
+VAR am = [AM Net Flow per Weekday]
+RETURN "→ Action: weekday mornings this station " & IF ( am < 0, "loses " & FORMAT ( -am, "0" ) & " bikes/day — restock before 7 AM",
+    "gains " & FORMAT ( am, "0" ) & " bikes/day — clear docks before 9 AM" )""")
+m("Action Snapshot", "Live Ops", "", """
+"→ Action: " & FORMAT ( [Snapshots Kept], "#,0" ) & " live snapshots so far (rolling 14 days); a falling line means the station is draining now" """)

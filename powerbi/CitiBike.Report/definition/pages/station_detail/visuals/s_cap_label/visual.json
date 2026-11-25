@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_cap_label",
   "position": {
-    "x": 656,
-    "y": 88,
-    "z": 2600,
-    "width": 276,
+    "x": 752,
+    "y": 84,
+    "z": 4300,
+    "width": 232,
     "height": 20,
-    "tabOrder": 2600
+    "tabOrder": 4300
   },
   "visual": {
     "visualType": "textbox",
@@ -22,7 +22,7 @@
                     "value": "CAPACITY (DOCKS)",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "8pt",
+                      "fontSize": "9pt",
                       "color": "#5B6478"
                     }
                   }

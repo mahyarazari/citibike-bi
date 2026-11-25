@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "tt_action",
   "position": {
-    "x": 10,
-    "y": 198,
-    "z": 1700,
-    "width": 300,
-    "height": 36,
-    "tabOrder": 1700
+    "x": 12,
+    "y": 234,
+    "z": 2800,
+    "width": 316,
+    "height": 44,
+    "tabOrder": 2800
   },
   "visual": {
     "visualType": "shape",
@@ -106,7 +106,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "9D"
                 }
               }
             },
@@ -131,7 +131,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },

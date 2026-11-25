@@ -323,11 +323,12 @@ class Page:
             v["objects"] = objects
         vc = dict(vco or {})
         if title is not None:
-            vc.setdefault("title", props(show=True, text=title))
+            vc.setdefault("title", props(show=True, text=title, fontSize=12, titleWrap=True, fontFamily="Segoe UI Semibold"))
         elif vtype not in ("shape", "textbox", "actionButton", "image"):
             vc.setdefault("title", props(show=False))
         if subtitle:
-            vc["subTitle"] = [{"properties": {"show": L(True), "text": {"expr": MEAS(subtitle)}}}]
+            vc["subTitle"] = [{"properties": {"show": L(True), "text": {"expr": MEAS(subtitle)}, "titleWrap": L(True),
+                                             "fontSize": L(10), "fontColor": C(BLUE), "fontFamily": L("Segoe UI Semibold")}}]
         if tooltip_page:
             vc["visualTooltip"] = props(show=True, type="ReportPage", section=tooltip_page)
         if vc:
@@ -440,12 +441,12 @@ def dyn_text(p: Page, vname, x, y, w, h, measure, size=9, color=GREY, color_meas
 def kpi(p: Page, key, x, y, w, label, value_measure, footer_measure, color_measure="KPI Color Neutral", h=104):
     shape(p, f"{key}_bg", x, y, w, h, "#FFFFFF", radius=10, shadow=True)
     shape(p, f"{key}_accent", x + 14, y, 36, 4, BLUE, radius=2)
-    textbox(p, f"{key}_label", x + 12, y + 12, w - 24, 20, label.upper(), size=8, color=GREY, font="Segoe UI Semibold")
+    textbox(p, f"{key}_label", x + 12, y + 12, w - 24, 20, label.upper(), size=9, color=GREY, font="Segoe UI Semibold")
     p.add(f"{key}_value", "card", x + 4, y + 30, w - 8, 44, roles={"Values": [f"Measures[{value_measure}]"]},
           objects={"labels": props(fontSize=24, fontFamily="Segoe UI Semibold", color=C(NAVY)),
                    "categoryLabels": props(show=False)},
           vco=no_chrome())
-    dyn_text(p, f"{key}_footer", x + 6, y + h - 30, w - 12, 24, footer_measure, size=8, color_measure=color_measure,
+    dyn_text(p, f"{key}_footer", x + 6, y + h - 34, w - 12, 30, footer_measure, size=9, color_measure=color_measure,
              bold=True)
 
 
@@ -473,17 +474,17 @@ def nav(p: Page, pages: list[tuple[str, str, str]], active: str):
         on = pid == active
         button(p, f"nav_{pid}", 10, y, 164, 38, f"{icon}    {label}", {"type": "PageNavigation", "navigationSection": pid},
                color=BLUE if on else GREY, hover_color=BLUE if on else NAVY, fill="#E8F0FD" if on else None,
-               hover_fill="#E8F0FD" if on else "#F3F5F8", bold=on, radius=19)
+               hover_fill="#E8F0FD" if on else "#F3F5F8", bold=on, radius=19, size=11)
         y += 44
     shape(p, "nav_card", 12, 600, 160, 104, "#F3F5F8", radius=10)
     textbox(p, "nav_card_t", 22, 610, 140, 18, "DATA SOURCES", size=7, color="#8A93A6", font="Segoe UI Semibold")
     textbox(p, "nav_card_b", 22, 628, 144, 70,
-            "Citi Bike GBFS (live) · monthly trip files · NYC NTA 2020 · Census 2020 · Open-Meteo", size=7, color=GREY)
+            "Citi Bike GBFS (live) · monthly trip files · NYC NTA 2020 · Census 2020 · Open-Meteo", size=8, color=GREY)
 
 
 def header(p: Page, title: str):
     textbox(p, "hdr_title", 204, 10, 760, 34, title, size=20, color=NAVY, font="Segoe UI Semibold")
-    dyn_text(p, "hdr_asof", 204, 44, 860, 20, "Data As Of Text", size=9, color=GREY)
+    dyn_text(p, "hdr_asof", 204, 44, 900, 22, "Data As Of Text", size=10, color=GREY)
 
 
 def filter_pane(p: Page) -> tuple[list[str], dict]:
@@ -763,8 +764,8 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
           objects={"values": [{"properties": {"backColor": CM("Heat Color"), "fontColor": CM("Heat Font Color")},
                                "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
                                             "metadata": "_Measures.Avg Trips per Hour"}}],
-                   "grid": props(gridVertical=False, gridHorizontal=False, rowPadding=2, textSize=7),
-                   "columnHeaders": props(fontSize=7), "rowHeaders": props(fontSize=8)})
+                   "grid": props(gridVertical=False, gridHorizontal=False, rowPadding=3, textSize=8),
+                   "columnHeaders": props(fontSize=8), "rowHeaders": props(fontSize=9)})
     p.add("dm_profile", "lineChart", X0 + 652, 188, 408, 250,
           roles={"Category": ["dim_hour[hour]"],
                  "Y": ["Measures[Weekday Avg Trips per Hour]", "Measures[Weekend Avg Trips per Hour]"]},
@@ -930,54 +931,71 @@ def build_pages(topo) -> tuple[list[Page], list[dict]]:
         "filterConfig": {"filters": [{"name": "f_station", "type": "Categorical", "howCreated": "Drillthrough",
                                       "field": COL("dim_station", "name")}]},
     }
-    back = {"icon": props(show=True, shapeType="back", lineColor=C(BLUE)),
-            "text": [{"properties": {"show": L(True), "text": L("Back"), "fontSize": L(10), "fontColor": C(BLUE)}}],
-            "fill": props(show=False), "outline": props(show=False)}
-    p.add("sd_back", "actionButton", 20, 16, 90, 32, objects=back,
-          vco={"visualLink": props(show=True, type="Back"), "title": props(show=False), "background": props(show=False),
-               "dropShadow": props(show=False)})
-    textbox(p, "sd_title", 120, 10, 700, 36, "Station Detail", size=20, color=NAVY, font="Segoe UI Semibold")
-    dyn_text(p, "sd_action", 120, 46, 1100, 20, "Action Station", size=10, color=BLUE, bold=True)
-    for (x, w), (key, label, val, foot, colr) in zip(
-            [(20 + i * 312, 300) for i in range(4)],
-            [("s_status", "Status now", "Station Status", "Data As Of Text", "KPI Color Neutral"),
-             ("s_bikes", "Bikes available", "Station Bikes", "KPI Footer Docks", "KPI Color Neutral"),
-             ("s_cap", "Capacity (docks)", "Station Capacity", "KPI Footer Utilization", "KPI Color Neutral"),
-             ("s_trips", "Trips per day (started here)", "Trips per Day", "KPI Footer Trips", "KPI Color Trips")]):
-        kpi(p, key, x, 76, w, label, val, foot, colr)
-    p.add("sd_profile", "lineChart", 20, 192, 610, 250,
-          roles={"Category": ["dim_hour[hour]"], "Y": ["Measures[Departures]", "Measures[Arrivals]"]},
-          title="Departures vs arrivals by hour (month total)", subtitle="Action Hourly")
-    p.add("sd_history", "lineChart", 642, 192, 618, 250,
-          roles={"Category": ["fact_station_status[snapshot_utc_ny]"], "Y": ["Measures[Station Bikes]"]},
-          title="Bikes available over the last snapshots (live history)")
-    p.visuals[-1]["visual"]["query"]["queryState"]["Y"]["projections"][0] = {
-        "field": {"Aggregation": {"Expression": COL("fact_station_status", "num_bikes_available"), "Function": 0}},
-        "queryRef": "Sum(fact_station_status.num_bikes_available)", "nativeQueryRef": "Bikes available"}
-    p.add("sd_dest", "tableEx", 20, 454, 1240, 250,
-          roles={"Values": ["fact_top_routes[route]|Route", "Measures[Route Trips per Day]|Trips / day", "Measures[Route Member Share]|Members",
-                            "fact_top_routes[avg_distance_km]|Km"]},
-          sort=("Measures[Route Trips per Day]", "Descending"), title="Top routes starting here")
+    nav(p, PAGES, "liveops")
+    textbox(p, "sd_title", X0, 10, 600, 34, "Station Detail", size=20, color=NAVY, font="Segoe UI Semibold")
+    dyn_text(p, "sd_action", X0, 44, 700, 22, "Action Station", size=11, color=BLUE, bold=True)
+    button(p, "sd_back", X0 + 960, 16, 100, 32, "←   Back", {"type": "Back"}, color=BLUE, hover_color=NAVY,
+           fill="#FFFFFF", hover_fill="#E8F0FD", outline="#D6DEEB", bold=True, align="center", margin=0, radius=16)
+    p.add("sd_pick", "slicer", X0 + 720, 12, 228, 50, roles={"Values": ["dim_station[name]|Station"]},
+          objects={"data": props(mode="Dropdown"), "header": props(show=True, text="Pick a station", fontColor=C(GREY), textSize=9),
+                   "items": props(fontColor=C(NAVY), textSize=10)},
+          vco=no_chrome())
+    kpi_row(p, [("s_status", "Status now", "Station Status", "Station Footer Status", "KPI Color Neutral"),
+                ("s_bikes", "Bikes available now", "Station Bikes", "Station Footer Bikes", "KPI Color Neutral"),
+                ("s_cap", "Capacity (docks)", "Station Capacity", "Station Footer Capacity", "KPI Color Neutral"),
+                ("s_trips", "Trips per day (started here)", "Trips per Day", "KPI Footer Trips", "KPI Color Trips")])
+    p.add("sd_profile", "lineChart", X0, 188, 524, 250,
+          roles={"Category": ["dim_hour[hour]|Hour"],
+                 "Y": ["Measures[Departures]|Departures", "Measures[Arrivals]|Arrivals"]},
+          title="Departures vs arrivals by hour (month total)", subtitle="Action Station Flow",
+          objects={"dataPoint": [{"properties": {"fill": C("#D6604D")}, "selector": {"metadata": "_Measures.Departures"}},
+                                 {"properties": {"fill": C("#2166AC")}, "selector": {"metadata": "_Measures.Arrivals"}}],
+                   "lineStyles": props(strokeWidth=3)})
+    p.add("sd_history", "areaChart", X0 + 536, 188, 524, 250,
+          roles={"Category": ["fact_station_status[snapshot_utc_ny]|Snapshot (ET)"], "Y": ["Measures[Snapshot Bikes]|Bikes"]},
+          title="Bikes available across live snapshots", subtitle="Action Snapshot",
+          objects={"dataPoint": props(fill=C(BLUE)), "lineStyles": props(strokeWidth=2)})
+    p.add("sd_heat", "pivotTable", X0, 450, 524, 258,
+          roles={"Rows": ["dim_date[weekday_name]|Day"], "Columns": ["dim_hour[hour]|Hour"],
+                 "Values": ["Measures[Avg Trips per Hour]|Trips"]},
+          title="When this station is busy: avg trips started per hour",
+          objects={"values": [{"properties": {"backColor": CM("Heat Color"), "fontColor": CM("Heat Font Color")},
+                               "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}],
+                                            "metadata": "_Measures.Avg Trips per Hour"}}],
+                   "grid": props(gridVertical=False, gridHorizontal=False, rowPadding=3, textSize=8),
+                   "columnHeaders": props(fontSize=8), "rowHeaders": props(fontSize=9)})
+    p.add("sd_dest", "tableEx", X0 + 536, 450, 524, 258,
+          roles={"Values": ["fact_top_routes[route]|Route", "Measures[Route Trips per Day]|Trips / day",
+                            "Measures[Route Member Share]|Members", "fact_top_routes[avg_distance_km]|Km"]},
+          sort=("Measures[Route Trips per Day]", "Descending"), title="Top routes starting here",
+          objects={"columnFormatting": [
+              {"properties": {"dataBars": {"positiveColor": C("#92C5DE"), "negativeColor": C("#F4A582"), "axisColor": C(GREY),
+                                           "reverseDirection": L(False), "hideText": L(False)}},
+               "selector": {"metadata": "_Measures.Route Trips per Day"}}]})
     pages.append(p)
 
     # ---------------------------------------------------------------- Tooltip page
-    p = Page(TOOLTIP, "Neighborhood Tooltip", width=320, height=240, ptype="Tooltip", hidden=True)
+    p = Page(TOOLTIP, "Neighborhood Tooltip", width=340, height=280, ptype="Tooltip", hidden=True)
     p.extra = {"pageBinding": {"name": "nta_tooltip_binding", "type": "Tooltip", "referenceScope": "Default"}}
-    dyn_text(p, "tt_rank", 10, 8, 300, 20, "Tooltip Rank", size=9, color=GREY)
-    for i, (lab, meas) in enumerate([("Bikes", "Bikes Available"), ("Docks", "Docks Available"),
-                                     ("Empty", "Empty Stations (now)"), ("Full", "Full Stations (now)")]):
-        p.add(f"tt_{i}", "card", 10 + i * 76, 30, 72, 56, roles={"Values": [f"Measures[{meas}]"]},
-              objects={"labels": props(fontSize=14, color=C(NAVY)), "categoryLabels": props(show=True, fontSize=7)},
-              vco={"title": props(show=False), "dropShadow": props(show=False)})
-    p.add("tt_spark", "lineChart", 10, 92, 300, 100,
-          roles={"Category": ["fact_station_status[snapshot_utc_ny]"], "Y": ["Measures[Station Bikes]"]},
-          title="Bikes over recent snapshots",
-          objects={"categoryAxis": props(show=False), "valueAxis": props(show=False), "dataPoint": props(fill=C(BLUE))},
-          vco={"dropShadow": props(show=False)})
-    p.visuals[-1]["visual"]["query"]["queryState"]["Y"]["projections"][0] = {
-        "field": {"Aggregation": {"Expression": COL("fact_station_status", "num_bikes_available"), "Function": 0}},
-        "queryRef": "Sum(fact_station_status.num_bikes_available)", "nativeQueryRef": "Bikes"}
-    dyn_text(p, "tt_action", 10, 198, 300, 36, "Action Map", size=8, color=BLUE)
+    shape(p, "tt_bg", 0, 0, 340, 280, "#FFFFFF")
+    shape(p, "tt_accent", 14, 0, 40, 4, BLUE, radius=2)
+    dyn_text(p, "tt_name", 12, 10, 316, 26, "Tooltip Title", size=13, color=NAVY, bold=True)
+    dyn_text(p, "tt_rank", 12, 36, 316, 20, "Tooltip Rank", size=9, color=GREY)
+    tiles = [("Bikes available", "Bikes Available"), ("Docks available", "Docks Available"),
+             ("Empty stations", "Empty Stations (now)"), ("Full stations", "Full Stations (now)")]
+    for i, (lab, meas) in enumerate(tiles):
+        x, y = 12 + (i % 2) * 160, 60 + (i // 2) * 58
+        shape(p, f"tt_tile{i}", x, y, 154, 52, "#F3F5F8", radius=8)
+        textbox(p, f"tt_lab{i}", x + 8, y + 4, 140, 18, lab.upper(), size=7, color=GREY, font="Segoe UI Semibold")
+        p.add(f"tt_val{i}", "card", x + 2, y + 18, 150, 32, roles={"Values": [f"Measures[{meas}]"]},
+              objects={"labels": props(fontSize=15, fontFamily="Segoe UI Semibold", color=C(NAVY)),
+                       "categoryLabels": props(show=False)}, vco=no_chrome())
+    p.add("tt_spark", "areaChart", 8, 178, 324, 56,
+          roles={"Category": ["fact_station_status[snapshot_utc_ny]"], "Y": ["Measures[Snapshot Bikes]"]},
+          objects={"categoryAxis": props(show=False), "valueAxis": props(show=False), "legend": props(show=False),
+                   "dataPoint": props(fill=C(BLUE))},
+          vco=no_chrome())
+    dyn_text(p, "tt_action", 12, 234, 316, 44, "Action Map", size=9, color=BLUE, bold=True)
     pages.append(p)
     return pages, bookmarks
 

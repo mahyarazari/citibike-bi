@@ -3,10 +3,10 @@
   "name": "k_targets_footer",
   "position": {
     "x": 562,
-    "y": 660,
+    "y": 656,
     "z": 6800,
     "width": 188,
-    "height": 24,
+    "height": 30,
     "tabOrder": 6800
   },
   "visual": {
@@ -106,7 +106,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "9D"
                 }
               }
             },

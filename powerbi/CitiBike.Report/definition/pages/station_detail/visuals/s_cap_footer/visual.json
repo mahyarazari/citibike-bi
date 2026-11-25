@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_cap_footer",
   "position": {
-    "x": 650,
-    "y": 150,
-    "z": 2800,
-    "width": 288,
-    "height": 24,
-    "tabOrder": 2800
+    "x": 746,
+    "y": 142,
+    "z": 4500,
+    "width": 244,
+    "height": 30,
+    "tabOrder": 4500
   },
   "visual": {
     "visualType": "shape",
@@ -99,14 +99,14 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "KPI Footer Utilization"
+                  "Property": "Station Footer Capacity"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "9D"
                 }
               }
             },

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_trips_label",
   "position": {
-    "x": 968,
-    "y": 88,
-    "z": 3100,
-    "width": 276,
+    "x": 1020,
+    "y": 84,
+    "z": 4800,
+    "width": 232,
     "height": 20,
-    "tabOrder": 3100
+    "tabOrder": 4800
   },
   "visual": {
     "visualType": "textbox",
@@ -22,7 +22,7 @@
                     "value": "TRIPS PER DAY (STARTED HERE)",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "8pt",
+                      "fontSize": "9pt",
                       "color": "#5B6478"
                     }
                   }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_cap_value",
   "position": {
-    "x": 648,
-    "y": 106,
-    "z": 2700,
-    "width": 292,
+    "x": 744,
+    "y": 102,
+    "z": 4400,
+    "width": 248,
     "height": 44,
-    "tabOrder": 2700
+    "tabOrder": 4400
   },
   "visual": {
     "visualType": "card",

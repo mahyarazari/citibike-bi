@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "sd_profile",
   "position": {
-    "x": 20,
-    "y": 192,
-    "z": 3400,
-    "width": 610,
+    "x": 204,
+    "y": 188,
+    "z": 5100,
+    "width": 524,
     "height": 250,
-    "tabOrder": 3400
+    "tabOrder": 5100
   },
   "visual": {
     "visualType": "lineChart",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "dim_hour.hour",
-              "nativeQueryRef": "hour"
+              "nativeQueryRef": "hour",
+              "displayName": "Hour"
             }
           ]
         },
@@ -45,7 +46,8 @@
                 }
               },
               "queryRef": "_Measures.Departures",
-              "nativeQueryRef": "Departures"
+              "nativeQueryRef": "Departures",
+              "displayName": "Departures"
             },
             {
               "field": {
@@ -59,11 +61,65 @@
                 }
               },
               "queryRef": "_Measures.Arrivals",
-              "nativeQueryRef": "Arrivals"
+              "nativeQueryRef": "Arrivals",
+              "displayName": "Arrivals"
             }
           ]
         }
       }
+    },
+    "objects": {
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D6604D'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Departures"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2166AC'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Arrivals"
+          }
+        }
+      ],
+      "lineStyles": [
+        {
+          "properties": {
+            "strokeWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [
@@ -80,6 +136,27 @@
               "expr": {
                 "Literal": {
                   "Value": "'Departures vs arrivals by hour (month total)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             }
@@ -104,7 +181,39 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Action Hourly"
+                  "Property": "Action Station Flow"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2F6FDE'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             }

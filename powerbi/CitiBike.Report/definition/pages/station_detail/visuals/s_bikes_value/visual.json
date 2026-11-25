@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_bikes_value",
   "position": {
-    "x": 336,
-    "y": 106,
-    "z": 2200,
-    "width": 292,
+    "x": 476,
+    "y": 102,
+    "z": 3900,
+    "width": 248,
     "height": 44,
-    "tabOrder": 2200
+    "tabOrder": 3900
   },
   "visual": {
     "visualType": "card",

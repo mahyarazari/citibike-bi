@@ -1042,6 +1042,42 @@ table _Measures
 		displayFolder: Stations
 		lineageTag: 3b26e223-1c05-506d-9bc6-75778bbb27d6
 
+	measure 'Snapshot Bikes' = SUM ( fact_station_status[num_bikes_available] )
+		formatString: #,0
+		displayFolder: Live Ops
+		lineageTag: 97b49373-9e6d-5dc4-8d03-876c1a426372
+
+	measure 'Tooltip Title' = SELECTEDVALUE ( dim_neighborhood[nta_name], SELECTEDVALUE ( dim_neighborhood[borough], "New York City" ) )
+		displayFolder: Live Ops
+		lineageTag: e085b5df-ba32-582b-bacf-a052de599bf2
+
+	measure 'Station Footer Status' = ```
+			"fill " & FORMAT ( DIVIDE ( [Station Bikes], [Station Capacity] ), "0%" ) & "  ·  priority "
+			    & FORMAT ( [Station Priority], "0" ) & " / 100" 
+			```
+		displayFolder: Live Ops
+		lineageTag: 17465899-10c4-5eb4-8cdc-d6a32c58b329
+
+	measure 'Station Footer Bikes' = FORMAT ( [Station Docks], "#,0" ) & " free docks  ·  " & FORMAT ( SUM ( fact_station_live[num_ebikes_available] ), "#,0" ) & " e-bikes" 
+		displayFolder: Live Ops
+		lineageTag: c39fd540-6052-58d5-93e5-1ef70a37121b
+
+	measure 'Station Footer Capacity' = FORMAT ( [Trips per Dock per Day], "0.0" ) & " trips per dock per day vs city " & FORMAT ( [City Trips per Dock per Day], "0.0" ) 
+		displayFolder: Live Ops
+		lineageTag: 2de0db5e-156b-5fd8-9856-5ea2dcb83f8a
+
+	measure 'Action Station Flow' = ```
+			VAR am = [AM Net Flow per Weekday]
+			RETURN "→ Action: weekday mornings this station " & IF ( am < 0, "loses " & FORMAT ( -am, "0" ) & " bikes/day — restock before 7 AM",
+			    "gains " & FORMAT ( am, "0" ) & " bikes/day — clear docks before 9 AM" )
+			```
+		displayFolder: Live Ops
+		lineageTag: 795d0d6e-ffba-53da-8bb7-672db1409c8d
+
+	measure 'Action Snapshot' = "→ Action: " & FORMAT ( [Snapshots Kept], "#,0" ) & " live snapshots so far (rolling 14 days); a falling line means the station is draining now" 
+		displayFolder: Live Ops
+		lineageTag: 79ebdf69-4a5b-5f7f-96c1-00c0085de8b4
+
 	column Dummy
 		dataType: string
 		isHidden

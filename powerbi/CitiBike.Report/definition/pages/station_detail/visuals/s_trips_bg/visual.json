@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_trips_bg",
   "position": {
-    "x": 956,
-    "y": 76,
-    "z": 2900,
-    "width": 300,
+    "x": 1008,
+    "y": 72,
+    "z": 4600,
+    "width": 256,
     "height": 104,
-    "tabOrder": 2900
+    "tabOrder": 4600
   },
   "visual": {
     "visualType": "shape",

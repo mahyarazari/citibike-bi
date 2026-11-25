@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_cap_bg",
   "position": {
-    "x": 644,
-    "y": 76,
-    "z": 2400,
-    "width": 300,
+    "x": 740,
+    "y": 72,
+    "z": 4100,
+    "width": 256,
     "height": 104,
-    "tabOrder": 2400
+    "tabOrder": 4100
   },
   "visual": {
     "visualType": "shape",

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "sd_title",
   "position": {
-    "x": 120,
+    "x": 204,
     "y": 10,
-    "z": 1200,
-    "width": 700,
-    "height": 36,
-    "tabOrder": 1200
+    "z": 2700,
+    "width": 600,
+    "height": 34,
+    "tabOrder": 2700
   },
   "visual": {
     "visualType": "textbox",

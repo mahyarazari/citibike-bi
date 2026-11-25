@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_trips_accent",
   "position": {
-    "x": 970,
-    "y": 76,
-    "z": 3000,
+    "x": 1022,
+    "y": 72,
+    "z": 4700,
     "width": 36,
     "height": 4,
-    "tabOrder": 3000
+    "tabOrder": 4700
   },
   "visual": {
     "visualType": "shape",

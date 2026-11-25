@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "s_status_accent",
   "position": {
-    "x": 34,
-    "y": 76,
-    "z": 1500,
+    "x": 218,
+    "y": 72,
+    "z": 3200,
     "width": 36,
     "height": 4,
-    "tabOrder": 1500
+    "tabOrder": 3200
   },
   "visual": {
     "visualType": "shape",
