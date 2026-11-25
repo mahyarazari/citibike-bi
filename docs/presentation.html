@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citi Bike Live Ops BI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1F2A44; --blue: #2F6FDE; --grey: #5B6478; --muted: #8A93A6;
+    --bg: #F3F5F8; --card: #FFFFFF; --line: #E6EAF0; --pill: #E8F0FD;
+    --red: #B2182B; --red2: #D6604D; --peach: #F4A582; --sky: #92C5DE; --mid: #4393C3; --deep: #2166AC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--navy); font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+  .deck { height: 100vh; overflow: hidden; position: relative; }
+  .slide { position: absolute; inset: 0; padding: 56px 72px 72px; display: none; flex-direction: column; gap: 22px; }
+  .slide.active { display: flex; animation: in .35s ease; }
+  @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+  h1 { font-size: 46px; line-height: 1.1; font-weight: 700; }
+  h2 { font-size: 32px; font-weight: 700; }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  p, li { font-size: 16px; line-height: 1.55; color: var(--grey); }
+  .lead { font-size: 20px; max-width: 900px; }
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { background: var(--card); border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(31,42,68,.06); position: relative; }
+  .card.accent::before { content: ""; position: absolute; top: 0; left: 18px; width: 40px; height: 4px; border-radius: 2px; background: var(--blue); }
+  .kpi .label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+  .kpi .value { font-size: 34px; font-weight: 700; margin: 6px 0 2px; }
+  .kpi .foot { font-size: 13px; font-weight: 600; color: var(--deep); }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--pill); color: var(--blue); margin: 0 6px 6px 0; }
+  .tag.live { background: #FDE8E6; color: var(--red); }
+  .tag.hist { background: #E5F0F8; color: var(--deep); }
+  .tag.ref { background: #EEF1F5; color: var(--grey); }
+  .action { margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--blue); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-weight: 600; color: var(--grey); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--navy); }
+  code { font-family: Consolas, monospace; font-size: 13px; background: #EEF1F5; padding: 1px 6px; border-radius: 4px; color: var(--navy); }
+  /* architecture flow */
+  .flow { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr 40px 1fr; align-items: stretch; }
+  .arrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 26px; }
+  .flow .card h3 { color: var(--blue); }
+  .flow ul { padding-left: 18px; } .flow li { font-size: 14px; }
+  /* palette */
+  .scale { display: flex; height: 14px; border-radius: 7px; overflow: hidden; }
+  .scale span { flex: 1; }
+  .legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  /* page mock */
+  .mock { display: grid; grid-template-columns: 120px 1fr; gap: 10px; background: var(--bg); border-radius: 12px; padding: 10px; height: 200px; }
+  .mock .side { background: #fff; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .mock .side i { display: block; height: 10px; border-radius: 5px; background: var(--line); }
+  .mock .side i.on { background: var(--pill); }
+  .mock .main { display: grid; grid-template-rows: 26px 1fr; gap: 8px; }
+  .mock .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .mock .kpis b, .mock .body b { background: #fff; border-radius: 6px; display: block; }
+  .mock .body { display: grid; gap: 6px; }
+  /* nav */
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; background: rgba(255,255,255,.85); backdrop-filter: blur(6px); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }
+  .bar button { border: 1px solid var(--line); background: #fff; color: var(--navy); border-radius: 99px; padding: 6px 16px; font: inherit; cursor: pointer; }
+  .bar button:hover { background: var(--pill); color: var(--blue); }
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--blue); transition: width .3s; }
+  .two { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 900px) {
+    .slide { padding: 28px 18px 72px; overflow-y: auto; }
+    .g3, .g4, .g2, .two, .flow { grid-template-columns: 1fr; }
+    .arrow { transform: rotate(90deg); height: 24px; }
+    h1 { font-size: 32px; } h2 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <!-- 1 Title -->
+  <section class="slide active">
+    <div class="eyebrow">Business Intelligence project · Nov 2026</div>
+    <h1>Citi Bike NYC<br>Live Operations BI</h1>
+    <p class="lead">An automated pipeline and Power BI report that tell NYC's bike-share operators <b>where to move bikes now</b>, when demand peaks, which casual riders to convert, and where to add stations.</p>
+    <div class="grid g4" style="margin-top:12px">
+      <div class="card accent kpi"><div class="label">Trips analysed</div><div class="value">5.08M</div><div class="foot">October 2026</div></div>
+      <div class="card accent kpi"><div class="label">Stations</div><div class="value">2,413</div><div class="foot">live every 30 min</div></div>
+      <div class="card accent kpi"><div class="label">Neighborhoods</div><div class="value">262</div><div class="foot">with 2020 population</div></div>
+      <div class="card accent kpi"><div class="label">DAX measures</div><div class="value">177</div><div class="foot">every visual ends in an action</div></div>
+    </div>
+  </section>
+
+  <!-- 2 Problem -->
+  <section class="slide">
+    <div class="eyebrow">The business problem</div>
+    <h2>Empty and full stations lose rides</h2>
+    <p class="lead">A rider who finds no bike, or no free dock, is a lost trip and an unhappy customer. The report supports four decisions:</p>
+    <div class="grid g4">
+      <div class="card accent"><h3>1 · Rebalancing</h3><p>Which stations are empty or full now, and which will run out soon → a truck dispatch list.</p></div>
+      <div class="card accent"><h3>2 · Demand planning</h3><p>When and where demand peaks: hour × weekday × station.</p></div>
+      <div class="card accent"><h3>3 · Customer growth</h3><p>Casual riders who ride like commuters → membership campaign.</p></div>
+      <div class="card accent"><h3>4 · Network expansion</h3><p>Busiest routes, overloaded docks, under-served neighborhoods.</p></div>
+    </div>
+    <p>Design rule: every chart shows context (trend or per-capita rate), a benchmark (city average or target) and a one-line <b style="color:var(--blue)">→ action</b>.</p>
+  </section>
+
+  <!-- 3 Sources -->
+  <section class="slide">
+    <div class="eyebrow">Where the data comes from</div>
+    <h2>Five public sources, no paid keys</h2>
+    <table>
+      <tr><th>Source</th><th>Type</th><th>What it contains</th><th>Refresh</th></tr>
+      <tr><td><b>Citi Bike GBFS API</b><br><code>gbfs.citibikenyc.com/gbfs/gbfs.json</code></td><td><span class="tag live">Live</span></td><td>Each station: bikes, e-bikes, free docks, installed/renting flags, capacity, location, region</td><td>every 30 min</td></tr>
+      <tr><td><b>Citi Bike trip files</b><br><code>s3.amazonaws.com/tripdata</code></td><td><span class="tag hist">History</span></td><td>Every trip: start/end time and station, bike type, member or casual (monthly ZIP of CSVs, ~5M rows)</td><td>5th of each month</td></tr>
+      <tr><td><b>NYC Open Data</b><br>2020 Neighborhood Tabulation Areas</td><td><span class="tag ref">Reference</span></td><td>262 neighborhood polygons and boroughs, used for maps and spatial join</td><td>static</td></tr>
+      <tr><td><b>NYC City Planning</b><br>2020 Census by NTA</td><td><span class="tag ref">Reference</span></td><td>Population per neighborhood, for per-1,000-resident rates</td><td>static</td></tr>
+      <tr><td><b>Open-Meteo</b><br>hourly archive</td><td><span class="tag hist">History</span></td><td>Temperature, rain and wind per hour (Central Park)</td><td>with trips</td></tr>
+    </table>
+    <p>Gotcha handled: trip files use the GBFS <code>short_name</code> as station id (e.g. <code>"5905.06"</code>), always kept as text, never as a number.</p>
+  </section>
+
+  <!-- 4 Architecture -->
+  <section class="slide">
+    <div class="eyebrow">Architecture</div>
+    <h2>From API to action, fully automated</h2>
+    <div class="flow">
+      <div class="card"><h3>1. Extract</h3><ul><li>GBFS discovery → live feeds</li><li>S3 listing → newest month</li><li>Resumable downloads with retries</li><li>Manifest = incremental load</li></ul></div>
+      <div class="arrow">→</div>
+      <div class="card"><h3>2. Clean & model</h3><ul><li>Python · polars · DuckDB</li><li>11 trip rules + 7 station rules</li><li>pandera schemas, 31 tests</li><li>Star schema, Parquet &lt; 50 MB</li></ul></div>
+      <div class="arrow">→</div>
+      <div class="card"><h3>3. Automate</h3><ul><li>GitHub Actions</li><li>Live job every 30 min</li><li>Trip job on the 5th</li><li>Outputs on the <code>data</code> branch</li></ul></div>
+      <div class="arrow">→</div>
+      <div class="card"><h3>4. Report</h3><ul><li>Power BI project (TMDL + PBIR)</li><li>Reads public raw URLs</li><li>No gateway needed</li><li>Generated from code</li></ul></div>
+    </div>
+    <p>The <code>BaseUrl</code> parameter switches the whole report to another data source in one place. Parquet is read first, with CSV as a fallback.</p>
+  </section>
+
+  <!-- 5 Data model -->
+  <section class="slide">
+    <div class="eyebrow">What the data contains</div>
+    <h2>Star schema: 6 dimensions, 17 facts</h2>
+    <div class="two">
+      <table>
+        <tr><th>Table</th><th>Grain</th><th>Rows</th></tr>
+        <tr><td><code>fact_trips_hourly</code></td><td>date × hour × station × bike × rider type</td><td>1.77M</td></tr>
+        <tr><td><code>fact_station_hourly</code></td><td>departures / arrivals / net flow per station-hour</td><td>1.15M</td></tr>
+        <tr><td><code>fact_od_monthly</code> · <code>fact_top_routes</code></td><td>origin → destination pairs</td><td>983K · 500</td></tr>
+        <tr><td><code>fact_station_live</code></td><td>station status now + time-to-empty + priority</td><td>2,353</td></tr>
+        <tr><td><code>fact_station_status</code></td><td>live snapshots, rolling 14 days</td><td>grows</td></tr>
+        <tr><td><code>fact_rebalance_list</code></td><td>top 50 stations for trucks</td><td>50</td></tr>
+        <tr><td><code>fact_weather_hourly</code></td><td>weather + trips vs normal hour</td><td>744</td></tr>
+        <tr><td><code>fact_data_quality</code> · <code>fact_trip_cleaning</code></td><td>rows affected per rule, per run</td><td>small</td></tr>
+      </table>
+      <div class="grid">
+        <div class="card"><h3>Dimensions</h3><p><code>dim_date</code> (holidays, weeks) · <code>dim_hour</code> (day parts) · <code>dim_station</code> (2,419, incl. retired) · <code>dim_neighborhood</code> (population, docks per 1k) · <code>dim_region</code></p></div>
+        <div class="card"><h3>Raw trips never enter Power BI</h3><p>5M rows are aggregated to hourly grain in Python, keeping the model small and refresh fast.</p></div>
+        <div class="card"><h3>Live logic</h3><p>Fill ratio → status (Empty, Low, Balanced, High, Full). Net-flow trend from the last 4 snapshots → minutes to empty/full → priority score = urgency × demand.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 Cleaning -->
+  <section class="slide">
+    <div class="eyebrow">Data quality</div>
+    <h2>Every cleaning rule is logged</h2>
+    <div class="two">
+      <table>
+        <tr><th>Rule</th><th>Action</th><th>Rows (Oct)</th></tr>
+        <tr><td>Trip longer than 24 h</td><td>remove</td><td>967</td></tr>
+        <tr><td>Station id with trailing “_”</td><td>fix</td><td>5,656</td></tr>
+        <tr><td>Missing start station</td><td>remove</td><td>2,879</td></tr>
+        <tr><td>Missing end station (unreturned)</td><td>flag, keep</td><td>12,966</td></tr>
+        <tr><td>Test / depot / internal station</td><td>remove</td><td>1,466</td></tr>
+        <tr><td>Speed &gt; 40 km/h (classic bike)</td><td>flag</td><td>1</td></tr>
+        <tr><td>Station not in today's GBFS</td><td>flag</td><td>26,691</td></tr>
+        <tr><td>Duplicates · bad timestamps · &lt;1 min · out of NYC</td><td>remove / flag</td><td>0</td></tr>
+      </table>
+      <div class="grid">
+        <div class="card accent kpi"><div class="label">Rows removed</div><div class="value">0.10%</div><div class="foot">5,088,365 → 5,083,053 trips</div></div>
+        <div class="card"><h3>Live station rules</h3><p>Non-public regions, Jersey City / Hoboken (out of scope), not-installed stations and reports older than 60 minutes are removed every run.</p></div>
+        <div class="card"><h3>Visible in Power BI</h3><p>A raw 7-day sample is also published so the cleaning steps can be shown in Power Query.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 Normalization -->
+  <section class="slide">
+    <div class="eyebrow">Fair comparisons</div>
+    <h2>Rates, not raw totals</h2>
+    <p class="lead">A big neighborhood or station must not look better just because it is big. Rankings use:</p>
+    <div class="grid g3">
+      <div class="card accent"><h3>Per 1,000 residents</h3><p>Trips, bikes and docks per 1k people (2020 Census). Parks and airports have no population → shown as blank, never divided by zero.</p></div>
+      <div class="card accent"><h3>Per dock</h3><p>Trips per dock per day shows real pressure on a station, independent of its size.</p></div>
+      <div class="card accent"><h3>Index vs city = 100</h3><p>Every map metric becomes an index, so one diverging colour scale works for all of them.</p></div>
+      <div class="card accent"><h3>Week over week</h3><p>With one month of trips, trends compare the last 7 days with the 7 before.</p></div>
+      <div class="card accent"><h3>Same-hour baseline</h3><p>Weather impact compares each hour with the normal level for that hour, removing time-of-day bias.</p></div>
+      <div class="card accent"><h3>Targets</h3><p>Balanced ≥ 85% · empty or full ≤ 5% · data age ≤ 60 min · rows removed ≤ 1%.</p></div>
+    </div>
+    <div style="max-width:520px">
+      <div class="scale"><span style="background:#B2182B"></span><span style="background:#D6604D"></span><span style="background:#F4A582"></span><span style="background:#FDDBC7"></span><span style="background:#D1E5F0"></span><span style="background:#92C5DE"></span><span style="background:#4393C3"></span><span style="background:#2166AC"></span></div>
+      <div class="legend"><span>worse than city</span><span>city = 100</span><span>better than city</span></div>
+    </div>
+  </section>
+
+  <!-- 8 Overview -->
+  <section class="slide">
+    <div class="eyebrow">Page 1 · Overview · for managers</div>
+    <h2>How healthy is the network right now?</h2>
+    <div class="two">
+      <div class="grid">
+        <div class="card"><h3>KPI tiles</h3><p>Trips (with week-over-week change), average ride length, member share, % stations balanced vs the 85% target.</p></div>
+        <div class="card"><h3>Neighborhood map (hero)</h3><p>Neighborhoods coloured by an index vs city; station dots coloured by status and sized by capacity. A switcher recolours the map by live balance, bikes per 1k, trips per 1k, weekly growth or utilization.</p><div class="action">→ Rebalance the least balanced neighborhood first</div></div>
+        <div class="card"><h3>Trend · borough bars · members donut · neighborhood table</h3><p>Daily trips by bike type with a 7-day average; trips per 1k residents by borough vs the city line; a ranked table with an action column (Rebalance / Add docks / Expand).</p></div>
+      </div>
+      <div class="mock"><div class="side"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div><div class="main"><div class="kpis"><b></b><b></b><b></b><b></b></div><div class="body" style="grid-template-columns:1.5fr 1fr;grid-template-rows:1fr 1fr"><b style="grid-row:span 2"></b><b></b><b></b></div></div></div>
+    </div>
+  </section>
+
+  <!-- 9 Live ops -->
+  <section class="slide">
+    <div class="eyebrow">Page 2 · Live Operations · for the ops manager</div>
+    <h2>Where should the trucks go now?</h2>
+    <div class="grid g4">
+      <div class="card accent kpi"><div class="label">Empty now</div><div class="value" style="color:var(--red)">222</div><div class="foot">target ≤ 5%</div></div>
+      <div class="card accent kpi"><div class="label">Full now</div><div class="value" style="color:var(--deep)">127</div><div class="foot">target ≤ 5%</div></div>
+      <div class="card accent kpi"><div class="label">Bikes</div><div class="value">31.6K</div><div class="foot">vs 1 hour ago</div></div>
+      <div class="card accent kpi"><div class="label">Docks</div><div class="value">30.8K</div><div class="foot">stations needing a truck</div></div>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h3>Station map</h3><p>All 2,353 reporting stations: red = empty, blue = full, sized by capacity. Hover for bikes, docks and minutes to empty.</p></div>
+      <div class="card"><h3>Dispatch list</h3><p>Top 50 stations by priority (urgency × demand at this hour), with bikes to deliver or pick up to reach 50% full.</p><div class="action">→ Deliver X bikes · pick up Y · first stop: …</div></div>
+    </div>
+    <p style="font-size:13px">Numbers: live snapshot of Nov 25, 2026. Right-click a station → Station Detail.</p>
+  </section>
+
+  <!-- 10 Demand -->
+  <section class="slide">
+    <div class="eyebrow">Page 3 · Demand Patterns · for planning</div>
+    <h2>When and where does demand peak?</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Weekday × hour heatmap</h3><p>Average trips per hour; darker blue = busier.</p><div class="action">→ Stock bikes before the peak hour on the busiest weekday</div></div>
+      <div class="card"><h3>Weekday vs weekend profile</h3><p>Commute peaks on weekdays, a flat midday curve on weekends.</p><div class="action">→ Have crews ready before the weekday peak</div></div>
+      <div class="card"><h3>Morning drain map</h3><p>Net flow 6–10 AM on weekdays: red stations lose bikes, blue stations fill up.</p><div class="action">→ Add bikes in the most-draining neighborhood before 7 AM</div></div>
+      <div class="card"><h3>Weather impact</h3><p>Rainy hours run at <b>35% of normal</b>, cold hours at 82%.</p><div class="action">→ Cut crews and switch to charging on rainy forecasts</div></div>
+    </div>
+  </section>
+
+  <!-- 11 Customers -->
+  <section class="slide">
+    <div class="eyebrow">Page 4 · Customers · for marketing</div>
+    <h2>Who can we convert to members?</h2>
+    <div class="grid g4">
+      <div class="card accent kpi"><div class="label">Members</div><div class="value">82%</div><div class="foot">of trips</div></div>
+      <div class="card accent kpi"><div class="label">E-bikes</div><div class="value">74%</div><div class="foot">of trips</div></div>
+      <div class="card accent kpi"><div class="label">Target riders</div><div class="value">≈2,430</div><div class="foot">per week (estimate)</div></div>
+      <div class="card accent kpi"><div class="label">Revenue upside</div><div class="value">what-if</div><div class="foot">price × conversion rate</div></div>
+    </div>
+    <div class="card"><h3>How targets are estimated</h3><p>The open data has <b>no rider id</b>. A casual rider repeating the same origin → destination at least 3 times in one week, on weekday commute hours and under 30 minutes, counts as one likely commuter. This is a conservative lower bound. Price ($220 default) and conversion rate (10% default) are adjustable what-if parameters.</p><div class="action">→ Start the campaign at the station with the most repeat casual commute trips</div></div>
+  </section>
+
+  <!-- 12 Network -->
+  <section class="slide">
+    <div class="eyebrow">Page 5 · Network & Routes · for planning</div>
+    <h2>Where should the network grow?</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Top flows & routes</h3><p>The 60 busiest origin → destination lines on a map and a ranked table. Busiest: <b>55 Ave & Center Blvd → Vernon Blvd & 50 Ave</b>, ≈35 trips/day.</p><div class="action">→ Keep docks free at both ends of the top route</div></div>
+      <div class="card"><h3>Busiest docks</h3><p>Top 15 stations by trips per dock per day vs the city average.</p><div class="action">→ Add N docks at the most overloaded station to reach 1.5× city</div></div>
+      <div class="card" style="grid-column:span 2"><h3>Expansion candidates</h3><p>Neighborhoods with at least 20,000 residents ranked by docks per 1,000 residents, with a recommended action.</p><div class="action">→ New stations in the most under-docked dense neighborhood</div></div>
+    </div>
+  </section>
+
+  <!-- 13 DQ + detail -->
+  <section class="slide">
+    <div class="eyebrow">Page 6 · Data Quality · plus drill-through pages</div>
+    <h2>Proof that the pipeline works</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Data Quality page</h3><p>Data age vs 60-minute target, % rows removed, unmatched station ids, run success rate, rows per cleaning rule, live checks and the run log.</p></div>
+      <div class="card"><h3>Station Detail</h3><p>Right-click any station: status, bikes, docks, hourly departures vs arrivals, bikes over time, busy hours and top routes.</p></div>
+      <div class="card"><h3>Neighborhood tooltip</h3><p>Hover a neighborhood: bikes, docks, empty and full counts, balance rank, recent trend and its action.</p></div>
+    </div>
+  </section>
+
+  <!-- 14 Findings -->
+  <section class="slide">
+    <div class="eyebrow">Key findings · October 2026 + live snapshot</div>
+    <h2>What the data says</h2>
+    <div class="grid g2">
+      <div class="card accent"><h3>Supply</h3><p>About 15% of stations were empty or full at the snapshot (222 empty, 127 full), well above a 5% target; 69% balanced vs 85% target.</p></div>
+      <div class="card accent"><h3>Demand</h3><p>5.08M trips in October (≈164K/day). Strong weekday commute peaks; rain cuts trips by about two thirds.</p></div>
+      <div class="card accent"><h3>Customers</h3><p>82% of trips are by members and 74% on e-bikes. ≈2,430 casual riders per week behave like commuters.</p></div>
+      <div class="card accent"><h3>Data</h3><p>Only 0.10% of trips removed; 6 retired station ids explain 26.7K trips and are kept, not lost.</p></div>
+    </div>
+  </section>
+
+  <!-- 15 Actions & limits -->
+  <section class="slide">
+    <div class="eyebrow">Recommended actions · limitations</div>
+    <h2>What to do next</h2>
+    <div class="two">
+      <div class="card"><h3>Prioritised actions</h3><ol style="padding-left:18px">
+        <li>Run trucks from the dispatch list, starting with the highest-priority station.</li>
+        <li>Pre-position bikes in morning-draining neighborhoods before 7 AM.</li>
+        <li>Launch a membership offer at stations with repeat casual commuters.</li>
+        <li>Add docks at stations above 1.5× city utilization.</li>
+        <li>Plan new stations in dense, under-docked neighborhoods.</li>
+      </ol></div>
+      <div class="card"><h3>Limitations</h3><ul style="padding-left:18px">
+        <li>One month of trips (download speed) → week-over-week instead of month or year trends.</li>
+        <li>Population from the 2020 Census.</li>
+        <li>No rider id → conversion targets are estimates.</li>
+        <li>Live history builds up from the first run (14-day window).</li>
+        <li>GitHub cron can start a few minutes late.</li>
+      </ul></div>
+    </div>
+  </section>
+
+</div>
+<div class="bar"><span id="count">1 / 15</span><span>Citi Bike Live Ops BI · ← → or click to move</span><span><button id="prev">← Prev</button> <button id="next">Next →</button></span></div>
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let i = 0;
+  try { i = Math.min(+localStorage.getItem('cb-slide') || 0, slides.length - 1); } catch (e) {}
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = ((i + 1) / slides.length * 100) + '%';
+    try { localStorage.setItem('cb-slide', i); } catch (e) {}
+  }
+  document.getElementById('next').onclick = () => show(i + 1);
+  document.getElementById('prev').onclick = () => show(i - 1);
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+  show(i);
+</script>
+</body>
+</html>

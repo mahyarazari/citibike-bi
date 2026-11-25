@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>راهنمای داشبورد Citi Bike</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#1F2A44; --blue:#2F6FDE; --grey:#5B6478; --muted:#8A93A6; --bg:#F3F5F8; --card:#fff; --line:#E6EAF0; --pill:#E8F0FD; --red:#B2182B; --deep:#2166AC; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--navy); font-family:Vazirmatn, Tahoma, sans-serif; line-height:1.9; }
+  .wrap { display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+  nav { background:#fff; border-left:1px solid var(--line); padding:24px 14px; position:sticky; top:0; height:100vh; overflow-y:auto; }
+  nav .logo { display:flex; gap:10px; align-items:center; margin-bottom:22px; }
+  nav .logo b { width:34px; height:34px; border-radius:10px; background:var(--blue); color:#fff; display:grid; place-items:center; font-size:13px; }
+  nav a { display:block; padding:7px 14px; border-radius:20px; color:var(--grey); text-decoration:none; font-size:14px; }
+  nav a:hover { background:var(--pill); color:var(--blue); }
+  nav .sec { font-size:11px; color:var(--muted); margin:16px 14px 4px; font-weight:600; }
+  main { padding:36px 44px 80px; max-width:1100px; }
+  h1 { font-size:30px; margin-bottom:6px; }
+  h2 { font-size:22px; margin:44px 0 12px; padding-top:8px; }
+  h3 { font-size:16px; margin-bottom:4px; }
+  p, li { font-size:15px; color:var(--grey); }
+  .lead { font-size:17px; }
+  .card { background:var(--card); border-radius:12px; padding:16px 20px; box-shadow:0 2px 10px rgba(31,42,68,.06); margin-bottom:12px; position:relative; }
+  .card.accent::before { content:""; position:absolute; top:0; right:18px; width:40px; height:4px; border-radius:2px; background:var(--blue); }
+  .grid { display:grid; gap:12px; } .g2 { grid-template-columns:repeat(2,1fr); } .g3 { grid-template-columns:repeat(3,1fr); }
+  .en { direction:ltr; unicode-bidi:isolate; font-family:Consolas, monospace; font-size:13px; background:#EEF1F5; padding:1px 6px; border-radius:4px; color:var(--navy); }
+  .act { color:var(--blue); font-weight:600; font-size:14px; margin-top:6px; }
+  .tag { display:inline-block; font-size:12px; font-weight:600; padding:2px 10px; border-radius:99px; background:var(--pill); color:var(--blue); margin-left:6px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(31,42,68,.06); }
+  th { text-align:right; color:var(--grey); font-weight:600; padding:9px 12px; border-bottom:1px solid var(--line); background:#FAFBFC; }
+  td { padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .vis { border-right:3px solid var(--pill); padding-right:14px; margin:10px 0; }
+  .vis h3 { color:var(--navy); }
+  .row { display:grid; grid-template-columns:110px 1fr; gap:4px 12px; font-size:14px; }
+  .row b { color:var(--navy); font-weight:600; }
+  .row span { color:var(--grey); }
+  .tip { background:#FFF8E6; border-radius:10px; padding:10px 14px; font-size:14px; color:#7A5B00; margin:10px 0; }
+  @media (max-width:900px) { .wrap { grid-template-columns:1fr; } nav { position:static; height:auto; } main { padding:20px 16px 60px; } .g2,.g3 { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <div class="logo"><b>CB</b><div><div style="font-weight:600">Citi Bike</div><div style="font-size:12px;color:var(--grey)">راهنمای شخصی</div></div></div>
+  <div class="sec">کلیات</div>
+  <a href="#summary">خلاصه در یک دقیقه</a>
+  <a href="#data">داده‌ها از کجا می‌آیند</a>
+  <a href="#read">قواعد خواندن داشبورد</a>
+  <div class="sec">صفحه‌ها</div>
+  <a href="#overview">۱ · Overview</a>
+  <a href="#liveops">۲ · Live Operations</a>
+  <a href="#demand">۳ · Demand Patterns</a>
+  <a href="#customers">۴ · Customers</a>
+  <a href="#network">۵ · Network &amp; Routes</a>
+  <a href="#dq">۶ · Data Quality</a>
+  <a href="#detail">صفحه‌های مخفی</a>
+  <div class="sec">کار با گزارش</div>
+  <a href="#interact">تعامل‌ها</a>
+  <a href="#present">نکات ارائه</a>
+  <a href="#faq">سؤال‌های محتمل</a>
+</nav>
+
+<main>
+  <h1>راهنمای داشبورد Citi Bike NYC</h1>
+  <p class="lead">این فایل برای خودت است: هر صفحه و هر نمودار چه می‌گوید، چطور خوانده می‌شود و چه تصمیمی از آن درمی‌آید. اسم‌های داخل داشبورد انگلیسی‌اند؛ همان‌ها را اینجا <span class="en">این‌طوری</span> نوشته‌ام.</p>
+
+  <h2 id="summary">خلاصه در یک دقیقه</h2>
+  <div class="card accent">
+    <p><b>مسئله:</b> در سیستم دوچرخه‌ی اشتراکی نیویورک، ایستگاه‌ها خالی می‌شوند (دوچرخه نیست) یا پر می‌شوند (جای پارک نیست). هر دو یعنی سفر از دست‌رفته.</p>
+    <p><b>راه‌حل:</b> یک پایپ‌لاین Python هر ۳۰ دقیقه وضعیت زنده‌ی ایستگاه‌ها را می‌گیرد و ماهی یک بار سفرهای تاریخی را. داده را تمیز می‌کند و در GitHub منتشر می‌کند. Power BI از همان‌جا می‌خواند.</p>
+    <p><b>خروجی:</b> ۶ صفحه که هر کدام به یک تصمیم ختم می‌شود: کجا کامیون بفرستیم، کی دوچرخه بچینیم، به چه کسی پیشنهاد عضویت بدهیم، کجا ایستگاه اضافه کنیم.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h3>۵٫۰۸ میلیون سفر</h3><p>اکتبر ۲۰۲۶، یعنی روزی حدود ۱۶۴ هزار سفر</p></div>
+    <div class="card"><h3>۲,۴۱۳ ایستگاه فعال</h3><p>در ۲۶۲ محله‌ی نیویورک</p></div>
+    <div class="card"><h3>فقط ۰٫۱۰٪ حذف</h3><p>از کل سفرها در پاک‌سازی</p></div>
+  </div>
+
+  <h2 id="data">داده‌ها از کجا می‌آیند و شامل چه هستند</h2>
+  <table>
+    <tr><th>منبع</th><th>نوع</th><th>چه چیزی دارد</th><th>به‌روزرسانی</th></tr>
+    <tr><td>Citi Bike GBFS (API زنده)</td><td><span class="tag">لحظه‌ای</span></td><td>تعداد دوچرخه، دوچرخه‌ی برقی و جای خالی هر ایستگاه، به‌علاوه‌ی ظرفیت و مختصات</td><td>هر ۳۰ دقیقه</td></tr>
+    <tr><td>فایل‌های سفر Citi Bike (S3)</td><td><span class="tag">تاریخی</span></td><td>هر سفر: زمان و ایستگاه شروع و پایان، نوع دوچرخه، عضو یا مهمان</td><td>ماهانه (روز ۵ ام)</td></tr>
+    <tr><td>NYC Open Data · محله‌های NTA ۲۰۲۰</td><td><span class="tag">مرجع</span></td><td>مرز ۲۶۲ محله و ۵ بخش (borough) برای نقشه</td><td>ثابت</td></tr>
+    <tr><td>اداره‌ی برنامه‌ریزی نیویورک · سرشماری ۲۰۲۰</td><td><span class="tag">مرجع</span></td><td>جمعیت هر محله، برای نرخ «به ازای هر ۱۰۰۰ نفر»</td><td>ثابت</td></tr>
+    <tr><td>Open-Meteo</td><td><span class="tag">تاریخی</span></td><td>دما، باران و باد ساعتی</td><td>همراه سفرها</td></tr>
+  </table>
+  <div class="tip">چیزی که ممکن است بپرسند: «snapshot چهارده‌روزه» از قبل وجود ندارد. API فقط وضعیت همین لحظه را می‌دهد. تاریخچه از اولین اجرای پایپ‌لاین شروع شده و با هر اجرا یک snapshot اضافه می‌شود.</div>
+
+  <h2 id="read">قواعد خواندن داشبورد</h2>
+  <div class="grid g2">
+    <div class="card"><h3>هر نمودار سه چیز دارد</h3><p>۱) مقدار در کنار یک مبنا (روند یا نرخ سرانه)؛ ۲) یک معیار مقایسه (میانگین شهر یا هدف)؛ ۳) یک خط آبی <b style="color:var(--blue)">→</b> که می‌گوید چه کار کنیم.</p></div>
+    <div class="card"><h3>رنگ‌ها</h3><p><b style="color:var(--red)">قرمز</b> یعنی بدتر از شهر یا خالی. <b style="color:var(--deep)">آبی پررنگ</b> یعنی بهتر از شهر یا پر. آبی روشن یعنی متعادل. ▲ آبی رشد است و ▼ قرمز افت.</p></div>
+    <div class="card"><h3>شاخص (Index)</h3><p>عدد ۱۰۰ یعنی برابر میانگین شهر. ۱۵۰ یعنی ۵۰٪ بیشتر و ۵۰ یعنی نصف. این کار باعث می‌شود محله‌ی بزرگ فقط به‌خاطر بزرگی «بهتر» دیده نشود.</p></div>
+    <div class="card"><h3>WoW</h3><p>Week over Week یعنی ۷ روز آخر در مقابل ۷ روز قبلش. چون فقط یک ماه داده داریم، به‌جای مقایسه‌ی ماهانه این را می‌بینی.</p></div>
+  </div>
+
+  <!-- ===================== PAGES ===================== -->
+  <h2 id="overview">۱ · Overview: وضعیت کلی شبکه</h2>
+  <p><b>مخاطب:</b> مدیر. <b>سؤال:</b> «شبکه الان چقدر سالم است و مشکل اصلی کجاست؟»</p>
+  <div class="card">
+    <div class="vis"><h3>چهار کارت KPI</h3><div class="row">
+      <b>Trips</b><span>کل سفرهای ماه. زیرش درصد تغییر هفته‌ی آخر نسبت به هفته‌ی قبل آمده (▲ آبی رشد، ▼ قرمز افت).</span>
+      <b>Avg ride</b><span>میانگین مدت سفر به دقیقه (حدود ۱۲٫۷).</span>
+      <b>Member share</b><span>سهم سفرهای اعضا (حدود ۸۲٪). هدف ۷۵٪.</span>
+      <b>Balanced now</b><span>درصد ایستگاه‌هایی که الان متعادل‌اند، در مقایسه با هدف ۸۵٪. رنگ فوتر: آبی اگر به هدف رسیده، نارنجی بالای ۷۰٪، قرمز پایین‌تر.</span></div></div>
+    <div class="vis"><h3>نقشه‌ی سلامت محله‌ها (مهم‌ترین نمودار)</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>هر محله با یک شاخص نسبت به شهر رنگ شده (قرمز بدتر، آبی بهتر). نقطه‌ها ایستگاه‌ها هستند؛ رنگشان وضعیت فعلی (Empty تا Full) و اندازه‌شان ظرفیت است.</span>
+      <b>دکمه‌های بالا</b><span>معیار رنگ نقشه را عوض می‌کنند: تعادل زنده، دوچرخه به ازای هر ۱۰۰۰ نفر، سفر به ازای هر ۱۰۰۰ نفر، رشد هفتگی، و بهره‌وری هر جای پارک.</span>
+      <b>اقدام</b><span class="act">→ Rebalance X first: یعنی اول به نامتعادل‌ترین محله (با حداقل ۵ ایستگاه) کامیون بفرست.</span></div></div>
+    <div class="vis"><h3>Daily trips</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>سفر روزانه، جدا برای دوچرخه‌ی معمولی و برقی، با خط‌چین میانگین ۷ روزه که نوسان را صاف می‌کند.</span>
+      <b>اقدام</b><span class="act">→ Trips ±x% WoW · e-bikes y%</span></div></div>
+    <div class="vis"><h3>Trips per 1k residents (بر اساس borough)</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>سفر به ازای هر ۱۰۰۰ ساکن در هر بخش شهر، با خط‌چین میانگین شهر. رنگ میله: آبی بالای میانگین، نارنجی یا قرمز پایین‌تر.</span>
+      <b>چرا نرخ؟</b><span>چون Brooklyn پرجمعیت است و در تعداد خام همیشه بالا دیده می‌شود.</span>
+      <b>اقدام</b><span class="act">→ Grow X: بخشی که کمترین شاخص را دارد هدف رشد است.</span></div></div>
+    <div class="vis"><h3>Members vs casual</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>سهم اعضا در برابر کاربران مهمان.</span>
+      <b>اقدام</b><span class="act">→ Target N commuters · $X/yr: تعداد مهمان‌هایی که مثل اعضا رفت‌وآمد می‌کنند و درآمد بالقوه‌ی تبدیلشان.</span></div></div>
+    <div class="vis"><h3>Neighborhoods (city = 100)</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>جدول محله‌ها: سفر به ازای هر ۱۰۰۰ نفر، شاخص، رشد هفتگی، درصد تعادل و شاخص بهره‌وری. ستون آخر اقدام پیشنهادی است.</span>
+      <b>قاعده‌ی ستون → Action</b><span><b>Rebalance now</b> اگر کمتر از ۶۰٪ متعادل باشد · <b>Add docks</b> اگر بهره‌وری ۱٫۵ برابر شهر باشد و جای پارک کم · <b>Expand / promote</b> اگر بیش از ۲۰ هزار نفر جمعیت دارد و شاخص سفرش زیر ۵۰ است · وگرنه <b>Monitor</b>.</span></div></div>
+  </div>
+
+  <h2 id="liveops">۲ · Live Operations: کامیون‌ها کجا بروند</h2>
+  <p><b>مخاطب:</b> مدیر عملیات. <b>سؤال:</b> «همین الان کدام ایستگاه‌ها مشکل دارند و به کدام اول برسیم؟» این مهم‌ترین صفحه‌ی عملیاتی است.</p>
+  <div class="card">
+    <div class="vis"><h3>KPIها</h3><div class="row">
+      <b>Empty now / Full now</b><span>تعداد ایستگاه‌های کاملاً خالی و کاملاً پر. زیرشان درصد از کل آمده با هدف حداکثر ۵٪. در snapshot ما: ۲۲۲ خالی و ۱۲۷ پر.</span>
+      <b>Bikes / Docks</b><span>کل دوچرخه‌ها و جاهای خالی، به‌همراه تغییر نسبت به یک ساعت قبل و تعداد ایستگاه‌هایی که تا ۶۰ دقیقه‌ی دیگر کامیون لازم دارند.</span></div></div>
+    <div class="vis"><h3>Stations now (نقشه)</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>همه‌ی ایستگاه‌ها: قرمز خالی، نارنجی کم، آبی روشن متعادل، آبی پررنگ پر. با hover می‌بینی چند دقیقه تا خالی شدن مانده.</span>
+      <b>اقدام</b><span class="act">→ N empty, M full · first truck: borough</span></div></div>
+    <div class="vis"><h3>Dispatch list</h3><div class="row">
+      <b>چه نشان می‌دهد</b><span>۵۰ ایستگاه اول به ترتیب اولویت، با دوچرخه، جای خالی، دقیقه تا خالی یا پر شدن، امتیاز اولویت و اقدام (Deliver X یا Pick up Y).</span>
+      <b>امتیاز اولویت</b><span>عددی بین ۰ تا ۱۰۰ = فوریت × تقاضا. فوریت برای ایستگاهی که الان خالی یا پر است ۱ است و هرچه زمان تا خالی شدن بیشتر باشد کم می‌شود. تقاضا میانگین سفر تاریخی همان ساعت از همان روز هفته است.</span>
+      <b>تعداد دوچرخه</b><span>به اندازه‌ای که ایستگاه به ۵۰٪ ظرفیت برسد.</span>
+      <b>اقدام</b><span class="act">→ Deliver X · pick up Y · start: ایستگاه اول</span></div></div>
+  </div>
+
+  <h2 id="demand">۳ · Demand Patterns: تقاضا کی و کجاست</h2>
+  <p><b>مخاطب:</b> برنامه‌ریزی. <b>سؤال:</b> «در چه ساعت و روزی و کجا تقاضا اوج می‌گیرد؟»</p>
+  <div class="card">
+    <div class="vis"><h3>KPIها</h3><div class="row">
+      <b>Peak hour</b><span>شلوغ‌ترین ساعت روزهای کاری.</span>
+      <b>Busiest weekday</b><span>شلوغ‌ترین روز هفته.</span>
+      <b>Weekend / weekday</b><span>نسبت تقاضای ساعتی آخر هفته به روز کاری. ۱ یعنی برابر.</span>
+      <b>Rain impact</b><span>در ساعت‌های بارانی، سفر حدود ۳۵٪ مقدار عادی همان ساعت است، یعنی تقریباً −۶۵٪.</span></div></div>
+    <div class="vis"><h3>Trips per hour (Heatmap)</h3><div class="row">
+      <b>خواندن</b><span>ردیف‌ها روزهای هفته‌اند و ستون‌ها ساعت‌ها. هرچه آبی پررنگ‌تر، شلوغ‌تر.</span>
+      <b>اقدام</b><span class="act">→ Stock bikes before [ساعت اوج] on [روز اوج]</span></div></div>
+    <div class="vis"><h3>Weekday vs weekend</h3><div class="row">
+      <b>خواندن</b><span>خط آبی روز کاری است و دو قله‌ی صبح و عصر (رفت‌وآمد کاری) دارد. خط نارنجی آخر هفته است و یک منحنی پهن ظهر دارد.</span>
+      <b>اقدام</b><span class="act">→ Crews ready before [peak]</span></div></div>
+    <div class="vis"><h3>Morning drain (نقشه)</h3><div class="row">
+      <b>خواندن</b><span>خالص جریان ۶ تا ۱۰ صبح روزهای کاری. قرمز یعنی ایستگاه صبح دوچرخه از دست می‌دهد (محله‌های مسکونی) و آبی یعنی پر می‌شود (مرکز شهر).</span>
+      <b>اقدام</b><span class="act">→ Add N bikes in [محله] before 7 AM</span></div></div>
+    <div class="vis"><h3>Weather impact</h3><div class="row">
+      <b>خواندن</b><span>هر میله نسبت سفر به حالت عادی همان ساعت است. ۱۰۰٪ یعنی عادی. چون با همان ساعت مقایسه می‌شود، اثر «شب‌ها کمتر سفر می‌شود» حذف شده.</span>
+      <b>اقدام</b><span class="act">→ Rain = 35% of normal · cut crews</span></div></div>
+  </div>
+
+  <h2 id="customers">۴ · Customers: چه کسی را عضو کنیم</h2>
+  <p><b>مخاطب:</b> بازاریابی. <b>سؤال:</b> «کدام مهمان‌ها شبیه اعضا رفتار می‌کنند و ارزش تبدیلشان چقدر است؟»</p>
+  <div class="card">
+    <div class="vis"><h3>KPIها</h3><div class="row">
+      <b>Member / Casual share</b><span>۸۲٪ در برابر ۱۸٪. زیر Casual طول سفر دو گروه مقایسه شده است.</span>
+      <b>E-bike share</b><span>حدود ۷۴٪ سفرها با دوچرخه‌ی برقی است.</span>
+      <b>Revenue upside</b><span>درآمد سالانه‌ی بالقوه = تعداد هدف × نرخ تبدیل × قیمت عضویت.</span></div></div>
+    <div class="vis"><h3>Ride length · Casual share by hour · Bike mix by day</h3><div class="row">
+      <b>خواندن</b><span>مهمان‌ها سفرهای طولانی‌تر (تفریحی) دارند. سهم مهمان در ساعت‌های عصر و آخر هفته بالاتر است.</span>
+      <b>اقدام</b><span class="act">→ Push offers at [ساعتی که سهم مهمان بیشترین است] · → Casual rides N× longer · sell day passes</span></div></div>
+    <div class="vis"><h3>What-if: Membership price و Conversion rate</h3><div class="row">
+      <b>چطور کار می‌کند</b><span>دو منوی کشویی: قیمت پیش‌فرض ۲۲۰ دلار و نرخ تبدیل پیش‌فرض ۱۰٪. با تغییرشان، درآمد بالقوه فوراً عوض می‌شود. فرض‌ها صریح و قابل تغییرند.</span></div></div>
+    <div class="vis"><h3>Target riders و Campaign targets</h3><div class="row">
+      <b>تعریف</b><span>داده‌ی باز شناسه‌ی کاربر ندارد. پس هر مسیر مبدأ → مقصدی که یک مهمان در یک هفته حداقل ۳ بار در ساعت‌های رفت‌وآمد روز کاری و زیر ۳۰ دقیقه طی کرده، یک «رفت‌وآمدکننده‌ی احتمالی» حساب شده. حدود ۲,۴۳۰ نفر در هفته. این تخمین محافظه‌کارانه (حداقلی) است.</span>
+      <b>اقدام</b><span class="act">→ Start campaign at [ایستگاهی با بیشترین سفر تکراری]</span></div></div>
+  </div>
+
+  <h2 id="network">۵ · Network &amp; Routes: شبکه را کجا گسترش دهیم</h2>
+  <p><b>مخاطب:</b> برنامه‌ریزی شبکه. <b>سؤال:</b> «کدام مسیرها شلوغ‌اند، کدام ایستگاه‌ها زیر فشارند و کدام محله‌ها کم‌برخوردارند؟»</p>
+  <div class="card">
+    <div class="vis"><h3>KPIها</h3><div class="row">
+      <b>Top route / day</b><span>سفر روزانه‌ی پرترددترین مسیر (حدود ۳۵ در روز، در Long Island City).</span>
+      <b>Avg distance</b><span>فاصله‌ی مستقیم شروع تا پایان.</span>
+      <b>Trips / dock / day</b><span>میانگین شهر برای بهره‌وری هر جای پارک.</span>
+      <b>Under-served areas</b><span>محله‌هایی با جمعیت بیش از ۲۰ هزار نفر و کمتر از نصف «جای پارک به ازای ۱۰۰۰ نفر» شهر.</span></div></div>
+    <div class="vis"><h3>Top flows و Top routes</h3><div class="row">
+      <b>خواندن</b><span>۶۰ مسیر پرتردد روی نقشه، با ضخامت خط متناسب با حجم سفر، و جدول رتبه‌بندی‌شده با سهم اعضا.</span>
+      <b>اقدام</b><span class="act">→ Keep docks free on top route</span></div></div>
+    <div class="vis"><h3>Busiest docks</h3><div class="row">
+      <b>خواندن</b><span>۱۵ ایستگاه با بیشترین سفر به ازای هر جای پارک، با خط میانگین شهر. قرمز یعنی بیش از ۱٫۵ برابر شهر.</span>
+      <b>اقدام</b><span class="act">→ Add N docks at X (r× city): تعداد جای پارک لازم برای رسیدن به ۱٫۵ برابر شهر.</span></div></div>
+    <div class="vis"><h3>Expansion candidates</h3><div class="row">
+      <b>خواندن</b><span>محله‌های داخل محدوده‌ی سرویس، مرتب‌شده بر اساس کمترین جای پارک به ازای هر ۱۰۰۰ نفر.</span>
+      <b>اقدام</b><span class="act">→ New stations: [محله]</span></div></div>
+  </div>
+
+  <h2 id="dq">۶ · Data Quality: اثبات اینکه پایپ‌لاین درست کار می‌کند</h2>
+  <p><b>مخاطب:</b> تیم داده و استاد. <b>سؤال:</b> «داده تازه و قابل اعتماد است؟»</p>
+  <div class="card">
+    <div class="vis"><h3>KPIها</h3><div class="row">
+      <b>Data age</b><span>چند دقیقه از آخرین snapshot زنده گذشته. هدف حداکثر ۶۰ دقیقه است و اگر بیشتر شود قرمز می‌شود.</span>
+      <b>Rows removed</b><span>درصد سفرهای حذف‌شده: ۰٫۱۰٪، با سقف مجاز ۱٪.</span>
+      <b>Unmatched IDs</b><span>۶ شناسه‌ی ایستگاه که در GBFS امروز نیستند (ایستگاه‌های حذف‌شده یا تغییر نام‌داده). سفرهایشان حذف نشده‌اند.</span>
+      <b>Run success</b><span>درصد اجراهای موفق پایپ‌لاین.</span></div></div>
+    <div class="vis"><h3>Cleaning rules · Live data checks · Run log · Unmatched stations</h3><div class="row">
+      <b>خواندن</b><span>تعداد ردیف‌های متأثر از هر قانون پاک‌سازی (REMOVE یعنی حذف، FLAG یعنی علامت‌گذاری و نگه‌داشتن، FIX یعنی اصلاح). قوانین بررسی داده‌ی زنده، فهرست اجراها و فهرست شناسه‌های بی‌جفت هم اینجا هستند.</span>
+      <b>اقدام</b><span class="act">→ Map N unmatched IDs · → Pipeline healthy / Stale data</span></div></div>
+  </div>
+
+  <h2 id="detail">صفحه‌های مخفی</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Station Detail</h3><p>با کلیک راست روی یک ایستگاه، از Drill through به اینجا می‌آیی. یا از منوی «Pick a station» یک ایستگاه انتخاب کن. اینجا وضعیت فعلی، دوچرخه و جای خالی، رفت و برگشت ساعتی، تغییر دوچرخه در snapshotها، ساعت‌های شلوغ و مسیرهای پرتردد همان ایستگاه را می‌بینی.</p></div>
+    <div class="card"><h3>Neighborhood Tooltip</h3><p>وقتی موس را روی جدول محله‌ها یا میله‌های borough نگه داری، این کارت کوچک باز می‌شود: نام محله، رتبه‌ی تعادل، ۴ عدد اصلی، نمودار کوچک روند و اقدام.</p></div>
+  </div>
+
+  <h2 id="interact">تعامل‌ها</h2>
+  <table>
+    <tr><th>کار</th><th>چطور</th></tr>
+    <tr><td>جابه‌جایی بین صفحه‌ها</td><td>دکمه‌های منوی سمت چپ. صفحه‌ی فعال با رنگ آبی روشن مشخص است. در Desktop، دکمه را با Ctrl + کلیک بزن.</td></tr>
+    <tr><td>فیلتر</td><td>دکمه‌ی «⚲ Filters» بالا سمت راست، پنل فیلتر را باز می‌کند (Borough، بازه‌ی تاریخ، نوع کاربر، نوع دوچرخه). ✕ پنل را می‌بندد و «Reset filters» همه را پاک می‌کند.</td></tr>
+    <tr><td>تغییر رنگ نقشه</td><td>دکمه‌های بالای نقشه در صفحه‌ی Overview.</td></tr>
+    <tr><td>فیلتر متقاطع</td><td>کلیک روی یک میله، ردیف جدول یا ایستگاه روی نقشه، بقیه‌ی صفحه را فیلتر می‌کند. کلیک دوباره فیلتر را برمی‌دارد.</td></tr>
+    <tr><td>جزئیات ایستگاه</td><td>کلیک راست روی ایستگاه → Drill through → Station Detail.</td></tr>
+    <tr><td>Tooltip</td><td>موس را روی جدول محله‌ها یا میله‌های borough نگه دار.</td></tr>
+  </table>
+
+  <h2 id="present">نکات ارائه</h2>
+  <div class="card accent"><ol style="padding-right:18px">
+    <li>با مسئله شروع کن: «ایستگاه خالی یا پر یعنی سفر از دست‌رفته.»</li>
+    <li>معماری را در ۳۰ ثانیه بگو: API → Python → GitHub Actions → Power BI. بعد تأکید کن که کاملاً خودکار است و gateway لازم ندارد.</li>
+    <li>Overview → نقشه را نشان بده و دکمه‌ی معیار را عوض کن.</li>
+    <li>Live Operations → فهرست اعزام و یک Drill through به یک ایستگاه.</li>
+    <li>Demand → heatmap و اثر باران (۳۵٪).</li>
+    <li>Customers → منوی what-if قیمت را تغییر بده و نشان بده درآمد چطور عوض می‌شود.</li>
+    <li>Data Quality → «۰٫۱۰٪ حذف و همه‌چیز ثبت شده».</li>
+    <li>با محدودیت‌ها تمام کن: یک ماه داده، سرشماری ۲۰۲۰، و تخمینی بودن تعداد هدف.</li>
+  </ol></div>
+
+  <h2 id="faq">سؤال‌های محتمل و جواب کوتاه</h2>
+  <div class="grid g2">
+    <div class="card"><h3>چرا فقط یک ماه؟</h3><p>هر ماه حدود ۱ گیگابایت است و سرعت دانلود محدود بود. پایپ‌لاین قابل تنظیم است: با <span class="en">months_to_keep: 6</span> در <span class="en">config.yaml</span> شش ماه می‌شود.</p></div>
+    <div class="card"><h3>چرا نرخ به ازای جمعیت؟</h3><p>تا محله یا ایستگاه بزرگ فقط به‌خاطر اندازه‌اش بهتر دیده نشود.</p></div>
+    <div class="card"><h3>داده‌ی زنده چطور به‌روز می‌شود؟</h3><p>GitHub Actions هر ۳۰ دقیقه پایپ‌لاین را اجرا می‌کند و فایل‌ها را در شاخه‌ی <span class="en">data</span> منتشر می‌کند. Power BI با Refresh همان‌ها را می‌خواند.</p></div>
+    <div class="card"><h3>پاک‌سازی کجا انجام شده؟</h3><p>قوانین سنگین روی ۵ میلیون ردیف در Python. منطق ایستگاه‌ها و داده‌ی زنده هم قابل دیدن است. همه‌ی قوانین ۳۱ تست واحد دارند.</p></div>
+    <div class="card"><h3>امتیاز اولویت چطور حساب می‌شود؟</h3><p>۱۰۰ × فوریت × (۰٫۵ + ۰٫۵ × تقاضا). فوریت = e<sup>−دقیقه تا خالی یا پر شدن / ۶۰</sup> و تقاضا نسبت به صدک ۹۵ شهر سنجیده می‌شود.</p></div>
+    <div class="card"><h3>تعداد هدف عضویت واقعی است؟</h3><p>نه، تخمین حداقلی است، چون شناسه‌ی کاربر نداریم. روش تخمین صریحاً در گزارش نوشته شده.</p></div>
+  </div>
+</main>
+</div>
+</body>
+</html>
