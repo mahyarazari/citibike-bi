@@ -15,7 +15,8 @@ ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
 TMP="$(mktemp -d)"
-trap 'cd "$ROOT"; rm -rf "$TMP"; git worktree prune' EXIT
+trap 'cd "$ROOT"; rm -rf "$TMP"; git worktree prune; git branch -D data-tmp >/dev/null 2>&1 || true' EXIT
+git branch -D data-tmp >/dev/null 2>&1 || true   # leftover from an interrupted run
 
 # Separate worktree on a fresh orphan branch, so the main checkout is untouched
 git worktree add --detach "$TMP" >/dev/null 2>&1
