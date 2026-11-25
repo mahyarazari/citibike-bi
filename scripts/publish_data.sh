@@ -15,7 +15,7 @@ ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
 TMP="$(mktemp -d)"
-trap 'rm -rf "$TMP"; git worktree prune' EXIT
+trap 'cd "$ROOT"; rm -rf "$TMP"; git worktree prune' EXIT
 
 # Separate worktree on a fresh orphan branch, so the main checkout is untouched
 git worktree add --detach "$TMP" >/dev/null 2>&1
