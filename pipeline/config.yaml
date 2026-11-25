@@ -1,0 +1,57 @@
+# Citi Bike NYC BI pipeline configuration
+# All paths are relative to the repository root.
+
+paths:
+  raw_dir: data/raw            # downloaded ZIPs / API dumps (git-ignored)
+  work_dir: data/work          # intermediate per-month parquet (git-ignored)
+  clean_dir: data/clean        # published outputs read by Power BI (committed)
+  agg_dir: data/agg            # cleaned per-month aggregates (committed; enables incremental CI runs)
+  sample_dir: data/sample      # raw trip sample for Power Query cleaning demo (committed)
+  maps_dir: powerbi/maps       # simplified NTA TopoJSON/GeoJSON for map visuals
+  manifest: data/manifest.json # tracks processed trip months (committed)
+
+gbfs:
+  discovery_url: https://gbfs.citibikenyc.com/gbfs/gbfs.json
+  language: en
+  timeout_s: 30
+  stale_after_minutes: 60      # drop status rows with last_reported older than this
+  # GBFS regions that are not part of the public NYC network
+  excluded_region_names: ["8D", "IC HQ", "testzone"]
+  # NJ part of the system; out of scope like the JC- trip files (set to [] to include)
+  out_of_scope_region_names: ["JC District", "Hoboken District"]
+
+trips:
+  bucket_url: https://s3.amazonaws.com/tripdata
+  months_to_keep: 1            # last N complete months (1 = latest month only; raise for more history)
+  include_jersey_city: false   # files prefixed JC-
+  delete_zip_after_load: true  # keep disk usage low
+  sample_days: 7               # raw trip sample exported for the Power Query demo
+  sample_max_rows: 150000
+
+cleaning:
+  min_duration_min: 1
+  max_duration_min: 1440       # 24 hours
+  max_speed_kmh_classic: 40
+  nyc_bbox: {lat_min: 40.4, lat_max: 41.0, lng_min: -74.3, lng_max: -73.6}
+  # whole-word, case-insensitive match on station names
+  excluded_station_keywords: ["lab", "test", "depot", "warehouse", "mobile station", "nycbs", "shop",
+                              "mechanics", "loading docks", "charging"]
+  # regex on station ids: Lyft internal SYSxxx ids, placeholder 1234.56, NJ stations (JC/HB ids)
+  excluded_station_id_patterns: ["^SYS", "^1234\\.56$", "^JC", "^HB"]
+  timezone: America/New_York
+
+live:
+  snapshot_retention_days: 14
+  trend_snapshots: 4           # last N snapshots used for net-flow trend
+  low_threshold: 0.10          # fill ratio < 10% => Low
+  high_threshold: 0.90         # fill ratio > 90% => High
+  rebalance_list_size: 50
+
+geo:
+  nta_geojson_url: https://data.cityofnewyork.us/api/geospatial/9nt8-h7nd?method=export&format=GeoJSON
+  population_xlsx_url: https://s-media.nyc.gov/agencies/dcp/assets/files/excel/data-tools/census/census2020/nyc_decennialcensusdata_2010_2020_change-core-geographies.xlsx
+  simplify_tolerance_deg: 0.0004
+  service_area_buffer_km: 0.5  # NTAs within this distance of a station are "in service area"
+
+limits:
+  max_file_mb: 50

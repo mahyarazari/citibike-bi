@@ -1,0 +1,76 @@
+name: citibike-pipeline
+
+# Schedules (GitHub cron is UTC and may start a few minutes late)
+#  - every 30 min : live GBFS snapshot  -> live tables
+#  - 5th of month : trip refresh        -> picks up the newly published month
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+    - cron: "0 9 5 * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Pipeline mode"
+        type: choice
+        options: [live, trips, full]
+        default: live
+
+permissions:
+  contents: write
+
+# never run two jobs at once (both would push the data branch)
+concurrency:
+  group: citibike-pipeline
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Restore previous outputs from the data branch
+        run: |
+          if git fetch --depth=1 origin data; then
+            git checkout FETCH_HEAD -- data powerbi/maps || true
+            git reset -q   # keep files in the working tree, unstaged
+          else
+            echo "No data branch yet - first run"
+          fi
+          ls -la data/clean | head -40 || true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Unit tests
+        run: pytest
+
+      - name: Decide mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            MODE="${{ github.event.inputs.mode }}"
+          elif [ "${{ github.event.schedule }}" = "0 9 5 * *" ]; then
+            MODE="trips"
+          else
+            MODE="live"
+          fi
+          # live mode needs the dimensions built by a trips run
+          if [ "$MODE" = "live" ] && [ ! -f data/clean/dim_station.parquet ]; then MODE="full"; fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "Running mode: $MODE"
+
+      - name: Run pipeline
+        run: python pipeline/run.py --mode ${{ steps.mode.outputs.mode }}
+
+      - name: Publish outputs to the data branch
+        run: bash scripts/publish_data.sh "ci ${{ steps.mode.outputs.mode }} run ${{ github.run_id }}"

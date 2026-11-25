@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/
+data/work/
+logs/
+# Power BI local cache files
+powerbi/**/.pbi/localSettings.json
+powerbi/**/.pbi/cache.abf
+# pipeline outputs are published to the `data` branch (scripts/publish_data.sh), not main
+data/clean/
+data/agg/
+data/sample/
+data/manifest.json
+powerbi/maps/
