@@ -1,0 +1,264 @@
+nta_code,nta_name,borough,nta_type,population,area_km2,in_service_area,station_count,dock_count,docks_per_1k_residents,stations_per_km2,has_population
+BK0101,Greenpoint,Brooklyn,Residential,38980,3.281,true,30,1069,27.424320164186764,9.143553794574824,true
+BK0102,Williamsburg,Brooklyn,Residential,64444,2.681,true,39,1658,25.72776363974924,14.54681089145841,true
+BK0103,South Williamsburg,Brooklyn,Residential,47703,1.413,true,11,312,6.540469152883467,7.78485491861288,true
+BK0104,East Williamsburg,Brooklyn,Residential,52998,4.856,true,38,960,18.11389109022982,7.825370675453048,true
+BK0201,Brooklyn Heights,Brooklyn,Residential,25092,0.927,true,12,443,17.655029491471385,12.944983818770226,true
+BK0202,Downtown Brooklyn-DUMBO-Boerum Hill,Brooklyn,Residential,40968,2.205,true,31,1433,34.978519820347586,14.058956916099772,true
+BK0203,Fort Greene,Brooklyn,Residential,32938,1.629,true,23,825,25.047058109174813,14.119091467157766,true
+BK0204,Clinton Hill,Brooklyn,Residential,28647,1.353,true,9,272,9.494886026460014,6.651884700665189,true
+BK0261,Brooklyn Navy Yard,Brooklyn,Cemetery,5,0.939,true,7,202,40400.0,7.454739084132056,true
+BK0301,Bedford-Stuyvesant (West),Brooklyn,Residential,89189,3.429,true,35,736,8.252138716657884,10.20705745115194,true
+BK0302,Bedford-Stuyvesant (East),Brooklyn,Residential,84653,3.836,true,39,830,9.804732259931722,10.166840458811262,true
+BK0401,Bushwick (West),Brooklyn,Residential,58692,2.149,true,30,715,12.182239487494037,13.959981386691485,true
+BK0402,Bushwick (East),Brooklyn,Residential,62049,2.595,true,30,734,11.829360666569968,11.560693641618496,true
+BK0471,The Evergreens Cemetery,Brooklyn,Airport,6,0.519,true,0,0,0.0,0.0,true
+BK0501,Cypress Hills,Brooklyn,Residential,43256,2.265,true,8,118,2.7279452561494355,3.532008830022075,true
+BK0502,East New York (North),Brooklyn,Residential,42818,2.593,true,21,288,6.726143210799196,8.098727342846125,true
+BK0503,East New York-New Lots,Brooklyn,Residential,53004,4.316,true,16,239,4.5090936533091845,3.7071362372567194,true
+BK0504,Spring Creek-Starrett City,Brooklyn,Residential,17038,2.516,false,0,0,0.0,0.0,true
+BK0505,East New York-City Line,Brooklyn,Residential,45559,2.929,true,0,0,0.0,0.0,true
+BK0571,Highland Park-Cypress Hills Cemeteries (South),Brooklyn,Airport,7,0.753,true,1,18,2571.4285714285716,1.3280212483399734,true
+BK0601,Carroll Gardens-Cobble Hill-Gowanus-Red Hook,Brooklyn,Residential,59166,5.65,true,58,1738,29.374978873001385,10.265486725663717,true
+BK0602,Park Slope,Brooklyn,Residential,57405,2.4,true,27,868,15.120634091107046,11.25,true
+BK0701,Windsor Terrace-South Slope,Brooklyn,Residential,23622,1.423,true,14,321,13.589027178054357,9.838369641602249,true
+BK0702,Sunset Park (West),Brooklyn,Residential,54473,4.68,true,43,1119,20.542287004571072,9.18803418803419,true
+BK0703,Sunset Park (Central),Brooklyn,Residential,55606,1.742,true,16,388,6.977664280833003,9.184845005740527,true
+BK0771,Green-Wood Cemetery,Brooklyn,Airport,5,1.96,true,4,64,12800.0,2.0408163265306123,true
+BK0801,Prospect Heights,Brooklyn,Residential,23515,0.958,true,13,346,14.71401233255369,13.569937369519833,true
+BK0802,Crown Heights (North),Brooklyn,Residential,85275,3.29,true,39,854,10.014658457930226,11.854103343465045,true
+BK0891,Lincoln Terrace Park,Brooklyn,Park / open space,15,0.113,true,3,69,4600.0,26.548672566371682,true
+BK0901,Crown Heights (South),Brooklyn,Residential,50590,1.863,true,20,443,8.756671278908875,10.735373054213634,true
+BK0902,Prospect Lefferts Gardens-Wingate,Brooklyn,Residential,49513,2.233,true,30,659,13.309635853210269,13.434841021047918,true
+BK1001,Bay Ridge,Brooklyn,Residential,86779,5.726,true,51,797,9.1842496456516,8.906741180579811,true
+BK1002,Dyker Heights,Brooklyn,Residential,46756,2.705,true,0,0,0.0,0.0,true
+BK1061,Fort Hamilton,Brooklyn,Cemetery,775,0.786,true,0,0,0.0,0.0,true
+BK1091,Dyker Beach Park,Brooklyn,Park / open space,9,0.928,true,0,0,0.0,0.0,true
+BK1101,Bensonhurst,Brooklyn,Residential,104934,4.518,false,0,0,0.0,0.0,true
+BK1102,Bath Beach,Brooklyn,Residential,33070,1.91,false,0,0,0.0,0.0,true
+BK1103,Gravesend (West),Brooklyn,Residential,60523,3.143,false,0,0,0.0,0.0,true
+BK1201,Sunset Park (East)-Borough Park (West),Brooklyn,Residential,35632,1.092,true,2,31,0.8700044903457566,1.8315018315018314,true
+BK1202,Borough Park,Brooklyn,Residential,93905,3.761,true,4,76,0.8093285767531015,1.0635469290082424,true
+BK1203,Kensington,Brooklyn,Residential,41758,1.623,true,13,241,5.771349202548015,8.009858287122613,true
+BK1204,Mapleton-Midwood (West),Brooklyn,Residential,39137,2.913,false,0,0,0.0,0.0,true
+BK1301,Gravesend (South),Brooklyn,Residential,30366,2.4,false,0,0,0.0,0.0,true
+BK1302,Coney Island-Sea Gate,Brooklyn,Residential,49517,4.421,false,0,0,0.0,0.0,true
+BK1303,Brighton Beach,Brooklyn,Residential,33568,1.26,false,0,0,0.0,0.0,true
+BK1391,Calvert Vaux Park,Brooklyn,Park / open space,0,0.392,false,0,0,,0.0,false
+BK1401,Flatbush,Brooklyn,Residential,66503,2.232,true,13,308,4.631370013382855,5.82437275985663,true
+BK1402,Flatbush (West)-Ditmas Park-Parkville,Brooklyn,Residential,43016,2.128,true,9,217,5.0446345545843405,4.2293233082706765,true
+BK1403,Midwood,Brooklyn,Residential,52891,2.993,false,0,0,0.0,0.0,true
+BK1501,Gravesend (East)-Homecrest,Brooklyn,Residential,52797,3.24,false,0,0,0.0,0.0,true
+BK1502,Madison,Brooklyn,Residential,41465,2.544,false,0,0,0.0,0.0,true
+BK1503,Sheepshead Bay-Manhattan Beach-Gerritsen Beach,Brooklyn,Residential,69084,5.887,false,0,0,0.0,0.0,true
+BK1601,Ocean Hill,Brooklyn,Residential,37952,1.866,true,27,573,15.09801854974705,14.469453376205786,true
+BK1602,Brownsville,Brooklyn,Residential,60470,2.86,true,29,469,7.755912022490492,10.13986013986014,true
+BK1701,East Flatbush-Erasmus,Brooklyn,Residential,47690,1.837,true,16,368,7.716502411407003,8.709853021230266,true
+BK1702,East Flatbush-Farragut,Brooklyn,Residential,34317,2.241,true,3,61,1.777544657167002,1.3386880856760375,true
+BK1703,East Flatbush-Rugby,Brooklyn,Residential,42762,2.527,true,15,323,7.553435293017165,5.93589236248516,true
+BK1704,East Flatbush-Remsen Village,Brooklyn,Residential,39115,1.709,true,15,264,6.749328901955771,8.777062609713282,true
+BK1771,Holy Cross Cemetery,Brooklyn,Airport,32,0.397,true,1,22,687.5,2.5188916876574305,true
+BK1801,Flatlands,Brooklyn,Residential,67087,5.048,false,0,0,0.0,0.0,true
+BK1802,Marine Park-Mill Basin-Bergen Beach,Brooklyn,Residential,46955,5.469,false,0,0,0.0,0.0,true
+BK1803,Canarsie,Brooklyn,Residential,89932,6.553,true,0,0,0.0,0.0,true
+BK1891,Marine Park-Plumb Island,Brooklyn,Park / open space,1,4.042,false,0,0,0.0,0.0,true
+BK1892,McGuire Fields,Brooklyn,Park / open space,4,0.984,false,0,0,0.0,0.0,true
+BK1893,Canarsie Park & Pier,Brooklyn,Park / open space,5,1.073,false,0,0,0.0,0.0,true
+BK5591,Prospect Park,Brooklyn,Park / open space,15,2.539,true,13,387,25800.0,5.120126033871602,true
+BK5691,Barren Island-Floyd Bennett Field,Brooklyn,Park / open space,21,5.08,false,0,0,0.0,0.0,true
+BK5692,Jamaica Bay (West),Brooklyn,Park / open space,0,3.693,false,0,0,,0.0,false
+BK5693,Shirley Chisholm State Park,Brooklyn,Park / open space,0,1.699,false,0,0,,0.0,false
+BX0101,Mott Haven-Port Morris,Bronx,Residential,57718,3.807,true,33,657,11.382930801483072,8.668242710795903,true
+BX0102,Melrose,Bronx,Residential,42651,1.605,true,20,448,10.503856884949942,12.461059190031152,true
+BX0201,Hunts Point,Bronx,Residential,15131,4.184,true,7,150,9.913422774436588,1.6730401529636711,true
+BX0202,Longwood,Bronx,Residential,40289,1.43,true,17,370,9.183648142172801,11.888111888111888,true
+BX0291,North & South Brother Islands,Bronx,Park / open space,0,0.086,true,0,0,,0.0,false
+BX0301,Morrisania,Bronx,Residential,37607,1.283,true,11,227,6.03611029861462,8.57365549493375,true
+BX0302,Claremont Village-Claremont (East),Bronx,Residential,24553,0.929,true,12,262,10.670793793019183,12.917115177610333,true
+BX0303,Crotona Park East,Bronx,Residential,30158,1.484,true,14,283,9.383911399960208,9.433962264150944,true
+BX0391,Crotona Park,Bronx,Park / open space,34,0.589,true,4,76,2235.294117647059,6.791171477079796,true
+BX0401,Concourse-Concourse Village,Bronx,Residential,69387,2.462,true,26,607,8.74803637568997,10.560519902518276,true
+BX0402,Highbridge,Bronx,Residential,32456,1.212,true,10,197,6.069755977323145,8.250825082508252,true
+BX0403,Mount Eden-Claremont (West),Bronx,Residential,49651,1.264,true,15,339,6.827657046182353,11.867088607594937,true
+BX0491,Yankee Stadium-Macombs Dam Park,Bronx,Park / open space,19,0.261,true,5,120,6315.789473684211,19.157088122605362,true
+BX0492,Claremont Park,Bronx,Park / open space,10,0.173,true,2,43,4300.0,11.560693641618498,true
+BX0501,University Heights (South)-Morris Heights,Bronx,Residential,54682,1.824,true,21,449,8.211111517501188,11.513157894736842,true
+BX0502,Mount Hope,Bronx,Residential,49099,1.178,true,17,376,7.657997107884071,14.431239388794568,true
+BX0503,Fordham Heights,Bronx,Residential,32099,0.686,true,8,199,6.199570080064799,11.661807580174926,true
+BX0601,West Farms,Bronx,Residential,20147,1.087,true,10,221,10.969375093065965,9.19963201471941,true
+BX0602,Tremont,Bronx,Residential,32150,1.471,true,13,276,8.584758942457231,8.837525492861998,true
+BX0603,Belmont,Bronx,Residential,35825,1.523,true,12,297,8.29030006978367,7.879185817465529,true
+BX0701,University Heights (North)-Fordham,Bronx,Residential,46538,1.702,true,17,365,7.843052988955263,9.988249118683902,true
+BX0702,Bedford Park,Bronx,Residential,55521,2.281,true,25,553,9.960195241440175,10.960105217010083,true
+BX0703,Norwood,Bronx,Residential,43466,1.461,true,19,383,8.81148483872452,13.00479123887748,true
+BX0801,Kingsbridge Heights-Van Cortlandt Village,Bronx,Residential,35777,1.019,true,11,223,6.23305475584873,10.794896957801768,true
+BX0802,Kingsbridge-Marble Hill,Bronx,Residential,22807,1.144,true,14,326,14.293857149120884,12.237762237762238,true
+BX0803,Riverdale-Spuyten Duyvil,Bronx,Residential,47927,5.851,true,16,233,4.861560289607111,2.73457528627585,true
+BX0901,Soundview-Bruckner-Bronx River,Bronx,Residential,74342,2.992,true,0,0,0.0,0.0,true
+BX0902,Soundview-Clason Point,Bronx,Residential,37297,2.817,false,0,0,0.0,0.0,true
+BX0903,Castle Hill-Unionport,Bronx,Residential,41420,3.056,false,0,0,0.0,0.0,true
+BX0904,Parkchester,Bronx,Residential,33602,0.853,false,0,0,0.0,0.0,true
+BX0991,Soundview Park,Bronx,Park / open space,6,0.724,false,0,0,0.0,0.0,true
+BX1001,Westchester Square,Bronx,Residential,17376,1.429,false,0,0,0.0,0.0,true
+BX1002,Throgs Neck-Schuylerville,Bronx,Residential,48116,6.176,false,0,0,0.0,0.0,true
+BX1003,Pelham Bay-Country Club-City Island,Bronx,Residential,29462,3.28,false,0,0,0.0,0.0,true
+BX1004,Co-op City,Bronx,Residential,37369,2.699,false,0,0,0.0,0.0,true
+BX1071,Hart Island,Bronx,Airport,0,0.456,false,0,0,,0.0,false
+BX1091,Ferry Point Park-St. Raymond Cemetery,Bronx,Park / open space,0,2.02,false,0,0,,0.0,false
+BX1101,Pelham Parkway-Van Nest,Bronx,Residential,32425,1.448,true,0,0,0.0,0.0,true
+BX1102,Morris Park,Bronx,Residential,25077,2.586,false,0,0,0.0,0.0,true
+BX1103,Pelham Gardens,Bronx,Residential,29402,2.793,false,0,0,0.0,0.0,true
+BX1104,Allerton,Bronx,Residential,34623,1.464,false,0,0,0.0,0.0,true
+BX1161,Hutchinson Metro Center,Bronx,Cemetery,297,1.132,false,0,0,0.0,0.0,true
+BX1201,Williamsbridge-Olinville,Bronx,Residential,61346,3.367,true,0,0,0.0,0.0,true
+BX1202,Eastchester-Edenwald-Baychester,Bronx,Residential,51736,5.239,false,0,0,0.0,0.0,true
+BX1203,Wakefield-Woodlawn,Bronx,Residential,47657,3.683,false,0,0,0.0,0.0,true
+BX1271,Woodlawn Cemetery,Bronx,Airport,2,1.662,true,0,0,0.0,0.0,true
+BX2691,Van Cortlandt Park,Bronx,Park / open space,122,4.706,true,5,96,786.8852459016393,1.0624734381640457,true
+BX2791,Bronx Park,Bronx,Park / open space,69,3.109,true,1,31,449.27536231884056,0.32164683177870695,true
+BX2891,Pelham Bay Park,Bronx,Park / open space,28,9.224,false,0,0,0.0,0.0,true
+MN0101,Financial District-Battery Park City,Manhattan,Residential,52992,1.786,true,34,1894,35.74124396135266,19.036954087346025,true
+MN0102,Tribeca-Civic Center,Manhattan,Residential,25390,1.261,true,24,1417,55.80937376920047,19.032513877874703,true
+MN0191,The Battery-Governors Island-Ellis Island-Liberty Island,Manhattan,Park / open space,8,1.114,true,3,116,14500.0,2.6929982046678633,true
+MN0201,SoHo-Little Italy-Hudson Square,Manhattan,Residential,23287,1.2,true,21,1127,48.3961008287886,17.5,true
+MN0202,Greenwich Village,Manhattan,Residential,34147,0.985,true,19,1166,34.14648431780244,19.289340101522843,true
+MN0203,West Village,Manhattan,Residential,35011,1.339,true,22,1216,34.731941389848906,16.430171769977594,true
+MN0301,Chinatown-Two Bridges,Manhattan,Residential,42556,1.072,true,17,836,19.644703449572326,15.85820895522388,true
+MN0302,Lower East Side,Manhattan,Residential,49149,1.532,true,23,1066,21.689149321451097,15.013054830287206,true
+MN0303,East Village,Manhattan,Residential,71436,1.763,true,39,2411,33.7504899490453,22.12138400453772,true
+MN0401,Chelsea-Hudson Yards,Manhattan,Residential,69741,2.757,true,43,2543,36.463486327984974,15.596663039535727,true
+MN0402,Hell's Kitchen,Manhattan,Residential,59524,1.708,true,21,1065,17.891942745783215,12.295081967213115,true
+MN0501,Midtown South-Flatiron-Union Square,Manhattan,Residential,33214,1.382,true,23,1632,49.13590654543265,16.642547033285094,true
+MN0502,Midtown-Times Square,Manhattan,Residential,25575,2.281,true,41,2539,99.27663734115347,17.974572555896536,true
+MN0601,Stuyvesant Town-Peter Cooper Village,Manhattan,Residential,22512,0.518,true,6,319,14.170220326936745,11.583011583011583,true
+MN0602,Gramercy,Manhattan,Residential,28628,0.699,true,10,623,21.761911415397513,14.30615164520744,true
+MN0603,Murray Hill-Kips Bay,Manhattan,Residential,63520,1.465,true,24,1583,24.921284634760703,16.38225255972696,true
+MN0604,East Midtown-Turtle Bay,Manhattan,Residential,45765,1.221,true,18,1047,22.877745001638807,14.74201474201474,true
+MN0661,United Nations,Manhattan,Cemetery,0,0.101,true,0,0,,0.0,false
+MN0701,Upper West Side-Lincoln Square,Manhattan,Residential,70697,1.468,true,14,686,9.703382038841818,9.536784741144414,true
+MN0702,Upper West Side (Central),Manhattan,Residential,101767,2.361,true,20,910,8.94199494924681,8.470986869970352,true
+MN0703,Upper West Side-Manhattan Valley,Manhattan,Residential,51751,1.226,true,12,489,9.44909277115418,9.787928221859707,true
+MN0801,Upper East Side-Lenox Hill-Roosevelt Island,Manhattan,Residential,85527,1.998,true,18,803,9.388847966139348,9.00900900900901,true
+MN0802,Upper East Side-Carnegie Hill,Manhattan,Residential,62410,1.864,true,18,734,11.760935747476365,9.656652360515022,true
+MN0803,Upper East Side-Yorkville,Manhattan,Residential,84046,1.268,true,14,602,7.162744211503224,11.041009463722398,true
+MN0901,Morningside Heights,Manhattan,Residential,38865,1.479,true,11,421,10.832368454908014,7.437457741717376,true
+MN0902,Manhattanville-West Harlem,Manhattan,Residential,22183,0.997,true,12,292,13.163233106432854,12.036108324974926,true
+MN0903,Hamilton Heights-Sugar Hill,Manhattan,Residential,49410,1.485,true,18,438,8.864602307225258,12.121212121212121,true
+MN1001,Harlem (South),Manhattan,Residential,47113,1.34,true,14,487,10.336849701780825,10.44776119402985,true
+MN1002,Harlem (North),Manhattan,Residential,83327,2.21,true,26,630,7.560574603669879,11.764705882352942,true
+MN1101,East Harlem (South),Manhattan,Residential,59814,1.547,true,16,499,8.342528505032266,10.342598577892696,true
+MN1102,East Harlem (North),Manhattan,Residential,64655,2.427,true,26,681,10.532828087541567,10.712814173877215,true
+MN1191,Randall's Island,Manhattan,Park / open space,1302,2.18,true,4,87,66.82027649769586,1.8348623853211008,true
+MN1201,Washington Heights (South),Manhattan,Residential,72037,1.954,true,21,552,7.662728875439011,10.747185261003072,true
+MN1202,Washington Heights (North),Manhattan,Residential,71842,2.301,true,22,506,7.043233762979872,9.561060408518035,true
+MN1203,Inwood,Manhattan,Residential,36299,1.341,true,13,301,8.292239455632386,9.694258016405668,true
+MN1291,Highbridge Park,Manhattan,Park / open space,12,0.72,true,6,132,11000.0,8.333333333333334,true
+MN1292,Inwood Hill Park,Manhattan,Park / open space,16,0.93,true,4,86,5375.0,4.301075268817204,true
+MN6491,Central Park,Manhattan,Park / open space,129,3.559,true,11,348,2697.6744186046512,3.090755830289407,true
+OUTSIDE,Outside NYC NTAs,Outside NYC,Outside,0,,true,3,53,,,false
+QN0101,Astoria (North)-Ditmars-Steinway,Queens,Residential,50225,5.416,true,39,907,18.05873568939771,7.2008862629246675,true
+QN0102,Old Astoria-Hallets Point,Queens,Residential,18927,1.03,true,11,254,13.419982036244518,10.679611650485437,true
+QN0103,Astoria (Central),Queens,Residential,52220,1.959,true,18,466,8.923783990808118,9.188361408882082,true
+QN0104,Astoria (East)-Woodside (North),Queens,Residential,38673,2.419,true,30,683,17.66090036976702,12.401818933443572,true
+QN0105,Queensbridge-Ravenswood-Dutch Kills,Queens,Residential,32954,2.575,true,24,626,18.99617648843843,9.320388349514563,true
+QN0151,Rikers Island,Bronx,Rikers Island,3772,1.687,false,0,0,0.0,0.0,true
+QN0161,Sunnyside Yards (North),Queens,Cemetery,27,0.418,true,3,75,2777.777777777778,7.177033492822967,true
+QN0171,St. Michael's Cemetery,Queens,Airport,5,0.408,true,0,0,0.0,0.0,true
+QN0191,Astoria Park,Queens,Park / open space,0,0.249,true,3,93,,12.048192771084338,false
+QN0201,Long Island City-Hunters Point,Queens,Residential,32216,2.564,true,26,799,24.80134094859697,10.14040561622465,true
+QN0202,Sunnyside,Queens,Residential,52278,4.432,true,35,799,15.283675733578177,7.8971119133574,true
+QN0203,Woodside,Queens,Residential,53188,3.061,true,34,702,13.19846581935775,11.107481215289122,true
+QN0261,Sunnyside Yards (South),Queens,Cemetery,36,0.816,true,3,57,1583.3333333333333,3.6764705882352944,true
+QN0271,Calvary & Mount Zion Cemeteries,Queens,Airport,0,1.328,true,2,34,,1.506024096385542,false
+QN0301,Jackson Heights,Queens,Residential,101848,3.653,true,44,978,9.60254496897337,12.044894607172187,true
+QN0302,East Elmhurst,Queens,Residential,33573,2.672,true,26,542,16.14392517797039,9.730538922155688,true
+QN0303,North Corona,Queens,Residential,43434,1.297,true,15,350,8.058203250909425,11.56515034695451,true
+QN0401,Elmhurst,Queens,Residential,107864,3.911,true,35,808,7.49091448490692,8.949117872666838,true
+QN0402,Corona,Queens,Residential,73822,2.232,true,25,548,7.423261358402644,11.200716845878135,true
+QN0501,Maspeth,Queens,Residential,43257,5.418,true,25,496,11.466352266685162,4.614248800295312,true
+QN0502,Ridgewood,Queens,Residential,66402,3.953,true,44,886,13.342971597241046,11.130786744244878,true
+QN0503,Glendale,Queens,Residential,35135,2.788,true,4,82,2.333855130212039,1.4347202295552368,true
+QN0504,Middle Village,Queens,Residential,34474,3.246,true,0,0,0.0,0.0,true
+QN0571,Mount Olivet & All Faiths Cemeteries,Queens,Airport,3,0.71,true,1,21,7000.0,1.4084507042253522,true
+QN0572,Middle Village Cemetery,Queens,Airport,0,0.512,true,0,0,,0.0,false
+QN0573,St. John Cemetery,Queens,Airport,3,0.813,false,0,0,0.0,0.0,true
+QN0574,Highland Park-Cypress Hills Cemeteries (North),Queens,Airport,20,2.901,true,1,24,1200.0,0.3447087211306446,true
+QN0601,Rego Park,Queens,Residential,30741,1.876,true,8,158,5.13971568914479,4.264392324093817,true
+QN0602,Forest Hills,Queens,Residential,88965,5.384,true,37,669,7.5198111616928,6.872213967310549,true
+QN0701,College Point,Queens,Residential,33625,6.197,false,0,0,0.0,0.0,true
+QN0702,Whitestone-Beechhurst,Queens,Residential,28408,4.89,false,0,0,0.0,0.0,true
+QN0703,Bay Terrace-Clearview,Queens,Residential,23287,3.653,false,0,0,0.0,0.0,true
+QN0704,Murray Hill-Broadway Flushing,Queens,Residential,57387,5.245,false,0,0,0.0,0.0,true
+QN0705,East Flushing,Queens,Residential,34704,2.941,false,0,0,0.0,0.0,true
+QN0706,Queensboro Hill,Queens,Residential,23638,2.455,false,0,0,0.0,0.0,true
+QN0707,Flushing-Willets Point,Queens,Residential,69879,3.58,true,0,0,0.0,0.0,true
+QN0761,Fort Totten,Queens,Cemetery,0,0.646,false,0,0,,0.0,false
+QN0791,Kissena Park,Queens,Park / open space,2,1.023,false,0,0,0.0,0.0,true
+QN0801,Kew Gardens Hills,Queens,Residential,36009,3.187,false,0,0,0.0,0.0,true
+QN0802,Pomonok-Electchester-Hillcrest,Queens,Residential,35669,3.435,false,0,0,0.0,0.0,true
+QN0803,Fresh Meadows-Utopia,Queens,Residential,23434,3.084,false,0,0,0.0,0.0,true
+QN0804,Jamaica Estates-Holliswood,Queens,Residential,23576,3.661,false,0,0,0.0,0.0,true
+QN0805,Jamaica Hills-Briarwood,Queens,Residential,39292,2.568,false,0,0,0.0,0.0,true
+QN0871,Mount Hebron & Cedar Grove Cemeteries,Queens,Airport,1,0.856,false,0,0,0.0,0.0,true
+QN0891,Cunningham Park,Queens,Park / open space,5,1.979,false,0,0,0.0,0.0,true
+QN0901,Kew Gardens,Queens,Residential,24371,1.885,true,0,0,0.0,0.0,true
+QN0902,Richmond Hill,Queens,Residential,34100,2.812,false,0,0,0.0,0.0,true
+QN0903,South Richmond Hill,Queens,Residential,24141,1.472,false,0,0,0.0,0.0,true
+QN0904,Ozone Park (North),Queens,Residential,27312,1.68,false,0,0,0.0,0.0,true
+QN0905,Woodhaven,Queens,Residential,41948,2.204,false,0,0,0.0,0.0,true
+QN1001,South Ozone Park,Queens,Residential,79540,7.603,false,0,0,0.0,0.0,true
+QN1002,Ozone Park,Queens,Residential,23518,2.333,false,0,0,0.0,0.0,true
+QN1003,Howard Beach-Lindenwood,Queens,Residential,27320,4.887,false,0,0,0.0,0.0,true
+QN1091,Spring Creek Park,Queens,Park / open space,0,1.101,false,0,0,,0.0,false
+QN1101,Auburndale,Queens,Residential,36182,5.153,false,0,0,0.0,0.0,true
+QN1102,Bayside,Queens,Residential,35588,6.541,false,0,0,0.0,0.0,true
+QN1103,Douglaston-Little Neck,Queens,Residential,25262,6.331,false,0,0,0.0,0.0,true
+QN1104,Oakland Gardens-Hollis Hills,Queens,Residential,25249,3.682,false,0,0,0.0,0.0,true
+QN1191,Alley Pond Park,Queens,Park / open space,85,2.428,false,0,0,0.0,0.0,true
+QN1201,Jamaica,Queens,Residential,60993,4.351,false,0,0,0.0,0.0,true
+QN1202,South Jamaica,Queens,Residential,44401,3.518,false,0,0,0.0,0.0,true
+QN1203,Baisley Park,Queens,Residential,43090,4.455,false,0,0,0.0,0.0,true
+QN1204,Springfield Gardens (North)-Rochdale Village,Queens,Residential,32883,3.202,false,0,0,0.0,0.0,true
+QN1205,St. Albans,Queens,Residential,51816,6.901,false,0,0,0.0,0.0,true
+QN1206,Hollis,Queens,Residential,24576,2.273,false,0,0,0.0,0.0,true
+QN1301,Glen Oaks-Floral Park-New Hyde Park,Queens,Residential,23364,4.22,false,0,0,0.0,0.0,true
+QN1302,Bellerose,Queens,Residential,26566,5.14,false,0,0,0.0,0.0,true
+QN1303,Queens Village,Queens,Residential,54345,6.471,false,0,0,0.0,0.0,true
+QN1304,Cambria Heights,Queens,Residential,19081,3.073,false,0,0,0.0,0.0,true
+QN1305,Laurelton,Queens,Residential,26088,3.701,false,0,0,0.0,0.0,true
+QN1306,Springfield Gardens (South)-Brookville,Queens,Residential,23103,5.336,false,0,0,0.0,0.0,true
+QN1307,Rosedale,Queens,Residential,27101,4.388,false,0,0,0.0,0.0,true
+QN1371,Montefiore Cemetery,Queens,Airport,0,0.494,false,0,0,,0.0,false
+QN1401,Far Rockaway-Bayswater,Queens,Residential,58648,5.618,false,0,0,0.0,0.0,true
+QN1402,Rockaway Beach-Arverne-Edgemere,Queens,Residential,41367,4.692,false,0,0,0.0,0.0,true
+QN1403,Breezy Point-Belle Harbor-Rockaway Park-Broad Channel,Queens,Residential,24134,6.432,false,0,0,0.0,0.0,true
+QN1491,Rockaway Community Park,Queens,Park / open space,12,0.83,false,0,0,0.0,0.0,true
+QN8081,LaGuardia Airport,Queens,Park / open space,0,2.842,true,0,0,,0.0,false
+QN8191,Flushing Meadows-Corona Park,Queens,Park / open space,44,5.129,true,6,157,3568.1818181818185,1.1698186781048938,true
+QN8291,Forest Park,Queens,Park / open space,4,2.231,false,0,0,0.0,0.0,true
+QN8381,John F. Kennedy International Airport,Queens,Park / open space,2,18.32,false,0,0,0.0,0.0,true
+QN8491,Jamaica Bay (East),Queens,Park / open space,0,6.496,false,0,0,,0.0,false
+QN8492,Jacob Riis Park-Fort Tilden-Breezy Point Tip,Queens,Park / open space,24,4.89,false,0,0,0.0,0.0,true
+SI0101,St. George-New Brighton,Staten Island,Residential,20549,2.463,false,0,0,0.0,0.0,true
+SI0102,Tompkinsville-Stapleton-Clifton-Fox Hills,Staten Island,Residential,19027,2.252,false,0,0,0.0,0.0,true
+SI0103,Rosebank-Shore Acres-Park Hill,Staten Island,Residential,25510,3.275,false,0,0,0.0,0.0,true
+SI0104,West New Brighton-Silver Lake-Grymes Hill,Staten Island,Residential,37010,7.93,false,0,0,0.0,0.0,true
+SI0105,Westerleigh-Castleton Corners,Staten Island,Residential,31458,7.11,false,0,0,0.0,0.0,true
+SI0106,Port Richmond,Staten Island,Residential,22609,3.367,false,0,0,0.0,0.0,true
+SI0107,Mariner's Harbor-Arlington-Graniteville,Staten Island,Residential,33492,8.305,false,0,0,0.0,0.0,true
+SI0191,Snug Harbor,Staten Island,Park / open space,8,0.35,false,0,0,0.0,0.0,true
+SI0201,Grasmere-Arrochar-South Beach-Dongan Hills,Staten Island,Residential,36259,7.443,false,0,0,0.0,0.0,true
+SI0202,New Dorp-Midland Beach,Staten Island,Residential,29083,5.777,false,0,0,0.0,0.0,true
+SI0203,Todt Hill-Emerson Hill-Lighthouse Hill-Manor Heights,Staten Island,Residential,32822,17.309,false,0,0,0.0,0.0,true
+SI0204,New Springville-Willowbrook-Bulls Head-Travis,Staten Island,Residential,42871,19.453,false,0,0,0.0,0.0,true
+SI0291,Freshkills Park (North),Staten Island,Park / open space,15,6.334,false,0,0,0.0,0.0,true
+SI0301,Oakwood-Richmondtown,Staten Island,Residential,22388,5.197,false,0,0,0.0,0.0,true
+SI0302,Great Kills-Eltingville,Staten Island,Residential,54699,10.846,false,0,0,0.0,0.0,true
+SI0303,Arden Heights-Rossville,Staten Island,Residential,30683,6.296,false,0,0,0.0,0.0,true
+SI0304,Annadale-Huguenot-Prince's Bay-Woodrow,Staten Island,Residential,40534,16.762,false,0,0,0.0,0.0,true
+SI0305,Tottenville-Charleston,Staten Island,Residential,16089,11.778,false,0,0,0.0,0.0,true
+SI0391,Freshkills Park (South),Staten Island,Park / open space,95,4.437,false,0,0,0.0,0.0,true
+SI9561,Fort Wadsworth,Staten Island,Cemetery,495,0.917,false,0,0,0.0,0.0,true
+SI9591,Hoffman & Swinburne Islands,Staten Island,Park / open space,0,0.059,false,0,0,,0.0,false
+SI9592,Miller Field,Staten Island,Park / open space,46,1.01,false,0,0,0.0,0.0,true
+SI9593,Great Kills Park,Staten Island,Park / open space,5,2.172,false,0,0,0.0,0.0,true

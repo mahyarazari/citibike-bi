@@ -1,0 +1,3 @@
+table,month_key,file
+fact_trips_hourly,202610,fact_trips_hourly_202610.parquet
+fact_station_hourly,202610,fact_station_hourly_202610.parquet

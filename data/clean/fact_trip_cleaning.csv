@@ -1,0 +1,12 @@
+month_key,entity,rule,action,rows_affected,rows_in,rows_out,note
+202610,trips,R01 duplicate ride_id,REMOVE,0,5088365,5088365,""
+202610,trips,R02 unparseable timestamp,REMOVE,0,5088365,5088365,""
+202610,trips,R03 duration < 1 min (false start),REMOVE,0,5088365,5088365,""
+202610,trips,R04 duration > 24 h (lost/unreturned),REMOVE,967,5088365,5087398,""
+202610,trips,R05a station id with trailing '_' repaired,FIX,5656,5087398,5087398,""
+202610,trips,R05 missing start station,REMOVE,2879,5087398,5084519,""
+202610,trips,R06 missing end station (unreturned),FLAG,12966,5084519,5084519,""
+202610,trips,R07 test/depot/lab/internal or out-of-scope station,REMOVE,1466,5084519,5083053,"names: lab, test, depot, warehouse, mobile station, nycbs, shop, mechanics, loading docks, charging | ids: ^SYS|^1234\.56$|^JC|^HB"
+202610,trips,R08 coordinates outside NYC bbox,FLAG,0,5083053,5083053,values set to null
+202610,trips,R09 implausible speed > 40 km/h (classic),FLAG,1,5083053,5083053,distance set to null
+202610,trips,R10 station id not in GBFS short_name,FLAG,26691,5083053,5083053,6 distinct ids (retired/temporary stations)

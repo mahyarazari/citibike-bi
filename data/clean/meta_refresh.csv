@@ -1,0 +1,2 @@
+last_successful_run_utc,last_run_id,last_mode,last_live_snapshot_utc,snapshots_kept,trip_window_start,trip_window_end,last_trip_refresh_utc
+2026-11-28T12:41:59+00:00,20261128T124159Z-b89346,live,2026-11-28T12:41:12+00:00,14,2026-10-01,2026-10-31,2026-11-25T19:36:49+00:00
